@@ -28,25 +28,53 @@
     });
   }
 
-  // Hero: rotate the words on the lower line
+  // Hero: rotate the words on the lower line once, then rest on the last word.
+  // A Pause button lets visitors stop it (WCAG 2.2.2 Pause, Stop, Hide).
   var rotator = document.querySelector(".rotator");
+  var toggle = document.querySelector(".rotator-toggle");
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (rotator && !reduceMotion) {
     var words = rotator.getAttribute("data-words").split("|");
     var word = rotator.querySelector(".rotator__word");
     var index = 0;
+    var timer = null;
 
-    setInterval(function () {
+    function step() {
       word.classList.add("is-leaving");
       setTimeout(function () {
-        index = (index + 1) % words.length;
+        index += 1;
         word.textContent = words[index];
         word.classList.remove("is-leaving");
         word.classList.add("is-entering");
         word.getBoundingClientRect(); // let the browser place it below before sliding up
         word.classList.remove("is-entering");
+        if (index >= words.length - 1) finish();
       }, 400);
-    }, 2600);
+    }
+
+    function start() { timer = setInterval(step, 2600); }
+    function stop() { clearInterval(timer); timer = null; }
+    function finish() {
+      stop();
+      if (toggle) toggle.hidden = true; // nothing moves any more
+    }
+
+    if (toggle) {
+      toggle.hidden = false;
+      toggle.addEventListener("click", function () {
+        var paused = toggle.getAttribute("aria-pressed") === "true";
+        if (paused) {
+          start();
+          toggle.setAttribute("aria-pressed", "false");
+          toggle.textContent = "Pause animation";
+        } else {
+          stop();
+          toggle.setAttribute("aria-pressed", "true");
+          toggle.textContent = "Play animation";
+        }
+      });
+    }
+    start();
   }
 
   // Highlight the anchor for the section on screen

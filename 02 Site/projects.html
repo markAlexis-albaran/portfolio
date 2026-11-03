@@ -13,6 +13,7 @@
   <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <div class="bg-stripes" data-reveal="large" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
   <header class="nav">
     <div class="container nav__inner">
@@ -26,7 +27,7 @@
       </nav>
     </div>
   </header>
-  <main>
+  <main id="main">
     <section class="page-header">
       <div class="container" data-reveal>
         <p class="label">Selected work</p>
@@ -34,8 +35,9 @@
       </div>
     </section>
 
-    <section aria-label="All projects">
+    <section aria-labelledby="all-title">
       <div class="container">
+        <h2 class="visually-hidden" id="all-title">All projects</h2>
       <div class="cards">
         <a class="card" href="projects/springin.html" data-reveal data-delay="0">
           <div class="card__media">

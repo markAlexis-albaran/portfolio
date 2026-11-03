@@ -11,7 +11,7 @@ Baseline: the existing Framer portfolio at https://markalexis.framer.website. Ma
 
 ## Home page content (from the Framer baseline)
 - Availability note at the top: "Available for Full-Time Roles from Oct 1, 2026"
-- Hero: the sentence "I turn complexity into clarity." in white, then in grey "with AI-powered" and a line that rotates through "Research Synthesis", "Prototyping", "Design-to-Code", "Usability Testing" (each slides up and out as the next slides in)
+- Hero: the sentence "I turn complexity into clarity." in white, then in grey "with AI-powered" and a line that rotates through "Research Synthesis", "Prototyping", "Design-to-Code", "Usability Testing" (each slides up and out as the next slides in). It plays once and rests on "Usability Testing". A "Pause animation" button shows while it moves and hides once it stops (WCAG 2.2.2).
 - With animation turned off (reduced motion), only "I turn complexity into clarity." shows
 - Project cards, in this order: SpringIn (2026, Healthcare; replaced zengo; first because it shows the AI-assisted process), tvguideplus (2025, Media / Publishing), yumm (2024, Media / Publishing), pflegePro (2023, Healthcare), roverride (2023, Media / Publishing)
 - Contact section labeled ".say hello", with the line "Hiring a product designer who brings AI into the process? Let's talk." and a "contact me" button. Do not repeat the availability date here: the note at the top already says it, and the line should point toward a role, never invite unpaid design work.
@@ -35,6 +35,12 @@ Baseline: the existing Framer portfolio at https://markalexis.framer.website. Ma
 ## References
 - Like: the Framer portfolio (markalexis.framer.website) because it is the owner's own baseline: keep its structure, content, spacing and feel as much as possible.
 - Dislike: dull, static sites with nothing moving, and sites where motion or layout makes it hard to find the work or get around.
+
+## Accessibility (WCAG 2.2 AA)
+- White focus outline on every focusable element (the blue accent is only 2.5:1 on black).
+- A "Skip to content" link first on every page, pointing to `<main id="main">`.
+- No skipped heading levels: the home page has a hidden "Projects" h2 above the cards.
+- Nothing moves for more than 5 seconds without a way to pause it.
 
 ## Do NOT generate
 - Animations that delay or block reading the content or using the navigation.

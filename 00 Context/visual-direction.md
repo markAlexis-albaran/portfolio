@@ -7,9 +7,9 @@ Character: Dark, high contrast and typographic: a large light-weight hero senten
 
 Background: #000000
 Text primary: #FFFFFF
-Text secondary: #FFFFFF at 50% opacity (rgba(255, 255, 255, 0.5))
+Text secondary: #FFFFFF at 60% opacity (rgba(255, 255, 255, 0.6)), 7.37:1 on black, passes WCAG AAA. Raised from 50% (5.32:1) because body text uses Manrope Light.
 Divider and subtle surfaces: #FFFFFF at 10% opacity (rgba(255, 255, 255, 0.1))
-Accent: #1F00FF (buttons, card hover overlay, focus states)
+Accent: #1F00FF (buttons, card hover overlay). Never for focus outlines or text on black: only 2.5:1. Focus outlines are white.
 Do not introduce any other colors.
 
 ## Typography
