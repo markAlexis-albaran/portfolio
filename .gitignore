@@ -1,2 +1,5 @@
 # Mac folder settings files, not part of the project
 .DS_Store
+
+# Original research files: show the real client brand and participant quotes
+01 Projects/*/source/

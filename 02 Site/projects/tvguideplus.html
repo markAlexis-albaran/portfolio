@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>tvguideplus - Mark Alexis Albaran</title>
-  <meta name="description" content="tvguideplus case study by Mark Alexis Albaran.">
+  <meta name="description" content="tvguideplus: identifying usability opportunities on a mobile content platform. A UX case study by Mark Alexis Albaran.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
@@ -27,62 +27,92 @@
     </div>
   </header>
   <main>
-    <div class="case-cover placeholder-img" data-reveal>Cover image: tvguideplus</div>
+    <img class="case-cover case-cover--image" src="../images/tvguideplus/cover.jpg" alt="Two phones on a pedestal, one showing the TVGuide+ logo" data-reveal>
 
     <section class="case-header">
       <div class="container" data-reveal>
         <a class="case-header__back label" href="../projects.html">&larr; All projects</a>
-        <p class="label">Media / Publishing &middot; 2025</p>
+        <p class="label">Media / Publishing &middot; 2025 &middot; UX Design Intern</p>
         <h1 class="case-header__title">tvguideplus</h1>
+        <p class="case-header__subtitle">Identifying usability opportunities on a mobile content platform</p>
       </div>
     </section>
 
     <nav class="anchors" aria-label="Case study sections">
       <div class="container">
         <ul class="anchors__list">
-          <li><a href="#overview">Overview</a></li>
           <li><a href="#problem">Problem</a></li>
           <li><a href="#research">Research</a></li>
-          <li><a href="#solution">Solution</a></li>
-          <li><a href="#results">Results</a></li>
+          <li><a href="#insight">Insight</a></li>
+          <li><a href="#making">Making</a></li>
+          <li><a href="#outcome">Outcome</a></li>
         </ul>
       </div>
     </nav>
 
     <div class="container">
-      <section class="case-section" id="overview">
-        <h2 data-reveal>Overview</h2>
-        <div data-reveal data-delay="120">
-          <p>[Placeholder] Overview for tvguideplus goes here.</p>
-          <div class="placeholder-img">Image placeholder</div>
-        </div>
-      </section>
       <section class="case-section" id="problem">
         <h2 data-reveal>Problem</h2>
         <div data-reveal data-delay="120">
-          <p>[Placeholder] Problem for tvguideplus goes here.</p>
-          <div class="placeholder-img">Image placeholder</div>
+          <p>tvguideplus is a German entertainment platform that tries to serve four needs at once: TV schedule lookup, entertainment browsing, news reading and streaming discovery. On a phone, those sections compete for the same small screen, so quick tasks like checking what's on tonight get buried under ads and editorial content.</p>
+          <p>My goal was to find the biggest usability barriers on mobile and turn them into prioritized improvements.</p>
         </div>
       </section>
+
       <section class="case-section" id="research">
         <h2 data-reveal>Research</h2>
         <div data-reveal data-delay="120">
-          <p>[Placeholder] Research for tvguideplus goes here.</p>
-          <div class="placeholder-img">Image placeholder</div>
+          <p>I ran a mixed-method study: user interviews with university students and internal users who knew digital content platforms, followed by a moderated usability test with 5 participants and five tasks, from finding a program at a set time to subscribing to the newsletter.</p>
+          <ul class="stats">
+            <li><span class="stats__value">90%</span><span class="label">Task completion</span></li>
+            <li><span class="stats__value">82.5</span><span class="label">SUS score</span></li>
+            <li><span class="stats__value">5</span><span class="label">Participants</span></li>
+          </ul>
+          <p>The overall numbers were healthy, so the site wasn't broken. The friction sat in specific paths: broad search results, time and channel filters that were hard to find, no central news page, and a newsletter signup hidden at the bottom.</p>
+          <blockquote class="quote">"I just wanted to see what's on at 20:15."</blockquote>
+          <figure class="case-figure">
+            <img src="../images/tvguideplus/old-screens.jpg" alt="The original mobile screens: a large ad at the top, a crowded menu and the schedule buried below" loading="lazy">
+            <figcaption class="label">Before: the original mobile screens</figcaption>
+          </figure>
+          <p>I also benchmarked JustWatch and TV Spielfilm, and summarized the findings in a persona, Leon, an efficient mobile viewer who checks the platform in short breaks.</p>
         </div>
       </section>
-      <section class="case-section" id="solution">
-        <h2 data-reveal>Solution</h2>
+
+      <section class="case-section" id="insight">
+        <h2 data-reveal>Insight</h2>
         <div data-reveal data-delay="120">
-          <p>[Placeholder] Solution for tvguideplus goes here.</p>
-          <div class="placeholder-img">Image placeholder</div>
+          <p class="case-insight">People came with one fast task, mostly "what's on tonight", and the homepage made them dig for it.</p>
         </div>
       </section>
-      <section class="case-section" id="results">
-        <h2 data-reveal>Results</h2>
+
+      <section class="case-section" id="making">
+        <h2 data-reveal>Making</h2>
         <div data-reveal data-delay="120">
-          <p>[Placeholder] Results for tvguideplus goes here.</p>
-          <div class="placeholder-img">Image placeholder</div>
+          <h3>Home: TV tips first, news clearly separated</h3>
+          <p>I opened the homepage with trending topic chips and a "TV tips of the day" carousel, then a clear NEWS divider before the editorial content, instead of the large ad and mixed feed at the top. Participants said the oversized ad made the site feel like a scam, and that news articles were hard to tell apart from ads.</p>
+          <figure class="case-figure">
+            <img src="../images/tvguideplus/home-redesign.jpg" alt="Redesigned homepage: topic chips, a TV tips carousel and a separate news section" loading="lazy">
+          </figure>
+
+          <h3>Search: suggestions first, results labeled by type</h3>
+          <p>Search opens on the most popular searches, and results show as you type, each labeled as a TV program, streaming title or news article, with a button to see all results. Before, searching "Technik" returned one broad list, and participants weren't sure whether to use search, the menu or the homepage sections.</p>
+          <figure class="case-figure">
+            <img src="../images/tvguideplus/search-redesign.jpg" alt="Redesigned search: top searches before typing, then live results labeled Sendung, VOD and News" loading="lazy">
+          </figure>
+
+          <h3>TV Guide: now, 20:15 and 22:00 one tap away</h3>
+          <p>The full TV guide opens with tabs for now, 20:15 and 22:00, and one filter panel for time, genre and channel, with the active filters shown as chips you can remove. Finding a program by time or by channel broke down on filters buried several taps deep, and "I just wanted to see what's on at 20:15" came up again and again.</p>
+          <figure class="case-figure">
+            <img src="../images/tvguideplus/tvguide-redesign.jpg" alt="Redesigned TV guide: now, 20:15 and 22:00 tabs, and a filter panel for time, genre and channels" loading="lazy">
+          </figure>
+        </div>
+      </section>
+
+      <section class="case-section" id="outcome">
+        <h2 data-reveal>Outcome</h2>
+        <div data-reveal data-delay="120">
+          <p>I delivered a prioritized list of usability opportunities and redesigned the Home, Search and TV Guide screens around them.</p>
+          <p>With a small sample, the next step I'd take is testing the redesign with more participants to confirm the improvements hold up.</p>
         </div>
       </section>
     </div>
