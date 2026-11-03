@@ -3,10 +3,11 @@
 Baseline: the existing Framer portfolio at https://markalexis.framer.website. Match its structure, content and feel as closely as possible unless a rule below says otherwise. Use placeholders for anything not yet decided (images, case study content).
 
 ## Structure
-- Multi-page: a home page, a Projects page, an About page, and one page per case study.
-- Case study pages live under Projects (e.g. `projects/tvguideplus.html`). Every project on the home page and the Projects page links to its own case study page.
+- Multi-page: a home page, an About page, and one page per case study.
+- The home page shows all five projects. Each card links to its own case study page (e.g. `projects/tvguideplus.html`). Each case study's "All projects" link goes back to the cards on the home page (`index.html#work`).
+- Projects page: hidden for now. `projects.html` stays in the folder but nothing links to it, and search engines are asked to skip it. Bring it back (nav link and back links) once there are more than five projects.
 - About page: yes
-- Navigation: top bar with Home, Projects, About, Contact. Contact opens an email (mailto link). Visible on every page.
+- Navigation: top bar with Home, About, Contact. Contact opens an email (mailto link). Visible on every page.
 
 ## Home page content (from the Framer baseline)
 - Availability note at the top: "Available for Full-Time Roles from Oct 1, 2026"
