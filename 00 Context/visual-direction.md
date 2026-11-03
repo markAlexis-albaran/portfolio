@@ -30,11 +30,15 @@ Base spacing unit: 4px (used values: 8, 16, 20, 24, 36, 48, 80)
 Section padding: 180px between major sections on desktop, 80px on mobile
 Breakpoints: 810px, 1024px, 1440px
 
+## Background
+
+A fixed layer behind all content on every page: 9 vertical 1px lines, evenly spaced with 120px side padding on desktop (the page gutter on smaller screens, and every other line hidden on phones). Each line fades from white at 0% opacity at the top to white at 25% opacity at the bottom. It slides up from below the screen over about one second as the page opens.
+
 ## Do NOT generate
 
 - Light or white page backgrounds
 - Drop shadows
-- Decorative gradients, illustrations or background patterns
+- Decorative gradients, illustrations or background patterns, other than the striped background above
 - Heavy font weights (nothing above 500)
 - Colors outside the palette above, including for hover states
 - Rounded "pill" or bubbly shapes as decoration

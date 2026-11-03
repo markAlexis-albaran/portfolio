@@ -10,9 +10,10 @@ Baseline: the existing Framer portfolio at https://markalexis.framer.website. Ma
 
 ## Home page content (from the Framer baseline)
 - Availability note at the top: "Available for Full-Time Roles from Oct 1, 2026"
-- Hero sentence: "Turning complexity into clarity through product thinking user research"
+- Hero: the sentence "I turn complexity into clarity." in white, then in grey "with AI-powered" and a line that rotates through "Research Synthesis", "Prototyping", "Design-to-Code", "Usability Testing" (each slides up and out as the next slides in)
+- With animation turned off (reduced motion), only "I turn complexity into clarity." shows
 - Project cards: tvguideplus (2025, Media / Publishing), yumm (2024, Media / Publishing), pflegePro (2023, Healthcare), zengo (2023, Media / Publishing), roverride (2023, Media / Publishing)
-- Contact section labeled ".say hello" with a "contact me" button
+- Contact section labeled ".say hello", with the line "Hiring a product designer who brings AI into the process? Let's talk." and a "contact me" button. Do not repeat the availability date here: the note at the top already says it, and the line should point toward a role, never invite unpaid design work.
 - Footer with a "Last updated" note
 
 ## Case Study Display
@@ -25,7 +26,7 @@ Baseline: the existing Framer portfolio at https://markalexis.framer.website. Ma
 - Animation level: 3 (richer)
 - Page-load entrance, from the Framer baseline:
   - Hero and project list fade in while rising about 150px, with a slight spring at the end.
-  - One larger block slides up from below the screen over about one second.
+  - The striped background (see visual-direction.md) slides up from below the screen over about one second.
   - Footer fades in with a small 10px lift.
 - Card hover as described above.
 - Smooth scrolling to the case study anchors.
