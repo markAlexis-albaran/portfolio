@@ -21,7 +21,7 @@ Baseline: the existing Framer portfolio at https://markalexis.framer.website. Ma
 ## About page
 - No photo of the owner (owner's choice), and no page header: the page opens straight on the loop and the intro. The intro sentence is the page's h1.
 - Beside the intro, in the left column where a photo would go: a "How I work" loop diagram (inline SVG): Research, Synthesis, Prototype, Test, then back to Research. Blue "AI" badges on Synthesis and Prototype, legend "AI drafts, I review and decide". Arcs draw in order once, in about 3 seconds; finished state shows when motion is off. On tablets it stacks under the intro; phones get a stacked list instead, since the diagram's text would be too small.
-- Intro from 00 Context/bio.md, then Stack, Experience (design roles only, earlier jobs in one sentence) and Education.
+- Intro from 00 Context/bio.md, then Stack and Experience (design roles only, earlier jobs in one sentence). No Education section (owner's choice: hired on the work, not the degree).
 - Stack groups: AI (Claude Code, Claude Design); Design (Figma, FigJam, Figma Make, Miro); Research and testing (VWO, usability testing, user interviews); Code (HTML, CSS, JavaScript, GitHub); Collaboration (Jira, Confluence). Left out on purpose: macOS, Teams, Slack, Discord.
 
 ## Case Study Display
