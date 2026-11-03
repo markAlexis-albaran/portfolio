@@ -27,26 +27,110 @@
     </div>
   </header>
   <main id="main">
-    <section class="page-header">
-      <div class="container" data-reveal>
-        <p class="label">About</p>
-        <h1 class="page-header__title">Mark Alexis Albaran</h1>
-        <p class="case-header__subtitle">Product / UX Designer in Hamburg</p>
-      </div>
-    </section>
-
-    <section aria-label="About me">
+    <section class="about-top" aria-label="About me">
       <div class="container about">
-        <div class="about__photo placeholder-img" data-reveal>Photo placeholder</div>
         <div class="about__body" data-reveal data-delay="120">
-          <p class="about__intro">I'm a product designer in Hamburg with 4+ years of turning complex workflows into clear products.</p>
+          <h1 class="about__intro">I'm a product designer in Hamburg with 4+ years of turning complex workflows into clear products.</h1>
           <p>At Bauer Media Group, I'm the UX designer on the rebuild of a legacy content management system and a new design system, working with product managers and engineers on editorial workflows and content commerce. Before that, I led UX on a healthcare learning app at LifeBonus.</p>
           <p>I trained as a full-stack developer before moving into design, so I prototype in code, and I use AI across research synthesis, prototyping and design-to-code.</p>
         </div>
+        <figure class="process" data-reveal>
+          <svg viewBox="0 0 640 480" role="img" aria-labelledby="process-title process-desc">
+            <title id="process-title">How I work</title>
+            <desc id="process-desc">A loop of four steps: Research (interviews, desk research), Synthesis (affinity maps, insights), Prototype (Figma, Claude Design, code) and Test (usability tests, A/B tests), then back to Research. AI drafts in Synthesis and Prototype, and I review and decide.</desc>
+            <defs>
+              <marker id="process-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0 L10 5 L0 10 z" class="process__arrowhead"/>
+              </marker>
+            </defs>
+            <path class="process__arc" style="--i:0" d="M343.5 91.8 A150 150 0 0 1 468.2 216.5" marker-end="url(#process-arrow)"/>
+            <path class="process__arc" style="--i:1" d="M468.2 263.5 A150 150 0 0 1 343.5 388.2" marker-end="url(#process-arrow)"/>
+            <path class="process__arc" style="--i:2" d="M296.5 388.2 A150 150 0 0 1 171.8 263.5" marker-end="url(#process-arrow)"/>
+            <path class="process__arc" style="--i:3" d="M171.8 216.5 A150 150 0 0 1 296.5 91.8" marker-end="url(#process-arrow)"/>
+            <g class="process__node" style="--i:0">
+            <circle cx="320.0" cy="90.0" r="6" class="process__dot"/>
+            <text x="320.0" y="46.0" text-anchor="middle" class="process__title">Research</text>
+            <text x="320.0" y="66.0" text-anchor="middle" class="process__detail">interviews, desk research</text>
+            </g>
+            <g class="process__node" style="--i:1">
+            <circle cx="470.0" cy="240.0" r="6" class="process__dot"/>
+            <text x="490.0" y="234.0" text-anchor="start" class="process__title">Synthesis</text>
+            <text x="490.0" y="254.0" text-anchor="start" class="process__detail">affinity maps, insights</text>
+            <g class="process__ai"><rect x="420.0" y="229.0" width="34" height="22" rx="2"/><text x="437.0" y="244.5" text-anchor="middle">AI</text></g>
+            </g>
+            <g class="process__node" style="--i:2">
+            <circle cx="320.0" cy="390.0" r="6" class="process__dot"/>
+            <text x="320.0" y="424.0" text-anchor="middle" class="process__title">Prototype</text>
+            <text x="320.0" y="444.0" text-anchor="middle" class="process__detail">Figma, Claude Design, code</text>
+            <g class="process__ai"><rect x="303.0" y="346.0" width="34" height="22" rx="2"/><text x="320.0" y="361.5" text-anchor="middle">AI</text></g>
+            </g>
+            <g class="process__node" style="--i:3">
+            <circle cx="170.0" cy="240.0" r="6" class="process__dot"/>
+            <text x="150.0" y="234.0" text-anchor="end" class="process__title">Test</text>
+            <text x="150.0" y="254.0" text-anchor="end" class="process__detail">usability tests, A/B tests</text>
+            </g>
+            <text x="320" y="236" text-anchor="middle" class="process__center">How I work</text>
+            <text x="320" y="258" text-anchor="middle" class="process__detail">repeat until it's clear</text>
+          </svg>
+          <ol class="process__list">
+            <li><span class="process__list-title">Research</span><span class="label">interviews, desk research</span></li>
+            <li><span class="process__list-title">Synthesis <span class="process__ai-chip">AI</span></span><span class="label">affinity maps, insights</span></li>
+            <li><span class="process__list-title">Prototype <span class="process__ai-chip">AI</span></span><span class="label">Figma, Claude Design, code</span></li>
+            <li><span class="process__list-title">Test</span><span class="label">usability tests, A/B tests</span></li>
+            <li class="label">&#8634; repeat until it's clear</li>
+          </ol>
+          <figcaption class="process__legend label"><span class="process__ai-chip" aria-hidden="true">AI</span> AI drafts, I review and decide</figcaption>
+        </figure>
       </div>
     </section>
 
     <div class="container">
+      <section class="case-section" id="stack" aria-labelledby="stack-title">
+        <h2 id="stack-title" data-reveal>Stack</h2>
+        <div data-reveal data-delay="120">
+          <div class="stack-group">
+            <h3 class="label">AI</h3>
+            <ul class="chips">
+              <li class="chip">Claude Code</li>
+              <li class="chip">Claude Design</li>
+            </ul>
+          </div>
+          <div class="stack-group">
+            <h3 class="label">Design</h3>
+            <ul class="chips">
+              <li class="chip">Figma</li>
+              <li class="chip">FigJam</li>
+              <li class="chip">Figma Make</li>
+              <li class="chip">Miro</li>
+            </ul>
+          </div>
+          <div class="stack-group">
+            <h3 class="label">Research and testing</h3>
+            <ul class="chips">
+              <li class="chip">VWO (A/B testing)</li>
+              <li class="chip">Usability testing</li>
+              <li class="chip">User interviews</li>
+            </ul>
+          </div>
+          <div class="stack-group">
+            <h3 class="label">Code</h3>
+            <ul class="chips">
+              <li class="chip">HTML</li>
+              <li class="chip">CSS</li>
+              <li class="chip">JavaScript</li>
+              <li class="chip">GitHub</li>
+            </ul>
+          </div>
+          <div class="stack-group">
+            <h3 class="label">Collaboration</h3>
+            <ul class="chips">
+              <li class="chip">Jira</li>
+              <li class="chip">Confluence</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       <section class="case-section" aria-labelledby="experience-title">
         <h2 id="experience-title" data-reveal>Experience</h2>
         <div data-reveal data-delay="120">

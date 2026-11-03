@@ -15,7 +15,14 @@ Baseline: the existing Framer portfolio at https://markalexis.framer.website. Ma
 - With animation turned off (reduced motion), only "I turn complexity into clarity." shows
 - Project cards, in this order: SpringIn (2026, Healthcare; replaced zengo; first because it shows the AI-assisted process), tvguideplus (2025, Media / Publishing), yumm (2024, Media / Publishing), pflegePro (2023, Healthcare), roverride (2023, Media / Publishing)
 - Contact section labeled ".say hello", with the line "Hiring a product designer who brings AI into the process? Let's talk." and a "contact me" button. Do not repeat the availability date here: the note at the top already says it, and the line should point toward a role, never invite unpaid design work.
+- Tools row between the projects and the contact section: "Tools I work with", one row of tool names in the mono label style (AI tools first), and a "See my full stack" link to about.html#stack. Names only, no brand logos (they'd break the color rules).
 - Footer with a "Last updated" note
+
+## About page
+- No photo of the owner (owner's choice), and no page header: the page opens straight on the loop and the intro. The intro sentence is the page's h1.
+- Beside the intro, in the left column where a photo would go: a "How I work" loop diagram (inline SVG): Research, Synthesis, Prototype, Test, then back to Research. Blue "AI" badges on Synthesis and Prototype, legend "AI drafts, I review and decide". Arcs draw in order once, in about 3 seconds; finished state shows when motion is off. On tablets it stacks under the intro; phones get a stacked list instead, since the diagram's text would be too small.
+- Intro from 00 Context/bio.md, then Stack, Experience (design roles only, earlier jobs in one sentence) and Education.
+- Stack groups: AI (Claude Code, Claude Design); Design (Figma, FigJam, Figma Make, Miro); Research and testing (VWO, usability testing, user interviews); Code (HTML, CSS, JavaScript, GitHub); Collaboration (Jira, Confluence). Left out on purpose: macOS, Teams, Slack, Discord.
 
 ## Case Study Display
 - Index: cards with a thumbnail image, year, category and project name. Placeholder images until real ones exist.

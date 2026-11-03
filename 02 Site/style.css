@@ -438,20 +438,158 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- About ---------- */
 
+/* The How I work loop sits on the left, where a photo would go; the intro on the right */
 .about {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-20);
+  align-items: start;
   padding-bottom: var(--section);
 }
 
-.about__photo { aspect-ratio: 4 / 5; }
+.about__body { grid-column: 2; grid-row: 1; }
+
+/* ---------- How I work loop (About page) ---------- */
+
+.process {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* Tablets: two columns would shrink the diagram's text, so stack it under the intro */
+@media (max-width: 1023px) {
+  .about { grid-template-columns: 1fr; gap: var(--space-12); }
+  .about__body, .process { grid-column: auto; grid-row: auto; }
+}
+
+.process svg {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.process__arc {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 1.5;
+}
+
+.process__arrowhead { fill: rgba(255, 255, 255, 0.6); }
+
+.process__dot { fill: var(--text); }
+
+.process__title {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 20px;
+  fill: var(--text);
+}
+
+.process__detail {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  fill: var(--text-secondary);
+}
+
+.process__center {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 28px;
+  letter-spacing: -0.5px;
+  fill: var(--text);
+}
+
+.process__ai rect { fill: var(--accent); }
+
+.process__ai text {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  fill: var(--text);
+}
+
+.process__legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+}
+
+.process__ai-chip {
+  font-size: 12px;
+  color: var(--text);
+  background: var(--accent);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+/* Drawn in order once it scrolls into view: each arc, then its next step */
+.js .process__arc {
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+}
+
+.js .process__node { opacity: 0; }
+
+.js .process.is-visible .process__arc {
+  animation: process-draw 0.6s ease-out forwards;
+  animation-delay: calc(0.3s + var(--i) * 0.7s);
+}
+
+.js .process.is-visible .process__node {
+  animation: process-fade 0.5s ease-out forwards;
+  animation-delay: calc(var(--i) * 0.7s);
+}
+
+@keyframes process-draw { to { stroke-dashoffset: 0; } }
+@keyframes process-fade { to { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .process__arc { stroke-dashoffset: 0; animation: none; }
+  .js .process__node { opacity: 1; animation: none; }
+}
+
+/* Phones: the diagram's text would shrink too far, so show a stacked list instead */
+.process__list { display: none; }
+
+@media (max-width: 809px) {
+  .process svg { display: none; }
+  .process__list {
+    display: block;
+    list-style: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.6);
+    padding-left: var(--space-6);
+  }
+  .process__list li { padding: var(--space-4) 0; }
+  .process__list li > span { display: block; }
+  .process__list-title {
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: var(--space-2);
+  }
+  .process__legend { justify-content: flex-start; }
+}
+
+.about__photo {
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
 
 .about__body p + p { margin-top: var(--space-6); }
 
 .about__body p { color: var(--text-secondary); }
 
+/* The About page opens straight on the loop and intro, so they take the page-header's top space */
+.about-top { padding-top: var(--section); }
+
 .about__body .about__intro {
+  font-weight: 300;
+  margin-bottom: var(--space-6);
   font-size: 32px;
   line-height: 1.35;
   color: var(--text);
@@ -459,6 +597,53 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 809px) {
   .about__body .about__intro { font-size: 24px; }
+}
+
+/* ---------- Tools / stack ---------- */
+
+.chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.chip {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: var(--bg);
+  border-radius: 2px;
+}
+
+.tools {
+  padding-bottom: var(--section);
+}
+
+.tools .label#tools-title {
+  font-weight: 400;
+  margin-bottom: var(--space-6);
+}
+
+.tools__more {
+  display: inline-block;
+  margin-top: var(--space-6);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.2s ease;
+}
+
+.tools__more:hover { color: var(--text); }
+
+.stack-group + .stack-group { margin-top: var(--space-9); }
+
+.case-section .stack-group h3.label {
+  font-weight: 400;
+  font-size: 14px;
+  margin: 0 0 var(--space-4);
 }
 
 .timeline { list-style: none; }
@@ -486,6 +671,7 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 809px) {
   .about { grid-template-columns: 1fr; gap: var(--space-12); }
+  .about__body { grid-column: auto; }
 }
 
 /* ---------- Case study ---------- */
