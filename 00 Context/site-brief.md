@@ -10,7 +10,7 @@ Baseline: the existing Framer portfolio at https://markalexis.framer.website. Ma
 - Navigation: top bar with Home, About, Contact. Contact opens an email (mailto link). Visible on every page.
 
 ## Home page content (from the Framer baseline)
-- Availability note at the top: "Available for Full-Time Roles from Oct 1, 2026"
+- Availability note at the top: "Open to full-time positions" (no date; the original Oct 1, 2026 date passed and was removed)
 - Hero: the sentence "I turn complexity into clarity." in white, then in grey "with AI-powered" and a line that rotates through "Research Synthesis", "Prototyping", "Design-to-Code", "Usability Testing" (each slides up and out as the next slides in). It plays once and rests on "Usability Testing". A "Pause animation" button shows while it moves and hides once it stops (WCAG 2.2.2).
 - With animation turned off (reduced motion), only "I turn complexity into clarity." shows
 - Project cards, in this order: SpringIn (2026, Healthcare; replaced zengo; first because it shows the AI-assisted process), tvguideplus (2025, Media / Publishing), yumm (2024, Media / Publishing), pflegePro (2023, Healthcare), roverride (2023, Media / Publishing)

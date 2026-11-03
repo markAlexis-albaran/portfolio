@@ -1,10 +1,5 @@
 # Bio
 
-Write 2-3 sentences about yourself here. This is what Claude reads when generating your about page and any intro copy across the site. Write it in the same tone you want the site to have.
+I'm a product designer in Hamburg with 4+ years of turning complex workflows into clear products. At Bauer Media Group, I'm the UX designer on the rebuild of a legacy content management system and a new design system, working with product managers and engineers on editorial workflows and content commerce. Before that, I led UX on a healthcare learning app at LifeBonus. I trained as a full-stack developer before moving into design, so I prototype in code, and I use AI across research synthesis, prototyping and design-to-code.
 
-Example:
-"I'm a product designer with 5 years of experience, mostly in B2C mobile apps. I work at the intersection of research and craft: I want to understand the problem before I touch a tool. Currently based in London, open to product roles at companies building things that matter."
-
----
-
-[Replace this with your actual bio]
+Source: LinkedIn export (00 Context/Profile.pdf, kept off GitHub). Employer named openly (owner's decision, 2026-11-03).

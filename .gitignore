@@ -3,3 +3,6 @@
 
 # Original research files: show the real client brand and participant quotes
 01 Projects/*/source/
+
+# LinkedIn export: full work history and contact details
+00 Context/Profile.pdf
