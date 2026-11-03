@@ -13,7 +13,7 @@ Baseline: the existing Framer portfolio at https://markalexis.framer.website. Ma
 - Availability note at the top: "Available for Full-Time Roles from Oct 1, 2026"
 - Hero: the sentence "I turn complexity into clarity." in white, then in grey "with AI-powered" and a line that rotates through "Research Synthesis", "Prototyping", "Design-to-Code", "Usability Testing" (each slides up and out as the next slides in)
 - With animation turned off (reduced motion), only "I turn complexity into clarity." shows
-- Project cards: tvguideplus (2025, Media / Publishing), yumm (2024, Media / Publishing), pflegePro (2023, Healthcare), zengo (2023, Media / Publishing), roverride (2023, Media / Publishing)
+- Project cards, in this order: SpringIn (2026, Healthcare; replaced zengo; first because it shows the AI-assisted process), tvguideplus (2025, Media / Publishing), yumm (2024, Media / Publishing), pflegePro (2023, Healthcare), roverride (2023, Media / Publishing)
 - Contact section labeled ".say hello", with the line "Hiring a product designer who brings AI into the process? Let's talk." and a "contact me" button. Do not repeat the availability date here: the note at the top already says it, and the line should point toward a role, never invite unpaid design work.
 - Footer with a "Last updated" note
 

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpringIn - Mark Alexis Albaran</title>
+  <meta name="description" content="SpringIn: an AI-assisted design sprint on how nurses in German hospitals ask for time off. A UX case study by Mark Alexis Albaran.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+  <div class="bg-stripes" data-reveal="large" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="nav__logo" href="../index.html">Mark Alexis Albaran</a>
+      <nav aria-label="Main">
+        <ul class="nav__links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="mailto:mark.albaran@outlook.com">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <img class="case-cover case-cover--image" src="../images/springin/cover.jpg" alt="A phone showing the SpringIn splash screen on a stone pedestal next to a seedling" data-reveal>
+
+    <section class="case-header">
+      <div class="container" data-reveal>
+        <a class="case-header__back label" href="../index.html#work">&larr; All projects</a>
+        <p class="label">Healthcare &middot; 2026</p>
+        <h1 class="case-header__title">SpringIn</h1>
+        <p class="case-header__subtitle">An AI-assisted design sprint on how nurses ask for time off</p>
+      </div>
+    </section>
+
+    <nav class="anchors" aria-label="Case study sections">
+      <div class="container">
+        <ul class="anchors__list">
+          <li><a href="#problem">Problem</a></li>
+          <li><a href="#research">Research</a></li>
+          <li><a href="#insight">Insight</a></li>
+          <li><a href="#making">Making</a></li>
+          <li><a href="#outcome">Outcome</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <section class="case-section" id="problem">
+        <h2 data-reveal>Problem</h2>
+        <div data-reveal data-delay="120">
+          <p>SpringIn started with a guess: nurses in German hospitals lose their time off because of how duty rosters are made, through late plans, changes after publication and calls on days off. Before designing anything, I ran a design sprint to find out whether scheduling was really where the problem started, and for whom.</p>
+        </div>
+      </section>
+
+      <section class="case-section" id="research">
+        <h2 data-reveal>Research</h2>
+        <div data-reveal data-delay="120">
+          <p>I interviewed registered nurses, including a float pool nurse and a nurse who is rarely called in, and the ward managers who build the rosters. I followed up in writing, and added desk research on German rostering rules and national staffing data. Every hypothesis had written criteria for what would support or contradict it.</p>
+          <ul class="stats">
+            <li><span class="stats__value">5</span><span class="label">Participants</span></li>
+            <li><span class="stats__value">8</span><span class="label">Hypotheses tested</span></li>
+            <li><span class="stats__value">14</span><span class="label">Concept directions</span></li>
+          </ul>
+          <p>The founding guess mostly didn't hold. Most wishes for days off were granted, and participants traced roster trouble back to too few staff more than to how the plan was made.</p>
+          <h3>How I worked with AI</h3>
+          <p>I ran the sprint with Claude as a research and design partner. Custom skills drafted the research frame, affinity map, insight statements, problem frames and the strategy-to-skeleton layers, and every AI synthesis was flagged for my review before it moved forward. I made each call and logged it, with the reason, in a decision log. I built the prototype in Claude Design.</p>
+        </div>
+      </section>
+
+      <section class="case-section" id="insight">
+        <h2 data-reveal>Insight</h2>
+        <div data-reveal data-delay="120">
+          <p class="case-insight">A high approval rate hides the wishes nobody writes down.</p>
+          <blockquote class="quote">"I don't write all of them, because there are also other colleagues with family, and our head nurse has to consider them also."</blockquote>
+        </div>
+      </section>
+
+      <section class="case-section" id="making">
+        <h2 data-reveal>Making</h2>
+        <div data-reveal data-delay="120">
+          <h3>Reframing twice before the final design</h3>
+          <p>My first frame, paper shift swaps that reach the system only at month end, got as far as a wireframe, and it felt underwhelming, so I went back to the research. The second frame, helping the ward manager find someone to cover, didn't give nurses any more control over their own schedule, so I paused it. The third put the nurse at the center: she leaves some wishes unwritten out of consideration for colleagues. I chose it because both of its claims trace to a participant's own words, and design can reach it without more staff.</p>
+
+          <h3>A wish with room to move</h3>
+          <p>Each wish can carry up to two alternatives, or be marked as fixed, instead of adding more wishes or fairness rules, which are agreed with the works council and sit outside the design. The nurse held wishes back so her head nurse would have less to weigh. A wish with alternatives gives the head nurse options instead of one more constraint.</p>
+          <figure class="case-figure">
+            <img src="../images/springin/write-a-wish.jpg" alt="The wish round calendar, choosing a day off or a shift, and adding an alternative date" loading="lazy">
+            <figcaption class="label">Pick a day, choose what you'd like, then say what else would work</figcaption>
+          </figure>
+
+          <h3>Honest about what a wish is</h3>
+          <p>The app says plainly that a wish is not a promise, shows no approval status before the plan is out, and keeps colleagues' wishes private, since they're personal data. When a round has closed or a wish isn't granted, it points to talking to the head nurse or a colleague, which is what wards already do, instead of inventing a feature for it.</p>
+          <figure class="case-figure">
+            <img src="../images/springin/review-and-result.jpg" alt="Reviewing wishes before handing them in, the handed-in confirmation, and the results once the plan is out" loading="lazy">
+            <figcaption class="label">Review, hand in, and see which wish or alternative was granted</figcaption>
+          </figure>
+          <figure class="case-figure">
+            <img src="../images/springin/dead-ends.jpg" alt="A closed wish round and a wish that wasn't granted, both pointing to the head nurse or a colleague" loading="lazy">
+            <figcaption class="label">Dead ends point to what wards already do</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="case-section" id="outcome">
+        <h2 data-reveal>Outcome</h2>
+        <div data-reveal data-delay="120">
+          <p>I delivered a clickable prototype covering the whole wish round, a design rationale that traces every decision to its source, and an implementation document for handoff.</p>
+          <p>It hasn't been tested yet, and the frame rests on one nurse's words. Next I'd test it with more ward nurses, and with a head nurse to find out whether wishes with alternatives are actually easier to fit into the plan.</p>
+        </div>
+      </section>
+    </div>
+
+    <section class="contact" id="contact">
+      <div class="container" data-reveal>
+        <p class="label">.say hello</p>
+        <h2 class="contact__title">Hiring a product designer who brings AI into the process? Let's talk.</h2>
+        <a class="button" href="mailto:mark.albaran@outlook.com">contact me</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container" data-reveal="small">
+      <p class="label">Last Updated: November 2026</p>
+    </div>
+  </footer>
+  <script src="../main.js"></script>
+</body>
+</html>
