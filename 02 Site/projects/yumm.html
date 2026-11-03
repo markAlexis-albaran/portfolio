@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>yumm - Mark Alexis Albaran</title>
-  <meta name="description" content="yumm case study by Mark Alexis Albaran.">
+  <meta name="description" content="yumm: optimizing an affiliate product page for trust and conversion. A UX case study by Mark Alexis Albaran.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
@@ -26,62 +26,105 @@
     </div>
   </header>
   <main>
-    <div class="case-cover placeholder-img" data-reveal>Cover image: yumm</div>
+    <img class="case-cover case-cover--image" src="../images/yumm/cover.jpg" alt="A phone showing the yumm logo next to a cup of coffee and a croissant" data-reveal>
 
     <section class="case-header">
       <div class="container" data-reveal>
         <a class="case-header__back label" href="../index.html#work">&larr; All projects</a>
         <p class="label">Media / Publishing &middot; 2024</p>
         <h1 class="case-header__title">yumm</h1>
+        <p class="case-header__subtitle">Optimizing an affiliate product page for trust and conversion</p>
       </div>
     </section>
 
     <nav class="anchors" aria-label="Case study sections">
       <div class="container">
         <ul class="anchors__list">
-          <li><a href="#overview">Overview</a></li>
           <li><a href="#problem">Problem</a></li>
           <li><a href="#research">Research</a></li>
-          <li><a href="#solution">Solution</a></li>
-          <li><a href="#results">Results</a></li>
+          <li><a href="#insight">Insight</a></li>
+          <li><a href="#making">Making</a></li>
+          <li><a href="#outcome">Outcome</a></li>
         </ul>
       </div>
     </nav>
 
     <div class="container">
-      <section class="case-section" id="overview">
-        <h2 data-reveal>Overview</h2>
-        <div data-reveal data-delay="120">
-          <p>[Placeholder] Overview for yumm goes here.</p>
-          <div class="placeholder-img">Image placeholder</div>
-        </div>
-      </section>
       <section class="case-section" id="problem">
         <h2 data-reveal>Problem</h2>
         <div data-reveal data-delay="120">
-          <p>[Placeholder] Problem for yumm goes here.</p>
-          <div class="placeholder-img">Image placeholder</div>
+          <p>yumm is a German food and cooking publisher that earns money through affiliate links in its buying guides. Its electric grill guide brought in search traffic from people with one question: which electric grill should I buy?</p>
+          <p>But every product card looked the same, buy buttons appeared before there was any reason to trust them, and on mobile the guide turned into a long scroll. People skimmed, hesitated at the links and left before reaching the lower-ranked grills, which cost clicks and affiliate revenue.</p>
         </div>
       </section>
+
       <section class="case-section" id="research">
         <h2 data-reveal>Research</h2>
         <div data-reveal data-delay="120">
-          <p>[Placeholder] Research for yumm goes here.</p>
-          <div class="placeholder-img">Image placeholder</div>
+          <p>I combined a heuristic evaluation against Nielsen's heuristics with interviews and a usability test. Participants, most of whom cook every day, had to find the best grill for a family of four, find the cheapest reliable option, and choose one they'd buy themselves.</p>
+          <ul class="stats">
+            <li><span class="stats__value">25</span><span class="label">Participants</span></li>
+            <li><span class="stats__value">6.2%</span><span class="label">Buy button CTR</span></li>
+            <li><span class="stats__value">&euro;0.18</span><span class="label">Revenue per visitor</span></li>
+          </ul>
+          <p>Participants liked the editorial tone and the detailed product information. The problems were hierarchy, trust and length: they couldn't tell the best, budget and premium picks apart, the links felt like advertising, and on mobile the decision sat too far down the page.</p>
+          <blockquote class="quote">"Everything looks kind of the same, so I can't tell right away which model is actually the best."</blockquote>
+          <blockquote class="quote">"I'm not sure if this is an honest recommendation or just advertising."</blockquote>
         </div>
       </section>
-      <section class="case-section" id="solution">
-        <h2 data-reveal>Solution</h2>
+
+      <section class="case-section" id="insight">
+        <h2 data-reveal>Insight</h2>
         <div data-reveal data-delay="120">
-          <p>[Placeholder] Solution for yumm goes here.</p>
-          <div class="placeholder-img">Image placeholder</div>
+          <p class="case-insight">People trusted the writing but not the ranking: the page asked them to click before it showed them why.</p>
         </div>
       </section>
-      <section class="case-section" id="results">
-        <h2 data-reveal>Results</h2>
+
+      <section class="case-section" id="making">
+        <h2 data-reveal>Making</h2>
         <div data-reveal data-delay="120">
-          <p>[Placeholder] Results for yumm goes here.</p>
-          <div class="placeholder-img">Image placeholder</div>
+          <h3>A quick comparison at the top</h3>
+          <p>I placed a comparison module near the top of the guide, with color-coded badges (Best Overall, Best Value) and checkboxes to compare two grills side by side in a spec table, instead of a long list of identical cards. Participants couldn't tell which grill was best, cheapest or premium, and asked to see the differences without reading every section.</p>
+          <figure class="case-figure">
+            <img src="../images/yumm/comparison-before.jpg" alt="The original comparison: two near-identical product cards" loading="lazy">
+            <figcaption class="label">Before</figcaption>
+          </figure>
+          <figure class="case-figure">
+            <img src="../images/yumm/comparison-redesign.jpg" alt="Redesigned comparison: badges, compare checkboxes, a selection bar, then a side-by-side spec table" loading="lazy">
+            <figcaption class="label">After: select two grills, then compare them side by side</figcaption>
+          </figure>
+
+          <h3>A sticky "Jump to Best Price" button on mobile</h3>
+          <p>A persistent button jumps straight to the top pick and its price, instead of buy buttons that only live inside each card. On mobile those buttons scrolled out of view, and participants said they had to scroll too far before they could decide anything.</p>
+          <figure class="case-figure">
+            <img src="../images/yumm/sticky-cta.jpg" alt="A floating Jump to Best Price button over the article, leading to the Best Overall product card" loading="lazy">
+            <figcaption class="label">After: the button stays on screen and jumps to the top pick</figcaption>
+          </figure>
+
+          <h3>Compact product cards</h3>
+          <p>Each card now shows the badge, product, price, one main buy button and the rating, with other sellers and technical data folded into accordions, instead of everything expanded at once. Large blocks of text made the page hard to scan and slowed decisions.</p>
+          <figure class="case-figure">
+            <img src="../images/yumm/cards-before.jpg" alt="The original product card with every detail expanded" loading="lazy">
+            <figcaption class="label">Before</figcaption>
+          </figure>
+          <figure class="case-figure">
+            <img src="../images/yumm/cards-redesign.jpg" alt="The compact product card, closed and with other sellers and specs expanded" loading="lazy">
+            <figcaption class="label">After: closed, and with sellers and specs opened</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="case-section" id="outcome">
+        <h2 data-reveal>Outcome</h2>
+        <div data-reveal data-delay="120">
+          <ul class="stats stats--change">
+            <li><span class="stats__value">48% &rarr; 68%</span><span class="label">Task success</span></li>
+            <li><span class="stats__value">6.2% &rarr; 12.5%</span><span class="label">Buy button CTR</span></li>
+            <li><span class="stats__value">2.1% &rarr; 4.3%</span><span class="label">Mobile conversion</span></li>
+            <li><span class="stats__value">&euro;0.18 &rarr; &euro;0.36</span><span class="label">Revenue per visitor</span></li>
+          </ul>
+          <p>More people reached the end of the guide: scroll depth past 75% went from 24% to 40%, and time on page rose from 1:42 to 2:35.</p>
+          <p>Some users still questioned the ranking, so next I'd show the testing criteria and scoring method, and add picks by need, like best for balconies, for families or under &euro;100.</p>
         </div>
       </section>
     </div>
