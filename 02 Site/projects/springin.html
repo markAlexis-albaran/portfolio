@@ -58,7 +58,7 @@
       <section class="case-section" id="problem">
         <h2 data-reveal>Problem</h2>
         <div data-reveal data-delay="120">
-          <p>SpringIn started with a guess: nurses in German hospitals lose their time off because of how duty rosters are made, through late plans, changes after publication and calls on days off. Before designing anything, I ran a design sprint to find out whether scheduling was really where the problem started, and for whom.</p>
+          <p>SpringIn started with a guess: nurses in German hospitals lose their time off because of how duty rosters are made, through late plans, changes after publication and calls on days off. Before designing anything, I ran a design sprint to find out <mark class="hl">whether scheduling was really where the problem started</mark>, and for whom.</p>
         </div>
       </section>
 
@@ -71,9 +71,11 @@
             <li><span class="stats__value">8</span><span class="label">Hypotheses tested</span></li>
             <li><span class="stats__value">14</span><span class="label">Concept directions</span></li>
           </ul>
-          <p>The founding guess mostly didn't hold. Most wishes for days off were granted, and participants traced roster trouble back to too few staff more than to how the plan was made.</p>
-          <h3>How I worked with AI</h3>
-          <p>I ran the sprint with Claude as a research and design partner. Custom skills drafted the research frame, affinity map, insight statements, problem frames and the strategy-to-skeleton layers, and every AI synthesis was flagged for my review before it moved forward. I made each call and logged it, with the reason, in a decision log. I built the prototype in Claude Design.</p>
+          <p><mark class="hl">The founding guess mostly didn't hold.</mark> Most wishes for days off were granted, and participants traced roster trouble back to too few staff more than to how the plan was made.</p>
+          <div class="ai-note" role="note">
+            <p class="ai-note__label"><svg class="ai-note__spark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12.2" y1="10.4" x2="13.5" y2="1.0"/><line x1="13.3" y1="11.0" x2="18.9" y2="6.8"/><line x1="13.6" y1="12.2" x2="22.5" y2="13.5"/><line x1="13.0" y1="13.3" x2="17.5" y2="19.3"/><line x1="11.8" y1="13.6" x2="10.5" y2="23.0"/><line x1="10.7" y1="13.0" x2="5.1" y2="17.2"/><line x1="10.4" y1="11.8" x2="1.5" y2="10.5"/><line x1="11.0" y1="10.7" x2="6.5" y2="4.7"/></g></svg>How AI shaped this</p>
+            <p>I built 12 Claude skills, one for each step of the sprint, and ran them in sequence, with each one stopping for my decision. <code>extract-transcript</code> turned every interview into observations, checking each quote against the transcript word for word. <code>draft-affinity-map</code> and <code>draft-insight-statements</code> then grouped them and offered three candidate insights per group, and I chose one.</p>
+          </div>
         </div>
       </section>
 
@@ -82,6 +84,10 @@
         <div data-reveal data-delay="120">
           <p class="case-insight">A high approval rate hides the wishes nobody writes down.</p>
           <blockquote class="quote">"I don't write all of them, because there are also other colleagues with family, and our head nurse has to consider them also."</blockquote>
+          <div class="ai-note" role="note">
+            <p class="ai-note__label"><svg class="ai-note__spark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12.2" y1="10.4" x2="13.5" y2="1.0"/><line x1="13.3" y1="11.0" x2="18.9" y2="6.8"/><line x1="13.6" y1="12.2" x2="22.5" y2="13.5"/><line x1="13.0" y1="13.3" x2="17.5" y2="19.3"/><line x1="11.8" y1="13.6" x2="10.5" y2="23.0"/><line x1="10.7" y1="13.0" x2="5.1" y2="17.2"/><line x1="10.4" y1="11.8" x2="1.5" y2="10.5"/><line x1="11.0" y1="10.7" x2="6.5" y2="4.7"/></g></svg>How AI shaped this</p>
+            <p><code>draft-problem-frame</code> generated five candidate frames from the insight I picked, and always recommended one with its reason. Each reframe was my call, and every decision, with why I made it, went into a decision log.</p>
+          </div>
         </div>
       </section>
 
@@ -89,25 +95,102 @@
         <h2 data-reveal>Making</h2>
         <div data-reveal data-delay="120">
           <h3>Reframing twice before the final design</h3>
-          <p>My first frame, paper shift swaps that reach the system only at month end, got as far as a wireframe, and it felt underwhelming, so I went back to the research. The second frame, helping the ward manager find someone to cover, didn't give nurses any more control over their own schedule, so I paused it. The third put the nurse at the center: she leaves some wishes unwritten out of consideration for colleagues. I chose it because both of its claims trace to a participant's own words, and design can reach it without more staff.</p>
+          <ol class="frames">
+            <li class="frames__item is-dropped">
+              <p class="frames__meta"><span class="frames__num">01</span><span class="frames__status">Wireframed, then set aside</span></p>
+              <p class="frames__frame">Paper shift swaps only reach the system at month end.</p>
+              <p class="frames__why">It got as far as a wireframe and felt underwhelming, so I went back to the research.</p>
+            </li>
+            <li class="frames__item is-dropped">
+              <p class="frames__meta"><span class="frames__num">02</span><span class="frames__status">Paused</span></p>
+              <p class="frames__frame">Help the ward manager find someone to cover a shift.</p>
+              <p class="frames__why">It didn't give nurses any more control over their own schedule.</p>
+            </li>
+            <li class="frames__item is-chosen">
+              <p class="frames__meta"><span class="frames__num">03</span><span class="frames__status">Chosen</span></p>
+              <p class="frames__frame">A nurse leaves some wishes unwritten, out of consideration for colleagues.</p>
+              <p class="frames__why"><mark class="hl">Both of its claims trace to a participant's own words</mark>, and design can reach it without more staff.</p>
+            </li>
+          </ol>
 
           <h3>A wish with room to move</h3>
-          <p>Each wish can carry up to two alternatives, or be marked as fixed, instead of adding more wishes or fairness rules, which are agreed with the works council and sit outside the design. The nurse held wishes back so her head nurse would have less to weigh. A wish with alternatives gives the head nurse options instead of one more constraint.</p>
+          <p>Each wish can carry up to two alternatives, or be marked as fixed, instead of adding more wishes or fairness rules, which are agreed with the works council and sit outside the design. The nurse held wishes back so her head nurse would have less to weigh. <mark class="hl">A wish with alternatives gives the head nurse options instead of one more constraint.</mark></p>
+          <div class="try wish-demo">
+            <p class="try__head"><span class="try__badge"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 2v7.5M6 9.5l-1.6-1.6a1.2 1.2 0 0 0-1.7 1.7L6 13c.9.9 2 1.4 3.2 1.4h.3A3.5 3.5 0 0 0 13 10.9V7.5a1 1 0 0 0-2 0M11 7.5V6.5a1 1 0 0 0-2 0v1M9 7.5V6a1 1 0 0 0-2 0v1.5M7 7.5V2a1 1 0 0 0-2 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Interactive</span><span class="try__title">Add or remove alternatives</span></p>
+            <div class="wish-demo__phone">
+              <div class="wd-card wd-wish">
+                <div><span class="wd-small">Your wish</span><span class="wd-date">12.Mar (Fri)</span></div>
+                <span class="wd-tag wd-tag--off">Day off</span>
+              </div>
+              <p class="wd-h">Would anything else also work?</p>
+              <p class="wd-p">An alternative gives your Stationsleitung more room to say yes. You can add up to 2.</p>
+              <fieldset class="wd-group">
+                <legend class="visually-hidden">Would anything else also work?</legend>
+                <div class="wd-card wd-option is-on" data-option="yes">
+                  <label class="wd-radio"><input type="radio" name="wd-alt" value="yes" checked> <span>Yes, something else works</span></label>
+                  <ol class="wd-list"></ol>
+                  <button class="wd-add" type="button"><span aria-hidden="true">+</span> Add another date or shift <span class="wd-count">0 of 2</span></button>
+                  <p class="wd-limit" hidden><span aria-hidden="true">&#9432;</span> 2 of 2 added. Remove one to add a different option.</p>
+                </div>
+                <div class="wd-card wd-option" data-option="no">
+                  <label class="wd-radio"><input type="radio" name="wd-alt" value="no"> <span>No alternative<small>Only this date works. It stays a fixed wish.</small></span></label>
+                </div>
+              </fieldset>
+              <p class="visually-hidden" role="status" aria-live="polite"></p>
+            </div>
+            <p class="try__caption label">Rebuilt from my Claude Design prototype. Tap the buttons as a nurse would.</p>
+          </div>
           <figure class="case-figure">
             <img src="../images/springin/write-a-wish.jpg" alt="The wish round calendar, choosing a day off or a shift, and adding an alternative date" loading="lazy">
             <figcaption class="label">Pick a day, choose what you'd like, then say what else would work</figcaption>
           </figure>
+          <p class="ds__intro label">The components behind it</p>
+          <ul class="ds">
+            <li class="ds__tile">
+              <div class="ds__shot"><img src="../images/springin/ds/alt-one.png" alt="Other options with one alternative added, a counter showing 1 of 2, and a No alternative option" loading="lazy"></div>
+              <p class="ds__name">Alternatives, with one added</p>
+              <p class="ds__why">I added this to the design system. A nurse can list up to two other dates that would also work, or choose &ldquo;No alternative&rdquo; if only one date works.</p>
+            </li>
+            <li class="ds__tile">
+              <div class="ds__shot"><img src="../images/springin/ds/alt-max.png" alt="Two alternatives added, and a note saying 2 of 2 added, remove one to add a different option" loading="lazy"></div>
+              <p class="ds__name">Alternatives, with both added</p>
+              <p class="ds__why">When both spots are used, a short note explains the limit, so nobody wonders why they can't add another.</p>
+            </li>
+            <li class="ds__tile">
+              <div class="ds__shot"><img src="../images/springin/ds/shift-tags.png" alt="A list of four shift choices, each with a colored tag: Off, Early, Late and Night" loading="lazy"></div>
+              <p class="ds__name">Shift tags</p>
+              <p class="ds__why">The design system only marked shifts with single letters, like E and L. I added a colored tag with the full name for each shift, so the color is never the only clue.</p>
+            </li>
+          </ul>
 
           <h3>Honest about what a wish is</h3>
-          <p>The app says plainly that a wish is not a promise, shows no approval status before the plan is out, and keeps colleagues' wishes private, since they're personal data. When a round has closed or a wish isn't granted, it points to talking to the head nurse or a colleague, which is what wards already do, instead of inventing a feature for it.</p>
+          <p>The app says plainly that <mark class="hl">a wish is not a promise</mark>, shows no approval status before the plan is out, and keeps colleagues' wishes private, since they're personal data. When a round has closed or a wish isn't granted, it points to talking to the head nurse or a colleague, which is what wards already do, instead of inventing a feature for it.</p>
           <figure class="case-figure">
             <img src="../images/springin/review-and-result.jpg" alt="Reviewing wishes before handing them in, the handed-in confirmation, and the results once the plan is out" loading="lazy">
             <figcaption class="label">Review, hand in, and see which wish or alternative was granted</figcaption>
           </figure>
-          <figure class="case-figure">
-            <img src="../images/springin/dead-ends.jpg" alt="A closed wish round and a wish that wasn't granted, both pointing to the head nurse or a colleague" loading="lazy">
-            <figcaption class="label">Dead ends point to what wards already do</figcaption>
-          </figure>
+          <p class="ds__intro label">The components behind it</p>
+          <ul class="ds">
+            <li class="ds__tile">
+              <div class="ds__shot"><img src="../images/springin/ds/wish-note.png" alt="Helper text: a wish is not a promise, your Stationsleitung plans the whole ward and tries to fit as many wishes as possible" loading="lazy"></div>
+              <p class="ds__name">A note on every new wish</p>
+              <p class="ds__why">Shown each time someone starts a wish, so it's clear from the start that a wish is a request, not a booking.</p>
+            </li>
+            <li class="ds__tile">
+              <div class="ds__shot"><img src="../images/springin/ds/result-states.png" alt="A not granted wish card with a pointer box suggesting to talk to the Stationsleitung, above a granted wish row" loading="lazy"></div>
+              <p class="ds__name">Results, granted and not granted</p>
+              <p class="ds__why">Once the plan is out, each wish shows whether it was granted. I reused the design system's status labels and changed their wording. If a wish isn't granted, the card says who to talk to.</p>
+            </li>
+            <li class="ds__tile">
+              <div class="ds__shot"><img src="../images/springin/ds/closed-alert.png" alt="A red alert: wish collection closed on 10 February, for a late wish, talk to your Stationsleitung" loading="lazy"></div>
+              <p class="ds__name">Wish round closed</p>
+              <p class="ds__why">After the deadline, the screen says so and tells nurses who to ask about a late wish, instead of just blocking them.</p>
+            </li>
+          </ul>
+          <div class="ai-note" role="note">
+            <p class="ai-note__label"><svg class="ai-note__spark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12.2" y1="10.4" x2="13.5" y2="1.0"/><line x1="13.3" y1="11.0" x2="18.9" y2="6.8"/><line x1="13.6" y1="12.2" x2="22.5" y2="13.5"/><line x1="13.0" y1="13.3" x2="17.5" y2="19.3"/><line x1="11.8" y1="13.6" x2="10.5" y2="23.0"/><line x1="10.7" y1="13.0" x2="5.1" y2="17.2"/><line x1="10.4" y1="11.8" x2="1.5" y2="10.5"/><line x1="11.0" y1="10.7" x2="6.5" y2="4.7"/></g></svg>How AI shaped this</p>
+            <p><code>draft-concept-directions</code> generated eight directions, then ran a provocation pass for three more that drop the most obvious assumption, which pushed me past the first ideas. <code>draft-garrett</code> took the chosen one from strategy down to wireframe level, and I built the clickable prototype in Claude Design.</p>
+          </div>
         </div>
       </section>
 
@@ -115,7 +198,11 @@
         <h2 data-reveal>Outcome</h2>
         <div data-reveal data-delay="120">
           <p>I delivered a clickable prototype covering the whole wish round, a design rationale that traces every decision to its source, and an implementation document for handoff.</p>
-          <p>It hasn't been tested yet, and the frame rests on one nurse's words. Next I'd test it with more ward nurses, and with a head nurse to find out whether wishes with alternatives are actually easier to fit into the plan.</p>
+          <p><mark class="hl">It hasn't been tested yet</mark>, and the frame rests on one nurse's words. Next I'd test it with more ward nurses, and with a head nurse to find out whether wishes with alternatives are actually easier to fit into the plan.</p>
+          <div class="ai-note" role="note">
+            <p class="ai-note__label"><svg class="ai-note__spark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12.2" y1="10.4" x2="13.5" y2="1.0"/><line x1="13.3" y1="11.0" x2="18.9" y2="6.8"/><line x1="13.6" y1="12.2" x2="22.5" y2="13.5"/><line x1="13.0" y1="13.3" x2="17.5" y2="19.3"/><line x1="11.8" y1="13.6" x2="10.5" y2="23.0"/><line x1="10.7" y1="13.0" x2="5.1" y2="17.2"/><line x1="10.4" y1="11.8" x2="1.5" y2="10.5"/><line x1="11.0" y1="10.7" x2="6.5" y2="4.7"/></g></svg>How AI shaped this</p>
+            <p><code>draft-handoff</code> turned the research, decisions and prototype into the design rationale and implementation document. It names missing inputs, like the success measures we never wrote, instead of filling the gap with guesses.</p>
+          </div>
         </div>
       </section>
     </div>

@@ -55,6 +55,61 @@
     window.addEventListener("resize", checkCta);
   }
 
+  // SpringIn: live mini-prototype of "Would anything else also work?"
+  var demo = document.querySelector(".wish-demo");
+  if (demo) {
+    var options = [
+      { date: "13.Mar (Sat)", label: "Day off", cls: "off" },
+      { date: "11.Mar (Thu)", label: "Early shift", cls: "early" },
+      { date: "14.Mar (Sun)", label: "Day off", cls: "off" },
+      { date: "12.Mar (Fri)", label: "Late shift", cls: "late" }
+    ];
+    var chosen = [];
+    var list = demo.querySelector(".wd-list");
+    var addBtn = demo.querySelector(".wd-add");
+    var count = demo.querySelector(".wd-count");
+    var limit = demo.querySelector(".wd-limit");
+    var status = demo.querySelector("[role=status]");
+    var say = function (msg) { status.textContent = msg; };
+    var render = function () {
+      list.innerHTML = "";
+      chosen.forEach(function (o, i) {
+        var li = document.createElement("li");
+        li.innerHTML = '<span class="wd-num">' + (i + 1) + '</span><span>' + o.date + '</span>' +
+          '<span class="wd-tag wd-tag--' + o.cls + '">' + o.label + '</span>' +
+          '<button class="wd-remove" type="button" aria-label="Remove ' + o.date + ', ' + o.label + '">&times;</button>';
+        li.querySelector(".wd-remove").addEventListener("click", function () {
+          chosen.splice(i, 1);
+          render();
+          say(o.date + " removed. " + chosen.length + " of 2 added.");
+          (chosen.length ? list.querySelector(".wd-remove") : addBtn).focus();
+        });
+        list.appendChild(li);
+      });
+      var full = chosen.length >= 2;
+      addBtn.hidden = full;
+      limit.hidden = !full;
+      count.textContent = chosen.length + " of 2";
+    };
+    addBtn.addEventListener("click", function () {
+      var next = options.filter(function (o) { return chosen.indexOf(o) < 0; })[0];
+      if (!next || chosen.length >= 2) return;
+      chosen.push(next);
+      render();
+      say(next.date + ", " + next.label + " added. " + chosen.length + " of 2." + (chosen.length >= 2 ? " Limit reached." : ""));
+      if (chosen.length >= 2) list.querySelectorAll(".wd-remove")[1].focus();
+    });
+    demo.querySelectorAll('input[name="wd-alt"]').forEach(function (r) {
+      r.addEventListener("change", function () {
+        demo.querySelectorAll(".wd-option").forEach(function (o) {
+          o.classList.toggle("is-on", o.getAttribute("data-option") === r.value);
+        });
+        say(r.value === "no" ? "No alternative. This stays a fixed wish." : "Yes, something else works.");
+      });
+    });
+    render();
+  }
+
   var items = document.querySelectorAll("[data-reveal]");
 
   if (!("IntersectionObserver" in window)) {

@@ -681,12 +681,13 @@ a { color: inherit; text-decoration: none; }
    slides down into the top-right corner, above the number, so the two never overlap */
 .card__media .card__reveal {
   position: absolute;
-  inset: 0 0 auto auto;
-  width: 58%;
-  height: 50%;
+  /* Top lines up with the "Read case study" label; right edge matches the text padding */
+  inset: var(--space-6) var(--space-9) auto auto;
+  width: 46%;
+  height: 40%;
   object-fit: cover;
   object-position: center;
-  border-bottom-left-radius: 12px;
+  border-radius: 10px;
   opacity: 0;
   transform: translateY(-24px);
   transition: opacity 0.35s ease, transform 0.5s var(--ease-out);
@@ -725,11 +726,350 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 809px) {
   .card__type { padding: var(--space-6); }
   .card__more { left: var(--space-6); }
+  .card__media .card__reveal { inset: var(--space-6) var(--space-6) auto auto; }
 }
 
 /* Light mode: a lighter card panel than the page, and deeper brand lines so they show on it */
 :root[data-theme="light"] .card__media:has(.card__type) { background: #f5f5f5; }
 :root[data-theme="light"] .card__type { border-top-color: var(--brand-dark, var(--brand)); }
+
+/* ---------- Highlighted phrases in case study text ----------
+   A soft blue marker stroke behind the lower half of the phrase, and the phrase at full text strength,
+   so the key point of each paragraph can be found at a glance. */
+mark.hl {
+  color: var(--text);
+  background: linear-gradient(transparent 38%, var(--hl) 38%, var(--hl) 88%, transparent 88%);
+  padding: 0 3px;
+  border-radius: 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Pastel yellow marker (#FFE680). Light mode: a band behind the lower half of the words. */
+:root { --hl: #FFE680; }
+
+/* Dark mode: white text can't sit on yellow, so the marker covers the full line and the text turns dark */
+:root:not([data-theme="light"]) mark.hl {
+  color: #0a0a0a;
+  background: var(--hl);
+}
+
+/* ---------- AI notes in case studies ----------
+   Marked with the same spark as the nav, so "AI" reads as one recurring signal across the site. */
+.ai-note {
+  margin-top: var(--space-9);
+  padding: var(--space-6);
+  border-left: 2px solid var(--accent);
+  background: var(--divider);
+  border-radius: 0 10px 10px 0;
+}
+
+.ai-note__label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text) !important;
+}
+
+.ai-note__spark { width: 16px; height: 16px; flex-shrink: 0; }
+
+.ai-note p:last-child { font-size: 16px; }
+
+.ai-note code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--text);
+}
+
+/* ---------- Reframes: a sequence of problem frames ----------
+   Set-aside frames are dimmed; the chosen one is full strength with a blue edge and tag. */
+.frames {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin: var(--space-6) 0 var(--space-12);
+}
+
+.frames__item {
+  position: relative;
+  padding: var(--space-6);
+  border: 1px solid var(--outline-soft);
+  border-radius: 10px;
+}
+
+/* A small down arrow between frames */
+.frames__item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 32px;
+  bottom: calc(var(--space-6) * -1 + 4px);
+  border-top: 7px solid var(--outline-soft);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+}
+
+.frames__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.frames__num { color: var(--text-secondary); }
+
+.frames__status {
+  padding: 2px 10px;
+  border: 1px solid var(--outline-soft);
+  border-radius: 999px;
+  color: var(--text-secondary);
+}
+
+.case-section .frames__frame {
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.case-section p.frames__why { margin-top: var(--space-2); }
+
+/* Set aside: quieter, the frame struck through lightly */
+.frames__item.is-dropped .frames__frame {
+  color: var(--text-secondary);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--outline-soft);
+}
+
+/* Chosen: blue edge and a filled blue tag */
+.frames__item.is-chosen {
+  border-color: var(--accent);
+  border-left-width: 3px;
+}
+
+.frames__item.is-chosen .frames__status {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+@media (max-width: 809px) {
+  .case-section .frames__frame { font-size: 18px; }
+}
+
+/* ---------- Design system tiles (case studies) ----------
+   One component per tile: the component, its state, where it sits in the design system, and why. */
+.ds__intro { margin-top: var(--space-9); }
+
+.ds {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin: var(--space-4) 0 var(--space-9);
+}
+
+.ds__tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.ds__shot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  background: #f4f6f5; /* the prototype's own background, so components sit as they do in the app */
+  border-radius: 10px;
+  border: 1px solid var(--outline-soft);
+}
+
+.ds__shot img { width: 100%; max-width: 358px; height: auto; }
+
+.case-section .ds__name {
+  margin-top: var(--space-2);
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.ds__state {
+  margin-left: 4px;
+  padding: 1px 8px;
+  border: 1px solid var(--outline-soft);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* "New" / "Adapted": where the component sits in the design system, as a filled tag */
+.ds__tag {
+  margin-left: var(--space-2);
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--text);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.case-section p.ds__src {
+  margin-top: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.case-section p.ds__why { margin-top: 0; font-size: 15px; }
+
+@media (max-width: 809px) {
+  .ds { grid-template-columns: 1fr; }
+}
+
+/* ---------- Wish demo: a live mini-prototype (SpringIn) ----------
+   Styled like the app, not the portfolio, so it reads as the product in both modes. */
+/* "Try it" panels: every interactive example sits in one, like worked examples in a textbook.
+   A soft tint of the blue accent, and a blue "Interactive" label. */
+.try {
+  margin: var(--space-9) 0;
+  padding: var(--space-9);
+  background: var(--try-bg);
+  border: 1px solid var(--try-line);
+  border-radius: 18px;
+}
+
+:root { --try-bg: #0d0a3a; --try-line: rgba(120, 110, 255, 0.35); } /* solid, so the background lines stay behind it */
+:root[data-theme="light"] { --try-bg: #e4e6fb; --try-line: rgba(31, 0, 255, 0.18); }
+
+.case-section .try__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  color: var(--text);
+}
+
+.try__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px 4px 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.try__badge svg { width: 15px; height: 15px; }
+
+.try__title { font-weight: 500; font-size: 18px; }
+
+.case-section .try__caption { margin-top: var(--space-4); }
+
+.try .wish-demo__phone { margin: var(--space-6) 0 0; }
+
+@media (max-width: 809px) {
+  .try { padding: var(--space-6) var(--space-4); }
+}
+
+.wish-demo__phone {
+  --wd-ink: #16302b;
+  --wd-spruce: #1f5e55;
+  --wd-muted: #5b6b67;
+  max-width: 380px;
+  margin: var(--space-4) 0;
+  padding: var(--space-6) var(--space-4);
+  background: #f4f6f5;
+  border: 1px solid var(--outline-soft);
+  border-radius: 28px;
+  color: var(--wd-ink);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.wd-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 1px 0 rgba(22, 48, 43, 0.06);
+}
+
+.wd-wish { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; }
+.wd-small { display: block; font-size: 13px; color: var(--wd-muted); }
+.wd-date { display: block; font-weight: 600; }
+
+.wish-demo .wd-h { margin: 18px 0 6px; font-weight: 600; font-size: 19px; color: var(--wd-ink); }
+.wish-demo .wd-p { margin: 0 0 14px; font-size: 14px; color: var(--wd-muted); }
+
+.wd-group { border: 0; display: flex; flex-direction: column; gap: 10px; }
+.wd-option { border: 1px solid transparent; overflow: hidden; }
+.wd-option.is-on { border-color: var(--wd-spruce); }
+
+.wd-radio { display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px; cursor: pointer; font-weight: 600; }
+.wd-radio input { accent-color: var(--wd-spruce); width: 18px; height: 18px; margin-top: 1px; }
+.wd-radio small { display: block; font-weight: 400; font-size: 13px; color: var(--wd-muted); }
+
+.wd-list { list-style: none; }
+.wd-list li {
+  display: grid;
+  grid-template-columns: 18px 1fr auto 32px;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 8px 10px 16px;
+  border-top: 1px solid #e3e8e6;
+  animation: wd-in 0.25s ease-out;
+}
+@keyframes wd-in { from { opacity: 0; transform: translateY(-4px); } }
+
+.wd-num { color: var(--wd-muted); }
+
+.wd-remove {
+  width: 32px; height: 32px; border: 0; background: none; border-radius: 8px;
+  color: var(--wd-ink); font-size: 18px; cursor: pointer;
+}
+.wd-remove:hover { background: #eef2f0; }
+
+.wd-tag { padding: 2px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.wd-tag--off { background: #dcefe6; color: var(--wd-spruce); }
+.wd-tag--early { background: #fde7d2; color: #7a4210; }
+.wd-tag--late { background: #dfe5e3; color: #2d3f3b; }
+
+.wd-add {
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  padding: 12px 16px; border: 0; border-top: 1px solid #e3e8e6;
+  background: none; color: var(--wd-spruce); font: inherit; font-weight: 500; cursor: pointer; text-align: left;
+}
+.wd-add span[aria-hidden] { font-size: 20px; line-height: 1; }
+.wd-count { margin-left: auto; color: var(--wd-ink); font-weight: 400; }
+.wd-add:hover { background: #f4f8f6; }
+
+.wish-demo .wd-limit {
+  margin: 0; padding: 10px 16px; border-top: 1px solid #e3e8e6;
+  font-size: 13px; color: var(--wd-ink);
+}
+
+.wd-add[hidden], .wd-limit[hidden] { display: none; }
+
+.wd-option:not(.is-on) .wd-list,
+.wd-option:not(.is-on) .wd-add,
+.wd-option:not(.is-on) .wd-limit { display: none; }
+
+.wish-demo__phone :focus-visible { outline: 2px solid var(--wd-spruce); outline-offset: 2px; }
 
 /* ---------- Placeholder images ---------- */
 
@@ -1298,31 +1638,36 @@ a { color: inherit; text-decoration: none; }
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-6);
-  margin: var(--space-9) 0;
-  padding: var(--space-6) 0;
+  margin: var(--space-12) 0;
+  padding: var(--space-9) 0;
   border-top: 1px solid var(--divider);
   border-bottom: 1px solid var(--divider);
 }
 
 .stats li { display: flex; flex-direction: column; gap: var(--space-2); }
 
+/* Same type as the big numbers on the home page cards, so the two pages read as one system */
 .stats__value {
-  font-size: 40px;
-  line-height: 1;
-  letter-spacing: -1px;
+  font-weight: 300;
+  font-size: clamp(48px, 5.6vw, 88px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
 }
 
 .stats--change { grid-template-columns: repeat(2, 1fr); row-gap: var(--space-9); }
 
+/* Before → after pairs are longer, so they run a step smaller */
 .stats--change .stats__value {
-  font-size: 28px;
-  letter-spacing: -0.5px;
+  font-size: clamp(36px, 3.8vw, 56px);
+  letter-spacing: -0.03em;
 }
 
 @media (max-width: 809px) {
   .stats--change { grid-template-columns: 1fr; }
   .case-insight { font-size: 24px; }
-  .stats__value { font-size: 32px; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-9); }
+  .stats__value { font-size: 52px; }
+  .stats--change .stats__value { font-size: 40px; }
 }
 
 @media (max-width: 809px) {

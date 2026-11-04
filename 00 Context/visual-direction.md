@@ -10,7 +10,7 @@ Text primary: #FFFFFF
 Text secondary: #FFFFFF at 60% opacity (rgba(255, 255, 255, 0.6)), 7.37:1 on black, passes WCAG AAA. Raised from 50% (5.32:1) because body text uses Manrope Light.
 Divider and subtle surfaces: #FFFFFF at 10% opacity (rgba(255, 255, 255, 0.1))
 Accent: #1F00FF (buttons, card hover overlay). Never for focus outlines or text on black: only 2.5:1. Focus outlines are white.
-Do not introduce any other colors.
+Do not introduce any other colors (one exception: the pastel yellow highlight, below).
 
 ## Light theme (the default)
 
@@ -23,6 +23,26 @@ Hero rotating line only (64px, large text): #686868 (4.59:1, AAA for large text)
 Dividers and lines: black at 10–55% opacity (the same roles as the white values in dark mode). Background stripes are lighter, black at 8% at their darkest.
 Accent: #1F00FF, unchanged. Text on the accent is always white (--on-accent), in both themes.
 Framed project images keep their dark panels in both themes; they're images, not page colors.
+
+## Highlighted phrases (case studies)
+
+One or two key phrases per case study section get a pastel yellow marker (#FFE680, owner's choice; the only use of yellow on the site). Light mode: a band behind the lower half of the words, text in full color. Dark mode: the marker covers the full line and the text turns near-black (15.9:1), since white can't sit on yellow. Never a thin underline, which reads as a link. Use it for the point of the paragraph, not for decoration.
+
+## Big numbers
+
+Stats inside the case studies use the same type as the numbers on the home page cards: Manrope 300, tight letter-spacing, 48–88px depending on screen width (36–56px for longer before → after pairs). Three across on desktop, two across on phones.
+
+## AI notes (case studies)
+
+Where AI shaped a decision, a short note sits at the end of that section: a soft panel with a blue left edge, labeled "How AI shaped this" in mono with the same spark as the nav. Skill names in mono. Only write what the project files show; never invent how AI was used.
+
+## Design system tiles (case studies)
+
+Under a design decision, a "The components behind it" label and a two-column grid of tiles (one column on phones). Each tile: the component cut from the real screens on the prototype's own background, a plain name (with its state in words, like "with both added"), and one or two plain sentences on what it does for the user and whether it was added to or changed in the design system. No tags, pills or jargon: if the owner has to ask what a label means, a recruiter will too. Only use components and states the project files show.
+
+## Interactive examples ("Try it" panels)
+
+Every interactive section sits in a panel, like a worked example in a textbook: a solid blue tint (#E4E6FB in light mode, #0D0A3A in dark), a thin blue edge, 18px corners, and a header with a filled blue "INTERACTIVE" badge (hand icon, mono caps) followed by a short title of what to do. A mono caption underneath says where it comes from. The example inside keeps its own product colors.
 
 ## Typography
 
