@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <script>document.documentElement.classList.add("js");</script>
+  <script>document.documentElement.classList.add("js");try{if(localStorage.getItem("theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -22,6 +22,7 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html" aria-current="page">About</a></li>
           <li><a href="mailto:mark.albaran@outlook.com">Contact</a></li>
+          <li><button class="theme-toggle" type="button" role="switch" aria-checked="false"><span class="theme-toggle__label">Light mode</span><span class="theme-toggle__track" aria-hidden="true"><span class="theme-toggle__knob"></span></span></button></li>
         </ul>
       </nav>
     </div>
@@ -30,55 +31,21 @@
     <section class="about-top" aria-label="About me">
       <div class="container about">
         <div class="about__body" data-reveal data-delay="120">
-          <h1 class="about__intro">I'm a product designer who researches with people, prototypes in code, and uses AI to get from a question to a tested idea faster.</h1>
+          <h1 class="about__intro">I'm a product designer who researches with people, prototypes with AI, and gets from a question to a tested idea faster.</h1>
           <p>At Bauer Media Group, I'm part of the team rebuilding a legacy content management system and a new design system, working with product managers and engineers on editorial workflows and content commerce. Before that, I led UX on a healthcare learning app at LifeBonus.</p>
-          <p>I trained as a full-stack developer before moving into design, so I can build what I design and talk through constraints with engineers early. I'm looking for a full-time role on a product team where research and prototyping shape what gets built.</p>
         </div>
         <figure class="process" data-reveal>
-          <svg viewBox="0 0 640 480" role="img" aria-labelledby="process-title process-desc">
-            <title id="process-title">How I work</title>
-            <desc id="process-desc">A loop of four steps: Research (interviews, desk research), Synthesis (affinity maps, insights), Prototype (Figma, Claude Design, code) and Test (usability tests, A/B tests), then back to Research. AI drafts in Synthesis and Prototype, and I review and decide.</desc>
-            <defs>
-              <marker id="process-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M0 0 L10 5 L0 10 z" class="process__arrowhead"/>
-              </marker>
-            </defs>
-            <path class="process__arc" style="--i:0" d="M343.5 91.8 A150 150 0 0 1 468.2 216.5" marker-end="url(#process-arrow)"/>
-            <path class="process__arc" style="--i:1" d="M468.2 263.5 A150 150 0 0 1 343.5 388.2" marker-end="url(#process-arrow)"/>
-            <path class="process__arc" style="--i:2" d="M296.5 388.2 A150 150 0 0 1 171.8 263.5" marker-end="url(#process-arrow)"/>
-            <path class="process__arc" style="--i:3" d="M171.8 216.5 A150 150 0 0 1 296.5 91.8" marker-end="url(#process-arrow)"/>
-            <g class="process__node" style="--i:0">
-            <circle cx="320.0" cy="90.0" r="6" class="process__dot"/>
-            <text x="320.0" y="46.0" text-anchor="middle" class="process__title">Research</text>
-            <text x="320.0" y="66.0" text-anchor="middle" class="process__detail">interviews, desk research</text>
-            </g>
-            <g class="process__node" style="--i:1">
-            <circle cx="470.0" cy="240.0" r="6" class="process__dot"/>
-            <text x="490.0" y="234.0" text-anchor="start" class="process__title">Synthesis</text>
-            <text x="490.0" y="254.0" text-anchor="start" class="process__detail">affinity maps, insights</text>
-            <g class="process__ai"><rect x="420.0" y="229.0" width="34" height="22" rx="2"/><text x="437.0" y="244.5" text-anchor="middle">AI</text></g>
-            </g>
-            <g class="process__node" style="--i:2">
-            <circle cx="320.0" cy="390.0" r="6" class="process__dot"/>
-            <text x="320.0" y="424.0" text-anchor="middle" class="process__title">Prototype</text>
-            <text x="320.0" y="444.0" text-anchor="middle" class="process__detail">Figma, Claude Design, code</text>
-            <g class="process__ai"><rect x="303.0" y="346.0" width="34" height="22" rx="2"/><text x="320.0" y="361.5" text-anchor="middle">AI</text></g>
-            </g>
-            <g class="process__node" style="--i:3">
-            <circle cx="170.0" cy="240.0" r="6" class="process__dot"/>
-            <text x="150.0" y="234.0" text-anchor="end" class="process__title">Test</text>
-            <text x="150.0" y="254.0" text-anchor="end" class="process__detail">usability tests, A/B tests</text>
-            </g>
-            <text x="320" y="236" text-anchor="middle" class="process__center">How I work</text>
-            <text x="320" y="258" text-anchor="middle" class="process__detail">repeat until it's clear</text>
-          </svg>
-          <ol class="process__list">
-            <li><span class="process__list-title">Research</span><span class="label">interviews, desk research</span></li>
-            <li><span class="process__list-title">Synthesis <span class="process__ai-chip">AI</span></span><span class="label">affinity maps, insights</span></li>
-            <li><span class="process__list-title">Prototype <span class="process__ai-chip">AI</span></span><span class="label">Figma, Claude Design, code</span></li>
-            <li><span class="process__list-title">Test</span><span class="label">usability tests, A/B tests</span></li>
-            <li class="label">&#8634; repeat until it's clear</li>
-          </ol>
+          <h2 class="steps__heading">How I work</h2>
+          <div class="steps">
+            <span class="steps__loop" aria-hidden="true"></span>
+            <ol class="steps__list">
+              <li class="steps__item process__node" style="--i:0"><span class="steps__num label">01</span><div><span class="steps__title">Research</span><span class="steps__methods">interviews, desk research</span></div></li>
+              <li class="steps__item process__node" style="--i:1"><span class="steps__num label">02</span><div><span class="steps__title">Synthesis <span class="process__ai-chip">AI</span></span><span class="steps__methods">affinity maps, insights</span></div></li>
+              <li class="steps__item process__node" style="--i:2"><span class="steps__num label">03</span><div><span class="steps__title">Prototype <span class="process__ai-chip">AI</span></span><span class="steps__methods">Figma, Claude Design, code</span></div></li>
+              <li class="steps__item process__node" style="--i:3"><span class="steps__num label">04</span><div><span class="steps__title">Test</span><span class="steps__methods">usability tests, A/B tests</span></div></li>
+            </ol>
+            <p class="steps__repeat label">&#8634; back to Research, until it's clear</p>
+          </div>
           <figcaption class="process__legend label"><span class="process__ai-chip" aria-hidden="true">AI</span> AI drafts, I review and decide</figcaption>
         </figure>
       </div>

@@ -9,6 +9,11 @@
   --text: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.6); /* 7.37:1 on black: passes WCAG AAA */
   --divider: rgba(255, 255, 255, 0.1);
+  --line: rgba(255, 255, 255, 0.6);      /* arcs, list rules */
+  --outline-soft: rgba(255, 255, 255, 0.24); /* tool chip borders */
+  --stripe: rgba(255, 255, 255, 0.25);   /* background lines, bottom end */
+  --stripe-clear: rgba(255, 255, 255, 0);
+  --on-accent: #ffffff;                  /* text on the blue accent, both themes */
   --accent: #1f00ff;
   --accent-overlay: rgba(31, 0, 255, 0.75);
 
@@ -143,7 +148,7 @@ a { color: inherit; text-decoration: none; }
 .bg-stripes span {
   width: 1px;
   height: 100%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.25) 100%);
+  background: linear-gradient(180deg, var(--stripe-clear) 0%, var(--stripe) 100%);
 }
 
 @media (max-width: 1023px) {
@@ -153,6 +158,81 @@ a { color: inherit; text-decoration: none; }
 /* Fewer lines on phones so they don't crowd the text */
 @media (max-width: 809px) {
   .bg-stripes span:nth-child(even) { display: none; }
+}
+
+/* ---------- Light theme ----------
+   Palette based on danielautry.com's light mode: #e9e9e9 background, #0a0a0a text.
+   Secondary text is #4a4a4a (7.3:1, WCAG AAA) instead of the reference's #6a6a6a (4.4:1, fails AA). */
+:root[data-theme="light"] {
+  --bg: #e9e9e9;
+  --text: #0a0a0a;
+  --text-secondary: #4a4a4a;
+  --divider: rgba(0, 0, 0, 0.1);
+  --line: rgba(0, 0, 0, 0.55);
+  --outline-soft: rgba(0, 0, 0, 0.3);
+  --stripe: rgba(0, 0, 0, 0.08);
+  --stripe-clear: rgba(0, 0, 0, 0);
+  --accent-overlay: rgba(31, 0, 255, 0.82);
+}
+
+/* Theme switch in the nav: a toggle, on = light mode */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-secondary);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.theme-toggle:hover { color: var(--text); }
+
+.theme-toggle__track {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  border: 1px solid var(--text-secondary);
+  border-radius: 10px;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.theme-toggle__knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--text);
+  transition: transform 0.25s var(--spring);
+}
+
+.theme-toggle[aria-checked="true"] .theme-toggle__track {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.theme-toggle[aria-checked="true"] .theme-toggle__knob {
+  transform: translateX(16px);
+  background: var(--on-accent);
+}
+
+@media (max-width: 809px) {
+  .theme-toggle { font-size: 12px; }
+  /* Hidden on screen, still read out by screen readers */
+  .theme-toggle__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
 }
 
 /* ---------- Navigation ---------- */
@@ -207,7 +287,8 @@ a { color: inherit; text-decoration: none; }
 /* ---------- Hero ---------- */
 
 .hero {
-  padding: var(--section) 0 var(--space-20);
+  /* Half the section gap under the nav */
+  padding: calc(var(--section) / 2) 0 var(--space-20);
 }
 
 .availability {
@@ -238,6 +319,11 @@ a { color: inherit; text-decoration: none; }
   margin-top: 0.3em;
   color: var(--text-secondary);
 }
+
+/* Light mode: a lighter grey on the large rotating line, so it separates from the headline
+   the way it does in dark mode. #686868 on #E9E9E9 is 4.5:1, AAA for large text (64px). */
+:root[data-theme="light"] .hero__support,
+:root[data-theme="light"] .rotator { color: #686868; }
 
 /* With animation turned off, the first sentence stands alone */
 @media (prefers-reduced-motion: reduce) {
@@ -290,7 +376,7 @@ a { color: inherit; text-decoration: none; }
 /* ---------- Page header (Projects, About) ---------- */
 
 .page-header {
-  padding: var(--section) 0 var(--space-20);
+  padding: calc(var(--section) / 2) 0 var(--space-20);
 }
 
 .page-header__title {
@@ -347,8 +433,8 @@ a { color: inherit; text-decoration: none; }
 .card__cta {
   font-family: var(--font-mono);
   font-size: 14px;
-  color: var(--text);
-  border: 1px solid var(--text);
+  color: var(--on-accent);
+  border: 1px solid var(--on-accent);
   padding: var(--space-4) var(--space-6);
   transform: translateY(12px);
   transition: transform 0.45s var(--spring);
@@ -417,7 +503,7 @@ a { color: inherit; text-decoration: none; }
   display: inline-block;
   font-family: var(--font-mono);
   font-size: 14px;
-  color: var(--text);
+  color: var(--on-accent);
   background: var(--accent);
   padding: var(--space-4) var(--space-6);
   transition: transform 0.45s var(--spring);
@@ -473,18 +559,18 @@ a { color: inherit; text-decoration: none; }
 
 .process__arc {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.6);
+  stroke: var(--line);
   stroke-width: 1.5;
 }
 
-.process__arrowhead { fill: rgba(255, 255, 255, 0.6); }
+.process__arrowhead { fill: var(--line); }
 
 .process__dot { fill: var(--text); }
 
 .process__title {
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 20px;
+  font-size: 26px;
   fill: var(--text);
 }
 
@@ -497,7 +583,7 @@ a { color: inherit; text-decoration: none; }
 .process__center {
   font-family: var(--font-sans);
   font-weight: 300;
-  font-size: 28px;
+  font-size: 30px;
   letter-spacing: -0.5px;
   fill: var(--text);
 }
@@ -506,8 +592,8 @@ a { color: inherit; text-decoration: none; }
 
 .process__ai text {
   font-family: var(--font-mono);
-  font-size: 12px;
-  fill: var(--text);
+  font-size: 16px;
+  fill: var(--on-accent);
 }
 
 .process__legend {
@@ -520,7 +606,7 @@ a { color: inherit; text-decoration: none; }
 
 .process__ai-chip {
   font-size: 12px;
-  color: var(--text);
+  color: var(--on-accent);
   background: var(--accent);
   padding: 2px 8px;
   border-radius: 2px;
@@ -552,6 +638,105 @@ a { color: inherit; text-decoration: none; }
   .js .process__node { opacity: 1; animation: none; }
 }
 
+/* How I work: numbered steps with a loop bracket (chosen over a circle diagram for readability) */
+.steps__heading {
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 1.2;
+  margin-bottom: var(--space-9);
+}
+
+.steps {
+  position: relative;
+  padding-left: 48px;
+}
+
+/* The bracket on the left: runs from the last step back up to the first, arrow pointing in */
+.steps__loop {
+  position: absolute;
+  left: 0;
+  top: 14px;      /* JS lines these up with the 01 and 04 numbers */
+  bottom: 44px;
+  width: 40px;    /* reaches the numbers, so the tail leaves 04 and the head points at 01 */
+  border: 1.5px solid var(--line);
+  border-right: 0;
+  border-radius: 12px 0 0 12px;
+}
+
+.steps__loop::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: -4px;
+  border-left: 9px solid var(--line);
+  border-top: 5.5px solid transparent;
+  border-bottom: 5.5px solid transparent;
+}
+
+.steps__list { list-style: none; }
+
+.steps__item {
+  position: relative;
+  --pt: var(--space-4);
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.steps__item:first-child { padding-top: 0; --pt: 0px; }
+
+/* Subtle down arrows between the numbers: 01 → 02 → 03 → 04 */
+.steps__item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: calc(var(--pt) + 30px);
+  bottom: -12px;
+  border-left: 1px solid var(--outline-soft);
+}
+
+.steps__item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 4.5px;
+  bottom: -16px;
+  border-top: 6px solid var(--outline-soft);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+}
+
+.steps__num { padding-top: 6px; }
+
+.steps__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.3;
+}
+
+.steps__methods {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.steps__repeat { margin-top: var(--space-4); padding-left: 56px; }
+
+.steps + .process__legend { justify-content: flex-start; margin-left: 104px; }
+
+@media (max-width: 809px) {
+  .steps { padding-left: 36px; }
+  .steps__loop { width: 28px; }
+  .steps + .process__legend { margin-left: 92px; }
+  .steps__title { font-size: 20px; }
+}
+
 /* Phones: the diagram's text would shrink too far, so show a stacked list instead */
 .process__list { display: none; }
 
@@ -560,7 +745,7 @@ a { color: inherit; text-decoration: none; }
   .process__list {
     display: block;
     list-style: none;
-    border-left: 1px solid rgba(255, 255, 255, 0.6);
+    border-left: 1px solid var(--line);
     padding-left: var(--space-6);
   }
   .process__list li { padding: var(--space-4) 0; }
@@ -585,7 +770,7 @@ a { color: inherit; text-decoration: none; }
 .about__body p { color: var(--text-secondary); }
 
 /* The About page opens straight on the loop and intro, so they take the page-header's top space */
-.about-top { padding-top: var(--section); }
+.about-top { padding-top: calc(var(--section) / 2); }
 
 .about__body .about__intro {
   font-weight: 300;
@@ -614,18 +799,9 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.4;
   color: var(--text);
   padding: var(--space-2) var(--space-4);
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  border: 1px solid var(--outline-soft);
   background: var(--bg);
   border-radius: 2px;
-}
-
-.tools {
-  padding-bottom: var(--section);
-}
-
-.tools .label#tools-title {
-  font-weight: 400;
-  margin-bottom: var(--space-6);
 }
 
 .tools__more {
@@ -889,3 +1065,12 @@ a { color: inherit; text-decoration: none; }
   .js [data-reveal] { opacity: 1; transform: none; }
   *, *::before, *::after { transition-duration: 0.01ms !important; }
 }
+
+/* Tools tied to the rotating skill */
+.rotator-tools {
+  margin-top: var(--space-6);
+  font-size: 14px;
+  transition: opacity 0.4s ease;
+}
+.rotator-tools.is-changing { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .rotator-tools { display: none; } }

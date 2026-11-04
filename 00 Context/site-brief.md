@@ -7,20 +7,20 @@ Baseline: the existing Framer portfolio at https://markalexis.framer.website. Ma
 - The home page shows all five projects. Each card links to its own case study page (e.g. `projects/tvguideplus.html`). Each case study's "All projects" link goes back to the cards on the home page (`index.html#work`).
 - Projects page: hidden for now. `projects.html` stays in the folder but nothing links to it, and search engines are asked to skip it. Bring it back (nav link and back links) once there are more than five projects.
 - About page: yes
-- Navigation: top bar with Home, About, Contact. Contact opens an email (mailto link). Visible on every page.
+- Navigation: top bar with Home, About, Contact, then a "Light mode" toggle switch. Contact opens an email (mailto link). Visible on every page.
 
 ## Home page content (from the Framer baseline)
 - Availability note at the top: "Open to full-time positions" (no date; the original Oct 1, 2026 date passed and was removed)
-- Hero: the sentence "I turn complexity into clarity." in white, then in grey "with AI-powered" and a line that rotates through "Research Synthesis", "Prototyping", "Design-to-Code", "Usability Testing" (each slides up and out as the next slides in). It plays once and rests on "Usability Testing". A "Pause animation" button shows while it moves and hides once it stops (WCAG 2.2.2).
+- Hero: the sentence "I turn complexity into clarity." in white, then in grey "with AI-powered" and a line that rotates through "Research Synthesis", "Prototyping", "Design-to-Code", "Usability Testing" (each slides up and out as the next slides in). It loops continuously (owner's choice). A "Pause animation" button stays visible under the hero so visitors can stop it (WCAG 2.2.2).
 - With animation turned off (reduced motion), only "I turn complexity into clarity." shows
 - Project cards, in this order: SpringIn (2026, Healthcare; replaced zengo; first because it shows the AI-assisted process), tvguideplus (2025, Media / Publishing), Columna (2024, Media / Publishing; made-up name, replaced roverride; anonymized, see 01 Projects/columna/case-study.md), yumm (2024, Media / Publishing), pflegePro (2023, Healthcare)
 - Contact section labeled ".say hello", with the line "Hiring a product designer who brings AI into the process? Let's talk." and a "contact me" button. Do not repeat the availability date here: the note at the top already says it, and the line should point toward a role, never invite unpaid design work.
-- Tools row between the projects and the contact section: "Tools I work with", one row of tool names in the mono label style (AI tools first), and a "See my full stack" link to about.html#stack. Names only, no brand logos (they'd break the color rules).
+- Tools tied to the rotating skill: a small mono line under the headline names the tools for the skill on screen, and changes with it. Research Synthesis: "with Claude Code and Miro"; Prototyping: "in Figma, Figma Make and Claude Design"; Design-to-Code: "with Claude Code and GitHub"; Usability Testing: "with VWO and moderated sessions". It loops with the skills. Screen readers get all four pairs at once. Hidden when motion is off. (Replaced a scrolling tools slider that made the hero too busy.)
 - Footer with a "Last updated" note
 
 ## About page
 - No photo of the owner (owner's choice), and no page header: the page opens straight on the loop and the intro. The intro sentence is the page's h1.
-- Beside the intro, in the left column where a photo would go: a "How I work" loop diagram (inline SVG): Research, Synthesis, Prototype, Test, then back to Research. Blue "AI" badges on Synthesis and Prototype, legend "AI drafts, I review and decide". Arcs draw in order once, in about 3 seconds; finished state shows when motion is off. On tablets it stacks under the intro; phones get a stacked list instead, since the diagram's text would be too small.
+- Beside the intro, in the left column where a photo would go: "How I work", four numbered steps (01 Research, 02 Synthesis, 03 Prototype, 04 Test), each with its methods at normal reading size, blue "AI" badges on Synthesis and Prototype, subtle down arrows between the numbers, and a bracket on the left from 04 back to 01. Legend: "AI drafts, I review and decide". Same layout on phones. Chosen over a circle diagram because the circle's small text didn't read well.
 - Intro from 00 Context/bio.md, then Stack and Experience (design roles only, earlier jobs in one sentence). No Education section (owner's choice: hired on the work, not the degree).
 - Stack groups: AI (Claude Code, Claude Design); Design (Figma, FigJam, Figma Make, Miro); Research and testing (VWO, usability testing, user interviews); Code (HTML, CSS, JavaScript, GitHub); Collaboration (Jira, Confluence). Left out on purpose: macOS, Teams, Slack, Discord.
 

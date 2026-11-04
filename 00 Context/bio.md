@@ -1,10 +1,8 @@
 # Bio
 
-I'm a product designer who researches with people, prototypes in code, and uses AI to get from a question to a tested idea faster.
+I'm a product designer who researches with people, prototypes with AI, and gets from a question to a tested idea faster.
 
 At Bauer Media Group, I'm part of the team rebuilding a legacy content management system and a new design system, working with product managers and engineers on editorial workflows and content commerce. Before that, I led UX on a healthcare learning app at LifeBonus.
-
-I trained as a full-stack developer before moving into design, so I can build what I design and talk through constraints with engineers early. I'm looking for a full-time role on a product team where research and prototyping shape what gets built.
 
 Background line (About page, under Experience): My background is in healthcare: I studied nursing science and human medicine in the Philippines and analyzed drug safety data. I also worked in operations in Dubai and taught medical English online, before moving into tech, first as a developer, then as a designer. Owner's own words: "My background is Healthcare. I studied Nursing Science and Human Medicine in the Philippines." Say "studied", never "graduated"; no school or degree names (no Education section).
 

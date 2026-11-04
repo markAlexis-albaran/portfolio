@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <script>document.documentElement.classList.add("js");</script>
+  <script>document.documentElement.classList.add("js");try{if(localStorage.getItem("theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -22,6 +22,7 @@
           <li><a href="index.html" aria-current="page">Home</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="mailto:mark.albaran@outlook.com">Contact</a></li>
+          <li><button class="theme-toggle" type="button" role="switch" aria-checked="false"><span class="theme-toggle__label">Light mode</span><span class="theme-toggle__track" aria-hidden="true"><span class="theme-toggle__knob"></span></span></button></li>
         </ul>
       </nav>
     </div>
@@ -34,12 +35,14 @@
           I turn complexity into clarity.
           <span class="hero__support">
             with AI-powered
-            <span class="rotator" data-words="Research Synthesis|Prototyping|Design-to-Code|Usability Testing">
+            <span class="rotator" data-words="Research Synthesis|Prototyping|Design-to-Code|Usability Testing" data-tools="with Claude Code and Miro|in Figma, Figma Make and Claude Design|with Claude Code and GitHub|with VWO and moderated sessions">
               <span class="rotator__word" aria-hidden="true">Research Synthesis</span>
               <span class="visually-hidden">Research Synthesis, Prototyping, Design-to-Code and Usability Testing</span>
             </span>
           </span>
         </h1>
+        <p class="rotator-tools label" aria-hidden="true">with Claude Code and Miro</p>
+        <p class="visually-hidden">Tools: Claude Code and Miro for research synthesis; Figma, Figma Make and Claude Design for prototyping; Claude Code and GitHub for design-to-code; VWO and moderated sessions for usability testing.</p>
         <button class="rotator-toggle label" type="button" aria-pressed="false" hidden>Pause animation</button>
       </div>
     </section>
@@ -94,26 +97,6 @@
           <p class="card__desc">A learning app that teaches elderly-care workers safer patient handling, in lessons short enough for a shift.</p>
         </a>
       </div>
-      </div>
-    </section>
-
-    <section class="tools" aria-labelledby="tools-title">
-      <div class="container" data-reveal>
-        <h2 class="label" id="tools-title">Tools I work with</h2>
-        <ul class="chips">
-          <li class="chip">Claude Code</li>
-          <li class="chip">Claude Design</li>
-          <li class="chip">Figma</li>
-          <li class="chip">Figma Make</li>
-          <li class="chip">FigJam</li>
-          <li class="chip">Miro</li>
-          <li class="chip">VWO</li>
-          <li class="chip">Jira</li>
-          <li class="chip">Confluence</li>
-          <li class="chip">HTML / CSS / JS</li>
-          <li class="chip">GitHub</li>
-        </ul>
-        <a class="tools__more label" href="about.html#stack">See my full stack &rarr;</a>
       </div>
     </section>
 

@@ -12,6 +12,18 @@ Divider and subtle surfaces: #FFFFFF at 10% opacity (rgba(255, 255, 255, 0.1))
 Accent: #1F00FF (buttons, card hover overlay). Never for focus outlines or text on black: only 2.5:1. Focus outlines are white.
 Do not introduce any other colors.
 
+## Light theme (optional, visitor's choice)
+
+Dark stays the default. A "Light mode" toggle switch sits last in the nav on every page (on = light, blue track; off = dark, outlined track), and the choice is remembered in the visitor's browser. On phones only the switch shows; its label stays readable by screen readers.
+Palette based on danielautry.com's light mode:
+Background: #E9E9E9
+Text primary: #0A0A0A
+Text secondary: #4A4A4A (7.3:1 on #E9E9E9, WCAG AAA). The reference uses #6A6A6A, which is only 4.4:1 and fails AA.
+Hero rotating line only (64px, large text): #686868 (4.59:1, AAA for large text), lighter than other secondary text so it separates from the headline the way it does in dark mode.
+Dividers and lines: black at 10–55% opacity (the same roles as the white values in dark mode). Background stripes are lighter, black at 8% at their darkest.
+Accent: #1F00FF, unchanged. Text on the accent is always white (--on-accent), in both themes.
+Framed project images keep their dark panels in both themes; they're images, not page colors.
+
 ## Typography
 
 Heading: Manrope, weight 300, 64px on desktop (40px on mobile), line-height 1, letter-spacing -2.7px (scale proportionally on mobile)
