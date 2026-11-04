@@ -42,6 +42,19 @@
     });
   }
 
+  // Home: the floating "Projects" button hides once the top of the cards is three quarters up the screen
+  var scrollCta = document.querySelector(".scroll-cta");
+  var work = document.getElementById("work");
+  if (scrollCta && work) {
+    var checkCta = function () {
+      // Hidden once the visitor starts scrolling, or when the cards already fill the lower half
+      scrollCta.classList.toggle("is-hidden", window.scrollY > 40 || work.getBoundingClientRect().top < window.innerHeight * 0.5);
+    };
+    checkCta();
+    window.addEventListener("scroll", checkCta, { passive: true });
+    window.addEventListener("resize", checkCta);
+  }
+
   var items = document.querySelectorAll("[data-reveal]");
 
   if (!("IntersectionObserver" in window)) {
@@ -55,7 +68,7 @@
         setTimeout(function () { el.classList.add("is-visible"); }, delay);
         revealObserver.unobserve(el);
       });
-    }, { rootMargin: "0px 0px -10% 0px" });
+    }, { rootMargin: "0px 0px 0px 0px" });
 
     items.forEach(function (el) {
       // The large block starts off screen, so it plays on load instead of waiting to be seen
