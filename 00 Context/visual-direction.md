@@ -14,7 +14,7 @@ Do not introduce any other colors.
 
 ## Light theme (optional, visitor's choice)
 
-Dark stays the default. A "Light mode" toggle switch sits last in the nav on every page (on = light, blue track; off = dark, outlined track), and the choice is remembered in the visitor's browser. On phones only the switch shows; its label stays readable by screen readers.
+Dark stays the default. A "Light mode" toggle switch sits last in the nav on every page (on = light, blue track; off = dark, outlined track), and the choice is remembered in the visitor's browser. On phones the label stays visible too, at 12px, with tighter nav spacing so everything fits down to a 320px-wide screen.
 Palette based on danielautry.com's light mode:
 Background: #E9E9E9
 Text primary: #0A0A0A

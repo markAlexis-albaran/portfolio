@@ -223,16 +223,9 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 809px) {
-  .theme-toggle { font-size: 12px; }
-  /* Hidden on screen, still read out by screen readers */
-  .theme-toggle__label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-  }
+  /* Phones: keep the "Light mode" label visible, at the nav's smaller size */
+  .theme-toggle { font-size: 12px; gap: 6px; }
+  .theme-toggle__label { white-space: nowrap; }
 }
 
 /* ---------- Navigation ---------- */
@@ -280,7 +273,7 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 809px) {
   .nav__logo { display: none; }
   .nav__inner { justify-content: center; }
-  .nav__links { gap: var(--space-6); }
+  .nav__links { gap: var(--space-4); align-items: center; }
   .nav__links a { font-size: 12px; }
 }
 
