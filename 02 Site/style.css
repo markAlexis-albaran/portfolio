@@ -290,6 +290,9 @@ a { color: inherit; text-decoration: none; }
 
 /* A spark in front of the line, a nod to Claude's mark (drawn here, not the official logo) */
 .nav__built, .nav__built-menu { display: inline-flex; align-items: center; gap: 5px; }
+/* The mono font spaces ;-) wide, so pull its characters together */
+.nav__wink { letter-spacing: -0.22em; margin-left: -0.15em; }
+
 .nav__spark { width: 16px; height: 16px; flex-shrink: 0; color: var(--text); }
 
 .nav__built-menu { display: none; }
