@@ -97,6 +97,28 @@
     startWords();
   }
 
+  // Contact: the address is stored in pieces and joined here, so it never appears whole
+  // in the page code (most spam bots read the code without running scripts).
+  // Then "Copy email" copies it instead of opening a mail app.
+  var emailText = document.querySelector(".contact__email");
+  var email = emailText ? emailText.getAttribute("data-user") + "@" + emailText.getAttribute("data-domain") : "";
+  if (emailText) emailText.textContent = email;
+  var copyButton = document.querySelector(".contact__copy");
+  var copyStatus = document.querySelector(".contact__status");
+  if (copyButton && email && navigator.clipboard && window.isSecureContext !== false) {
+    copyButton.hidden = false; // only shown where copying works
+    copyButton.addEventListener("click", function () {
+      navigator.clipboard.writeText(email).then(function () {
+        copyButton.textContent = "Copied";
+        if (copyStatus) copyStatus.textContent = "Email address copied";
+        setTimeout(function () {
+          copyButton.textContent = "Copy email";
+          if (copyStatus) copyStatus.textContent = "";
+        }, 2000);
+      });
+    });
+  }
+
   // How I work: line the loop bracket up with the 01 and 04 numbers
   var steps = document.querySelector(".steps");
   if (steps) {
