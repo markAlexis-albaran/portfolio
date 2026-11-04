@@ -12,9 +12,9 @@ Divider and subtle surfaces: #FFFFFF at 10% opacity (rgba(255, 255, 255, 0.1))
 Accent: #1F00FF (buttons, card hover overlay). Never for focus outlines or text on black: only 2.5:1. Focus outlines are white.
 Do not introduce any other colors.
 
-## Light theme (optional, visitor's choice)
+## Light theme (the default)
 
-Dark stays the default. A "Light mode" toggle switch sits last in the nav on every page (on = light, blue track; off = dark, outlined track), and the choice is remembered in the visitor's browser. On phones the label stays visible too, at 12px, with tighter nav spacing so everything fits down to a 320px-wide screen.
+Light is the default (changed 2026-11-04 at the owner's request). A "Dark mode" toggle switch sits last in the nav on every page (on = dark, blue track; off = light, outlined track), and the choice is remembered in the visitor's browser. On phones the label stays visible too, at 12px, with tighter nav spacing so everything fits down to a 320px-wide screen.
 Palette based on danielautry.com's light mode:
 Background: #E9E9E9
 Text primary: #0A0A0A

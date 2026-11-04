@@ -7,7 +7,7 @@ Baseline: the existing Framer portfolio at https://markalexis.framer.website. Ma
 - The home page shows all five projects. Each card links to its own case study page (e.g. `projects/tvguideplus.html`). Each case study's "All projects" link goes back to the cards on the home page (`index.html#work`).
 - Projects page: hidden for now. `projects.html` stays in the folder but nothing links to it, and search engines are asked to skip it. Bring it back (nav link and back links) once there are more than five projects.
 - About page: yes
-- Navigation: top bar with Home, About, Contact, then a "Light mode" toggle switch. Contact scrolls to the contact section at the bottom of the current page (no mailto links anywhere: they open a mail app, which felt jarring). Visible on every page.
+- Navigation: top bar with Home, About, Contact, then a "Dark mode" toggle switch. Light mode is the default. Contact scrolls to the contact section at the bottom of the current page (no mailto links anywhere: they open a mail app, which felt jarring). Visible on every page.
 
 ## Home page content (from the Framer baseline)
 - Availability note at the top: "Open to full-time positions" (no date; the original Oct 1, 2026 date passed and was removed)

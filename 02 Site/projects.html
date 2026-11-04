@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <script>document.documentElement.classList.add("js");try{if(localStorage.getItem("theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
+  <script>document.documentElement.classList.add("js");var t="light";try{if(localStorage.getItem("theme")==="dark")t="dark"}catch(e){}if(t==="light")document.documentElement.setAttribute("data-theme","light");</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -23,7 +23,7 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="#contact">Contact</a></li>
-          <li><button class="theme-toggle" type="button" role="switch" aria-checked="false"><span class="theme-toggle__label">Light mode</span><span class="theme-toggle__track" aria-hidden="true"><span class="theme-toggle__knob"></span></span></button></li>
+          <li><button class="theme-toggle" type="button" role="switch" aria-checked="false"><span class="theme-toggle__label">Dark mode</span><span class="theme-toggle__track" aria-hidden="true"><span class="theme-toggle__knob"></span></span></button></li>
         </ul>
       </nav>
     </div>

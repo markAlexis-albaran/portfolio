@@ -1,13 +1,13 @@
 // Entrance and scroll reveals, plus the active link in the case study anchor menu.
 
 (function () {
-  // Light / dark switch. Dark is the default; the choice is remembered in this browser.
+  // Dark mode switch. Light is the default; the choice is remembered in this browser.
   var root = document.documentElement;
   var themeButton = document.querySelector(".theme-toggle");
   function labelTheme() {
     if (!themeButton) return;
     var light = root.getAttribute("data-theme") === "light";
-    themeButton.setAttribute("aria-checked", light ? "true" : "false");
+    themeButton.setAttribute("aria-checked", light ? "false" : "true"); // on = dark mode
   }
   if (themeButton) {
     labelTheme();
