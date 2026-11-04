@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Columna - Mark Alexis Albaran</title>
+  <meta name="description" content="Columna: two tokenized design systems behind a block-based CMS for editors across magazine brands. A UX case study by Mark Alexis Albaran.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="bg-stripes" data-reveal="large" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="nav__logo" href="../index.html">Mark Alexis Albaran</a>
+      <nav aria-label="Main">
+        <ul class="nav__links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="mailto:mark.albaran@outlook.com">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <img class="case-cover case-cover--image" src="../images/columna/cover.jpg" alt="A desktop monitor on a stone pedestal showing the recreated Columna editor, next to magazines and a coffee cup" data-reveal>
+
+    <section class="case-header">
+      <div class="container" data-reveal>
+        <a class="case-header__back label" href="../index.html#work">&larr; All projects</a>
+        <p class="label">Media / Publishing &middot; 2024</p>
+        <h1 class="case-header__title">Columna</h1>
+        <p class="case-header__subtitle">Two design systems behind a block-based CMS for magazine editors</p>
+      </div>
+    </section>
+
+    <nav class="anchors" aria-label="Case study sections">
+      <div class="container">
+        <ul class="anchors__list">
+          <li><a href="#problem">Problem</a></li>
+          <li><a href="#research">Research</a></li>
+          <li><a href="#insight">Insight</a></li>
+          <li><a href="#making">Making</a></li>
+          <li><a href="#outcome">Outcome</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <section class="case-section" id="problem">
+        <h2 data-reveal>Problem</h2>
+        <div data-reveal data-delay="120">
+          <p>Columna is a block-based CMS, in the style of Notion, for editors who write for several magazine brands, with AI built into the writing workflow. It was built to replace an older CMS step by step.</p>
+          <p>The old system looked like enterprise software from another decade and was full of manual steps. It still worked, but only because editors knew it by heart, so anything new had to beat years of habit.</p>
+        </div>
+      </section>
+
+      <section class="case-section" id="research">
+        <h2 data-reveal>Research</h2>
+        <div data-reveal data-delay="120">
+          <p>Editors didn't write in the old CMS at all. They drafted in Microsoft Word, then copied the text over and formatted it again by hand before publishing. The CMS was the last, slowest step, rather than the place the work happened.</p>
+        </div>
+      </section>
+
+      <section class="case-section" id="insight">
+        <h2 data-reveal>Insight</h2>
+        <div data-reveal data-delay="120">
+          <p class="case-insight">If editors can write in the CMS from the first word, the copy-and-reformat step disappears.</p>
+        </div>
+      </section>
+
+      <section class="case-section" id="making">
+        <h2 data-reveal>Making</h2>
+        <div data-reveal data-delay="120">
+          <h3>Write, save, publish and schedule in one place</h3>
+          <p>Editors start an article directly in Columna, build it from blocks, save drafts, publish, or schedule it for later, instead of drafting in Word and reformatting in the CMS. Every step that used to happen outside the system now happens inside it.</p>
+          <figure class="case-figure">
+            <img src="../images/columna/editor.svg" alt="A recreated block editor: an article title and image, a block menu with heading, image and recipe card, a Draft saved status, and a schedule panel with date and time" loading="lazy">
+            <figcaption class="label">Recreated for this portfolio: the real product is confidential</figcaption>
+          </figure>
+
+          <h3>Two design systems instead of one</h3>
+          <p>We built two design systems, each with its own team: one for the components readers see on the brand sites, and one for the components editors use inside the CMS. A single shared system would have pulled in two directions, since the reader side has to carry each brand's identity, while the editor side is one work tool where speed and consistency matter more than brand. I worked across both.</p>
+
+          <h3>Tokens, so a brand swaps in without a redesign</h3>
+          <p>Both systems are built on design tokens: named values for color, type and shape. A component is designed once, and each brand's tokens give it that brand's look, so supporting another brand means a new set of tokens, not new components.</p>
+          <figure class="case-figure">
+            <img src="../images/columna/tokens.svg" alt="The same article card shown in three made-up brands, Kochzeit, Sternblick and Fernweg, with their brand color, headline font and corner radius tokens listed underneath" loading="lazy">
+            <figcaption class="label">Recreated for this portfolio, with made-up brands: one card, three token sets</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="case-section" id="outcome">
+        <h2 data-reveal>Outcome</h2>
+        <div data-reveal data-delay="120">
+          <p>The project was stopped before its official launch, so there are no usage numbers to show.</p>
+          <p>What I take from it: designing two systems for two very different audiences, and building on tokens so one component can serve many brands. Both carry over to any product that has to look different for different customers while staying one system underneath.</p>
+        </div>
+      </section>
+    </div>
+
+    <section class="contact" id="contact">
+      <div class="container" data-reveal>
+        <p class="label">.say hello</p>
+        <h2 class="contact__title">Hiring a product designer who brings AI into the process? Let's talk.</h2>
+        <a class="button" href="mailto:mark.albaran@outlook.com">contact me</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container" data-reveal="small">
+      <p class="label">Last Updated: November 2026</p>
+    </div>
+  </footer>
+  <script src="../main.js"></script>
+</body>
+</html>
