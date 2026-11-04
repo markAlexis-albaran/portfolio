@@ -19,6 +19,29 @@
     });
   }
 
+  // Phone menu: open and close the floating panel
+  var navEl = document.querySelector(".nav");
+  var menuBtn = document.querySelector(".nav__menu-btn");
+  if (navEl && menuBtn) {
+    var setMenu = function (open) {
+      navEl.classList.toggle("is-open", open);
+      menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+    menuBtn.addEventListener("click", function () {
+      setMenu(!navEl.classList.contains("is-open"));
+    });
+    // Close on Escape, on a tap outside, and after choosing a link
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && navEl.classList.contains("is-open")) { setMenu(false); menuBtn.focus(); }
+    });
+    document.addEventListener("click", function (e) {
+      if (navEl.classList.contains("is-open") && !navEl.contains(e.target)) setMenu(false);
+    });
+    navEl.querySelectorAll(".nav__links a").forEach(function (a) {
+      a.addEventListener("click", function () { setMenu(false); });
+    });
+  }
+
   var items = document.querySelectorAll("[data-reveal]");
 
   if (!("IntersectionObserver" in window)) {
