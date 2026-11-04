@@ -149,7 +149,9 @@
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
         anchorLinks.forEach(function (link) {
-          link.classList.toggle("is-active", link.getAttribute("href") === "#" + entry.target.id);
+          var on = link.getAttribute("href") === "#" + entry.target.id;
+          link.classList.toggle("is-active", on);
+          if (on) { link.setAttribute("aria-current", "location"); } else { link.removeAttribute("aria-current"); }
         });
       });
     }, { rootMargin: "-40% 0px -55% 0px" });

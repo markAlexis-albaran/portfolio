@@ -1044,8 +1044,17 @@ a { color: inherit; text-decoration: none; }
   transition: color 0.2s ease;
 }
 
-.anchors__list a:hover,
-.anchors__list a.is-active { color: var(--text); }
+.anchors__list a:hover { color: var(--text); }
+
+/* Active section: full text color plus an underline, so it doesn't rely on a color shift alone */
+.anchors__list a { padding-bottom: 6px; border-bottom: 2px solid transparent; }
+.anchors__list a.is-active {
+  color: var(--text);
+  border-bottom-color: currentColor;
+}
+
+/* Light mode: lighter inactive links (#686868, 4.6:1, still passes AA) so the active one stands out */
+:root[data-theme="light"] .anchors__list a:not(.is-active):not(:hover) { color: #686868; }
 
 .case-section {
   display: grid;
