@@ -26,7 +26,7 @@ Baseline: the existing Framer portfolio at https://markalexis.framer.website. Ma
 
 ## Case Study Display
 - Index: cards with a thumbnail image, year, category and project name. Placeholder images until real ones exist.
-- Card hover: the image zooms to about 120% inside its frame, a color overlay fades in, and a "Read Case Study" button appears.
+- Cards are type-led: one result large in the hero type with a mono caption, on a panel with a thin top line in the brand color (deeper shades in light mode, on a #F5F5F5 panel). Hover: the number stays; a piece of a real screen slides down into the top-right corner, and a small "Read case study →" label appears top-left. No blue wash or zoom. On touch screens both show all the time.
 - Inside case study: sections with an anchor menu at the top that jumps to each section.
 - Cover images: yes, a large cover image at the top of each case study, above the title and anchor menu. Placeholder until real ones exist.
 
