@@ -1594,6 +1594,257 @@ mark.hl {
 .ex-img svg { display: block; width: 100%; height: auto; }
 .progress-demo .pf-pair, .exfilter-demo { --pf-red: #d93a30; }
 
+/* ---------- Featured projects: a stack of folders ----------
+   Each project is a wide folder tinted with its brand color; folders overlap like a filing stack,
+   and each tab steps to the right so every name stays visible. Hover lifts a folder out. */
+.folders__heading {
+  margin-bottom: calc(var(--space-12) + 40px); /* room for the first tab */
+  font-weight: 300;
+  font-size: 32px;
+  letter-spacing: -0.5px;
+}
+
+.folders { list-style: none; padding-bottom: var(--section); }
+
+:root { --folder-base: #121212; --folder-edge: rgba(255, 255, 255, 0.14); }
+:root[data-theme="light"] { --folder-base: #f7f7f7; --folder-edge: rgba(0, 0, 0, 0.12); }
+
+.folder {
+  --folder-bg: color-mix(in srgb, var(--brand) 14%, var(--folder-base));
+  position: relative;
+  z-index: var(--i);
+}
+:root[data-theme="light"] .folder { --folder-bg: color-mix(in srgb, var(--brand) 22%, var(--folder-base)); }
+.folder + .folder { margin-top: -48px; } /* the overlap */
+
+.folder__link { position: relative; display: block; color: var(--text); }
+
+.folder__tab {
+  position: absolute;
+  bottom: calc(100% - 1px); /* sits on the folder's edge, so tab and folder read as one piece */
+  left: calc(var(--i) * 17%);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 40px;
+  padding: 0 var(--space-6);
+  background: var(--folder-bg);
+  border: 1px solid var(--folder-edge);
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  white-space: nowrap;
+  transition: transform 0.35s var(--ease-out);
+}
+.folder__tab::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--brand); }
+:root[data-theme="light"] .folder__tab::before { background: var(--brand-dark); }
+.folder__num { color: var(--text-secondary); }
+
+.folder__body {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-9);
+  min-height: 220px;
+  /* bottom space = the overlap plus the next folder's tab, so the tab never covers text */
+  padding: var(--space-9) var(--space-9) calc(var(--space-6) + 48px + 40px);
+  background: var(--folder-bg);
+  border: 1px solid var(--folder-edge);
+  border-bottom: 0;
+  border-radius: 0 14px 0 0;
+  overflow: hidden;
+  transition: transform 0.35s var(--ease-out);
+}
+.folder:first-child .folder__body { border-top-left-radius: 0; }
+
+.folder__meta { display: block; font-family: var(--font-mono); font-size: 13px; color: var(--text-secondary); }
+.folder__title { display: block; margin: var(--space-2) 0; font-weight: 500; font-size: 28px; line-height: 1.2; }
+.folder__desc { display: block; max-width: 44ch; font-size: 16px; color: var(--text-secondary); }
+.folder__more { display: inline-block; margin-top: var(--space-4); font-family: var(--font-mono); font-size: 13px; opacity: 0; transition: opacity 0.3s ease; }
+
+.folder__stat { display: flex; flex-direction: column; gap: var(--space-2); transition: opacity 0.3s ease; }
+.folder__big { font-weight: 300; font-size: clamp(56px, 6vw, 96px); line-height: 0.95; letter-spacing: -0.04em; }
+.folder__caption { max-width: 26ch; font-family: var(--font-mono); font-size: 13px; color: var(--text-secondary); }
+
+.folder__preview {
+  position: absolute;
+  top: var(--space-9);
+  right: var(--space-9);
+  width: 30%;
+  aspect-ratio: 31 / 20;
+  object-fit: cover;
+  border-radius: 10px;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: opacity 0.3s ease, transform 0.4s var(--ease-out);
+}
+
+/* Keyboard focus: an outline on the folder (no hover effects on folders) */
+.folder__link:focus-visible { outline: none; }
+.folder__link:focus-visible .folder__body { outline: 2px solid var(--text); outline-offset: -2px; }
+
+@media (max-width: 809px) {
+  .folders__heading { font-size: 24px; }
+  .folder + .folder { margin-top: -36px; }
+  .folder__tab { left: calc(var(--i) * 8%); height: 34px; padding: 0 var(--space-4); font-size: 12px; }
+  .folder__body { gap: var(--space-4); padding: var(--space-6) var(--space-6) calc(var(--space-4) + 36px + 34px); min-height: 0; }
+  .folder__title { font-size: 22px; }
+  .folder__big { font-size: 40px; }
+  .folder__caption { font-size: 12px; }
+}
+
+
+/* ---------- Stacked deck ----------
+   With JavaScript, the list pins under the nav while the visitor scrolls through .deck.
+   Each folder holds the top for a stretch of scrolling, then the next one slides up over it.
+   Covered folders keep 12px of their top edge and their tab in view.
+   main.js sets the positions (--y), the list height and the scroll runway on .deck.
+   Without JavaScript the folders stay a plain overlapping list. */
+.folders.is-deck {
+  position: sticky;
+  top: calc(var(--nav-height) + 24px + 40px); /* 40px: room for the tabs above */
+  padding-bottom: 0;
+  overflow-anchor: none;
+}
+.folders.is-deck .folder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  transform: translateY(var(--y, 0px));
+  transition: transform 0.5s var(--ease-out);
+}
+.folders.is-measuring, .folders.is-measuring * { transition: none !important; }
+
+
+/* ---------- Folder content: the result is the title ----------
+   Folders are neutral; the color sits on the tabs. No lift or expand on hover:
+   only the loading-screen logo fades in on the right, and "Read case study" appears.
+   (Overrides the earlier folder rules.) */
+.folder,
+:root[data-theme="light"] .folder { --folder-bg: var(--folder-base); }
+
+/* tabs are gray like their folder; the folder on top gets the accent blue */
+.folder__tab {
+  background: var(--folder-bg);
+  transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+}
+.folder__tab::before { display: none; } /* no dot */
+.folder__tab-text { display: inline-flex; align-items: baseline; gap: var(--space-2); }
+
+/* The folder on top: its tab takes the project's dark brand color, with white text.
+   Every --brand-dark is at least 4.5:1 against white (Columna darkened a touch to #C4512A). */
+.folder.is-active .folder__tab { background: var(--brand-dark); border-color: var(--brand-dark); color: #FFFFFF; }
+.folder.is-active .folder__num { color: #FFFFFF; }
+/* folders that aren't on top rest on a darker gray, tab included */
+:root { --folder-off: #1C1C1C; }
+:root[data-theme="light"] { --folder-off: #DCDCDC; }
+.is-deck .folder:not(.is-active),
+:root[data-theme="light"] .is-deck .folder:not(.is-active) { --folder-bg: var(--folder-off); }
+.folder__body { transition: background-color 0.3s ease, padding 0.4s var(--ease-out); }
+
+/* Folders that aren't on top show only their tab and category · year.
+   The rest folds away (and unfolds) smoothly; screen readers still get all of it. */
+.folder__details { display: grid; grid-template-rows: 1fr; transition: grid-template-rows 0.4s var(--ease-out); }
+.folder__details-inner { min-height: 0; overflow: hidden; }
+.is-deck .folder:not(.is-active) .folder__details { grid-template-rows: 0fr; }
+.is-deck .folder:not(.is-active) .folder__body { padding-top: var(--space-6); }
+.is-deck .folder:not(.is-active) .folder__preview { display: none; }
+/* the folder on top always shows "Read case study", on every screen size */
+.is-deck .folder.is-active .folder__more { display: inline-block; opacity: 1; }
+.folder:last-child .folder__body { padding-bottom: calc(var(--space-9) + 20px); } /* clear of the logo, like the others */ /* no tab below the last folder to make room for */
+
+.folder__body { display: block; min-height: 0; }
+.folder__main { display: block; max-width: 60%; }
+.folder__headline { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 var(--space-4); margin: var(--space-2) 0 var(--space-4); }
+.folder__headline .folder__big { font-size: clamp(48px, 5vw, 72px); }
+.folder__headline .folder__caption { max-width: none; font-family: var(--font-sans); font-weight: 500; font-size: 22px; line-height: 1.3; color: var(--text); }
+
+.folder__preview {
+  top: var(--space-9);
+  width: min(26%, 320px); /* sized by width, so every logo is the same size whatever the folder's height */
+  height: auto;
+  max-width: none;
+  aspect-ratio: 31 / 20;
+  transform: none;
+  transition: opacity 0.3s ease;
+}
+
+/* No hover effects. The folder on top shows its brand logo (the loading screen)
+   on the right and "Read case study"; without JavaScript, every folder shows "Read case study". */
+.folder__preview { opacity: 0; transition: none; }
+/* the logo floats up a few pixels as it fades in, once the folder has settled on top */
+.is-deck .folder.is-active .folder__preview { opacity: 1; animation: logo-in 0.5s var(--ease-out) 0.25s both; }
+@keyframes logo-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .is-deck .folder.is-active .folder__preview { animation: none; } }
+.folder__more { opacity: 1; }
+
+@media (max-width: 1023px) {
+  .folder__main { max-width: 64%; }
+  .folder__headline { flex-direction: column; align-items: flex-start; } /* number above its line, the same in every folder */
+  .folder__preview { display: block; position: absolute; width: 30%; }
+}
+
+/* Phones: the logo shrinks to a small square in the top-right corner */
+@media (max-width: 809px) {
+  .folder__main { max-width: none; }
+  .folder__headline .folder__big { font-size: 44px; }
+  .folder__headline .folder__caption { font-size: 18px; }
+  .folder__preview { top: var(--space-6); right: var(--space-6); width: 64px; height: 64px; max-width: none; border-radius: 8px; }
+  .folder__meta { padding-right: 76px; }
+}
+
+/* ---------- Folder tabs as vertical bookmarks ----------
+   Each tab sits on the folder's left edge, text running bottom to top like a book spine.
+   In the stack, covered tabs peek out 12px above the next one. Only the folder on top
+   shows its name on the tab; the others show their number (screen readers still get the name). */
+:root { --tab-w: 44px; }
+.folders { padding-left: var(--tab-w); }
+.folders__heading { margin-bottom: var(--space-12); }
+.folder + .folder { margin-top: -24px; }
+.folders.is-deck { top: calc(var(--nav-height) + 24px); }
+.folders.is-deck .folder { left: var(--tab-w); }
+
+.folder__tab, .folder:first-child .folder__tab {
+  top: 20px;
+  bottom: auto;
+  left: auto;
+  right: calc(100% - 1px);
+  width: var(--tab-w);
+  height: auto;
+  padding: var(--space-4) 0;
+  justify-content: center;
+  border: 1px solid var(--folder-edge);
+  border-right: 0;
+  border-radius: 12px 0 0 12px;
+}
+.folder.is-active .folder__tab { border-color: var(--brand-dark); }
+.folder__tab-text {
+  align-items: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg); /* reads bottom to top, like a spine */
+}
+.is-deck .folder:not(.is-active) .folder__name {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+.folder__body { padding-bottom: calc(var(--space-9) + 24px); border-radius: 0 14px 0 0; }
+.folder:last-child .folder__body { padding-bottom: calc(var(--space-9) + 20px); }
+
+@media (max-width: 809px) {
+  :root { --tab-w: 34px; }
+  .folder + .folder { margin-top: -20px; }
+  .folder__tab, .folder:first-child .folder__tab { top: 16px; padding: var(--space-4) 0; height: auto; }
+  .folder__body { padding-bottom: calc(var(--space-6) + 20px); }
+  .folder:last-child .folder__body { padding-bottom: var(--space-6); }
+}
+
+/* No divider line between the projects and the contact section on the home page */
+#work + .contact { border-top: 0; }
+
 /* ---------- Placeholder images ---------- */
 
 .placeholder-img {
@@ -2244,3 +2495,13 @@ mark.hl {
 @media (prefers-reduced-motion: reduce) { .rotator-tools { display: none; } }
 
 .ex-list:focus-visible { outline: 2px solid var(--pf-red); outline-offset: -2px; }
+
+/* ---------- Phones: full name in the bar, with the built-with line under it ---------- */
+@media (max-width: 809px) {
+  .nav__name { display: inline; font-size: 13px; }
+  .nav__mark { display: none; }
+  .nav__built { display: inline-flex; font-size: 9px; gap: 4px; }
+  .nav__built .nav__spark { width: 12px; height: 12px; }
+  .nav__built-menu { display: none; }
+  .nav__brand { gap: 1px; }
+}

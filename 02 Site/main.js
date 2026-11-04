@@ -557,6 +557,99 @@
     });
   }
 
+  // Featured projects as a stacked deck. The list pins under the nav while the visitor
+  // scrolls through .deck; every `step` pixels of scrolling, the next folder slides up
+  // and takes the top. Each folder holds the top for a full step, so nothing covers it early.
+  var deck = document.querySelector(".deck");
+  var folderList = deck && deck.querySelector(".folders");
+  if (folderList) {
+    var folderItems = Array.prototype.slice.call(folderList.querySelectorAll(".folder"));
+    var n = folderItems.length, PEEK = 12, step = 280, overlap = 48, hOpen = [], hClosed = [], stackH = [], current = -1;
+
+    var measure = function () {
+      folderList.classList.remove("is-deck");
+      overlap = n > 1 ? -parseFloat(getComputedStyle(folderItems[1]).marginTop) || 0 : 0;
+      folderList.classList.add("is-deck", "is-measuring");
+      folderItems.forEach(function (f, i) {
+        var was = f.classList.contains("is-active");
+        f.classList.add("is-active"); hOpen[i] = f.offsetHeight;
+        f.classList.remove("is-active"); hClosed[i] = f.offsetHeight;
+        f.classList.toggle("is-active", was);
+      });
+      step = Math.max(110, Math.round(window.innerHeight * 0.16)); // how far to scroll before the next folder takes over
+      // How tall the stack is with each folder on top. The list takes that height as it
+      // changes, so no empty space is left under the stack when the deck scrolls away.
+      stackH = [];
+      var runway = 0;
+      for (var a = 0; a < n; a++) {
+        var y = a * PEEK + hOpen[a] - overlap;
+        for (var k = a + 1; k < n; k++) y += hClosed[k] - overlap;
+        stackH[a] = y + overlap;
+        // the deck must outlast every state: folder a is on top until (a + 1) steps in;
+        // the last one gets half a step before the deck scrolls away
+        runway = Math.max(runway, stackH[a] + (a < n - 1 ? a + 1 : n - 0.5) * step);
+      }
+      deck.style.height = runway + "px";
+      void folderList.offsetHeight;
+      folderList.classList.remove("is-measuring");
+    };
+
+    var layout = function (a) {
+      var y = a * PEEK + hOpen[a] - overlap;
+      folderItems.forEach(function (f, i) {
+        var pos;
+        if (i <= a) pos = i * PEEK;
+        else { pos = y; y += hClosed[i] - overlap; }
+        f.style.setProperty("--y", pos + "px");
+        f.classList.toggle("is-active", i === a);
+        f.classList.toggle("is-under", i < a);
+      });
+      folderList.style.height = stackH[a] + "px";
+    };
+
+    var stuckTop = function () { return parseFloat(getComputedStyle(folderList).top) || 0; };
+    var fromScroll = function () {
+      var p = (stuckTop() - deck.getBoundingClientRect().top) / step;
+      var a = Math.max(0, Math.min(n - 1, Math.floor(p)));
+      if (a !== current) { current = a; layout(a); }
+    };
+
+    var rebuild = function () { hOpen = []; hClosed = []; measure(); current = -1; fromScroll(); };
+    rebuild();
+    window.addEventListener("scroll", fromScroll, { passive: true });
+    window.addEventListener("resize", rebuild);
+    window.addEventListener("load", rebuild); // fonts and images can change the heights
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(rebuild);
+
+    // Bring folder i to the top by scrolling to its stretch of the deck
+    var goTo = function (i, smooth) {
+      var deckTop = deck.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({ top: deckTop - stuckTop() + i * step + step * 0.3, behavior: smooth ? "smooth" : "auto" });
+      if (!smooth) fromScroll();
+    };
+    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    folderItems.forEach(function (f, i) {
+      var link = f.querySelector(".folder__link");
+      // A click on a folder that isn't on top brings it to the top first (with its
+      // "Read case study" link); a click on the folder on top opens the case study.
+      // Whether it was on top is read on press, before focus can change it.
+      var wasOnTop = null;
+      link.addEventListener("pointerdown", function () { wasOnTop = i === current; });
+      link.addEventListener("click", function (e) {
+        var onTop = wasOnTop !== null ? wasOnTop : i === current;
+        wasOnTop = null;
+        if (!onTop) { e.preventDefault(); goTo(i, !reduceMotion); }
+      });
+      // Keyboard focus on a folder that isn't on top scrolls to where it is,
+      // so the focused link is never covered or folded away
+      link.addEventListener("focus", function () {
+        if (i === current || wasOnTop !== null) return; // pointer presses are handled by the click
+        setTimeout(function () { goTo(i, false); }, 0); // after the browser's own scroll-into-view
+      });
+    });
+  }
+
   var items = document.querySelectorAll("[data-reveal]");
 
   if (!("IntersectionObserver" in window)) {
