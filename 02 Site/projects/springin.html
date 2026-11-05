@@ -49,6 +49,7 @@
           <li><a href="#insight">Insight</a></li>
           <li><a href="#making">Making</a></li>
           <li><a href="#outcome">Outcome</a></li>
+          <li><a href="#walkthrough">Walkthrough</a></li>
         </ul>
       </div>
     </nav>
@@ -227,6 +228,58 @@
             <p class="ai-note__label"><svg class="ai-note__spark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12.2" y1="10.4" x2="13.5" y2="1.0"/><line x1="13.3" y1="11.0" x2="18.9" y2="6.8"/><line x1="13.6" y1="12.2" x2="22.5" y2="13.5"/><line x1="13.0" y1="13.3" x2="17.5" y2="19.3"/><line x1="11.8" y1="13.6" x2="10.5" y2="23.0"/><line x1="10.7" y1="13.0" x2="5.1" y2="17.2"/><line x1="10.4" y1="11.8" x2="1.5" y2="10.5"/><line x1="11.0" y1="10.7" x2="6.5" y2="4.7"/></g></svg>How AI shaped this</p>
             <p><code>draft-handoff</code> turned the research, decisions and prototype into the design rationale and implementation document. It names missing inputs, like the success measures we never wrote, instead of filling the gap with guesses.</p>
           </div>
+        </div>
+      </section>
+      <section class="case-section" id="walkthrough">
+        <h2 data-reveal>Walkthrough</h2>
+        <div data-reveal data-delay="120">
+          <p>The whole wish round from start to finish, clicked through in the prototype: writing a wish with alternatives, checking the list before handing it in, the deadline passing, and the plan coming out.</p>
+          <div class="walk">
+            <div class="walk__head">
+              <p class="walk__title">One wish round, start to finish</p>
+              <button class="walk__toggle label" type="button" aria-pressed="false">Pause walkthrough</button>
+            </div>
+            <div class="walk__body">
+              <ol class="walk__steps">
+                <li class="is-current"><span class="walk__n" aria-hidden="true">1</span><div class="walk__d"><p class="walk__name">Open the app</p><p>The home screen shows the deadline, days left and wishes written. Open the Wunschplaner.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">2</span><div class="walk__d"><p class="walk__name">Write a wish</p><p>Tap 12 March, choose a day off, add alternatives up to the limit of two, remove one, then save.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">3</span><div class="walk__d"><p class="walk__name">Check before handing in</p><p>All four wishes in one list. Withdraw one, bring it back with Undo, then hand them in.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">4</span><div class="walk__d"><p class="walk__name">The deadline passes</p><p>The round closes, the wishes are read-only, and the screen says who to ask about a late wish.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">5</span><div class="walk__d"><p class="walk__name">The plan is out</p><p>Each wish shows whether it was granted, with a next step for the one that wasn't.</p></div></li>
+              </ol>
+              <div class="walk__stage" aria-hidden="true" inert>
+                <div class="wish-demo walk__scene walk__home">
+                  <div class="wish-demo__phone sp-phone">
+                    <div class="hm-top">
+                      <span class="hm-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="4" fill="currentColor"/><path d="M4.5 20c.8-3.6 3.9-6 7.5-6s6.7 2.4 7.5 6z" fill="currentColor"/></svg></span>
+                      <span class="hm-who"><strong>Max Mustermann</strong><span>Station 13C</span></span>
+                      <span class="hm-bell"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20.5a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+                    </div>
+                    <div class="hm-plan">
+                      <p class="hm-plan__for"><span class="hm-cal"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>Plan for March 2027</p>
+                      <p class="hm-plan__due">Hand in by 10.Feb (Wed)</p>
+                      <div class="hm-stats">
+                        <span><small>Days left</small>40</span>
+                        <span><small>Written</small>3 wishes</span>
+                        <span><small>Handed in</small>Not yet</span>
+                      </div>
+                      <span class="hm-open">Open Wunschplaner <span aria-hidden="true">&rarr;</span></span>
+                    </div>
+                    <p class="hm-h">Your Wünsche</p>
+                    <div class="hm-filters"><span class="is-on"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> All 4</span><span>Granted 3</span><span>Not granted 1</span></div>
+                    <div class="hm-past">
+                      <p class="hm-past__top"><strong>February 2027</strong><span>3 of 4 granted</span></p>
+                      <div class="hm-row"><span class="hm-dot"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="hm-row__txt"><strong>06.Feb (Sat)</strong>Your wish · Day off</span><span class="rs-badge rs-badge--yes">✓ Granted</span></div>
+                      <div class="hm-row"><span class="hm-dot"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="hm-row__txt"><strong>12.Feb (Fri)</strong>Alternative · 13.Feb (Sat), early shift</span><span class="rs-badge rs-badge--yes">✓ Granted</span></div>
+                      <div class="hm-row"><span class="hm-dot hm-dot--no">!</span><span class="hm-row__txt"><strong>19.Feb (Fri)</strong>Wished: day off · Planned: late shift</span><span class="rs-badge rs-badge--no">Not granted</span></div>
+                    </div>
+                  </div>
+                </div>
+                <span class="walk__pointer"></span>
+              </div>
+            </div>
+          </div>
+          <p class="try__caption label">Plays on its own, using the same rebuilt prototype as above. Pause it any time.</p>
         </div>
       </section>
       <nav class="case-end" aria-label="More projects">

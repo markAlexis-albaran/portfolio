@@ -194,8 +194,8 @@
   }
 
   // SpringIn, decision 1: write a wish on the calendar, then add alternatives. One prototype.
-  var fw = document.querySelector(".flow-write");
-  if (fw) {
+  // Written as a function so the walkthrough at the end of the page can run its own copy.
+  var initFlowWrite = function (fw) {
     var types = { off: ["Off", "Day off"], early: ["Early", "Early shift"], late: ["Late", "Late shift"], night: ["Night", "Night shift"] };
     var wishes = { 6: { t: "off", alts: [] }, 15: { t: "night", alts: [{ d: 16, t: "night" }] }, 25: { t: "off", alts: [{ d: 27, t: "off" }] } };
     var dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]; // 1 March 2027 is a Monday
@@ -257,7 +257,7 @@
       fw.querySelectorAll(".wd-option").forEach(function (o) {
         o.classList.toggle("is-on", o.getAttribute("data-option") === (draft.fixed ? "no" : "yes"));
       });
-      fw.querySelector('input[name="wd-alt"][value="' + (draft.fixed ? "no" : "yes") + '"]').checked = true;
+      fw.querySelector('input[name^="wd-alt"][value="' + (draft.fixed ? "no" : "yes") + '"]').checked = true;
     };
 
     var openWish = function (d) {
@@ -299,7 +299,7 @@
       fwSay(label(next.d) + ", " + types[next.t][1] + " added. " + draft.alts.length + " of 2." + (draft.alts.length >= 2 ? " Limit reached." : ""));
       if (draft.alts.length >= 2) list.querySelectorAll(".wd-remove")[1].focus();
     });
-    fw.querySelectorAll('input[name="wd-alt"]').forEach(function (r) {
+    fw.querySelectorAll('input[name^="wd-alt"]').forEach(function (r) {
       r.addEventListener("change", function () {
         draft.fixed = r.value === "no";
         drawAlts();
@@ -318,11 +318,10 @@
     });
     fw.querySelector(".fw-back").addEventListener("click", backToCal);
     drawCal();
-  }
+  };
 
   // SpringIn, decision 2: the same wishes before the deadline, after it, and once the plan is out
-  var fp = document.querySelector(".flow-plan");
-  if (fp) {
+  var initFlowPlan = function (fp) {
     var fpTypes = { off: ["off", "Day off"], night: ["night", "Night shift"] };
     var fpAll = [
       { d: "06.Mar (Sat)", t: "off", alt: "No alternative · fixed wish" },
@@ -380,13 +379,164 @@
         (r[2] ? '' : '<div class="rs-pointer"><span class="co-pin" aria-hidden="true">3</span><strong>Can\'t live with this?</strong>Talk to your Stationsleitung, or arrange it with a colleague.</div>') + '</li>';
     }).join("");
     var fpNames = { before: "Before the deadline", closed: "Deadline passed", out: "Plan is out" };
-    fp.querySelectorAll('input[name="fp"]').forEach(function (r) {
+    fp.querySelectorAll('input[name^="fp"]').forEach(function (r) {
       r.addEventListener("change", function () {
         ["before", "closed", "out"].forEach(function (k) { fp.querySelector(".fp-" + k).hidden = k !== r.value; });
         fpSay(fpNames[r.value] + " shown.");
       });
     });
     drawRv();
+  };
+
+  // Copies for the walkthrough are taken before the prototypes start, so each run begins fresh
+  var fwSource = document.querySelector(".flow-write"), fpSource = document.querySelector(".flow-plan");
+  var walkEl = document.querySelector(".walk");
+  var fwPristine = walkEl && fwSource ? fwSource.cloneNode(true) : null;
+  var fpPristine = walkEl && fpSource ? fpSource.cloneNode(true) : null;
+  if (fwSource) initFlowWrite(fwSource);
+  if (fpSource) initFlowPlan(fpSource);
+
+  // SpringIn walkthrough: a pointer clicks through the whole wish round on its own, from writing
+  // a wish to the plan coming out. It drives a real copy of the two prototypes above, so every
+  // screen is the prototype's own. Visitors can pause it; it waits while off screen, and with
+  // reduced motion it only starts when asked.
+  if (walkEl && fwPristine && fpPristine) {
+    var stage = walkEl.querySelector(".walk__stage");
+    var pointer = walkEl.querySelector(".walk__pointer");
+    var walkToggle = walkEl.querySelector(".walk__toggle");
+    var walkSteps = walkEl.querySelectorAll(".walk__steps li");
+    var walkPaused = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var walkOff = true, walkStarted = false, W = null, P = null;
+    var H = walkEl.querySelector(".walk__home"); // the home screen: static, rebuilt from the screenshot
+
+    // Waits that stand still while paused or off screen
+    var hold = function (ms) {
+      return new Promise(function (done) {
+        var left = ms, t0 = performance.now();
+        (function loop() {
+          var now = performance.now();
+          if (!walkPaused && !walkOff) left -= now - t0;
+          t0 = now;
+          if (left <= 0) done(); else setTimeout(loop, 40);
+        })();
+      });
+    };
+    var scene = function (pristine, cls) {
+      var src = pristine.cloneNode(true);
+      var el = document.createElement("div");
+      el.className = "wish-demo walk__scene " + cls;
+      var sw = src.querySelector(".fp-switch");
+      if (sw) el.appendChild(sw); // kept, hidden: the walkthrough uses it to move between moments
+      el.appendChild(src.querySelector(".wish-demo__phone"));
+      el.querySelectorAll("input[type=radio]").forEach(function (r) { r.name += "-walk"; });
+      return el;
+    };
+    var build = function () {
+      stage.querySelectorAll(".walk__scene:not(.walk__home)").forEach(function (el) { el.remove(); });
+      W = scene(fwPristine, "flow-write");
+      P = scene(fpPristine, "flow-plan");
+      P.hidden = true;
+      stage.insertBefore(P, pointer);
+      stage.insertBefore(W, P);
+      initFlowWrite(W);
+      initFlowPlan(P);
+    };
+    var phoneOf = function (el) { return el.querySelector(".wish-demo__phone"); };
+    var markStep = function (n) {
+      walkSteps.forEach(function (li, i) { li.classList.toggle("is-current", i === n); });
+    };
+    var show = function (el) {
+      [H, W, P].forEach(function (s) { s.hidden = s !== el; });
+      phoneOf(el).scrollTop = 0;
+    };
+    var moment = function (value) {
+      var r = P.querySelector('input[value="' + value + '"]');
+      r.checked = true;
+      r.dispatchEvent(new Event("change", { bubbles: true }));
+      phoneOf(P).scrollTop = 0;
+    };
+    // Scroll the phone's screen if the next button is below the fold, glide the pointer to it, tap
+    var tap = function (find) {
+      var el = find();
+      var phone = el.closest(".wish-demo__phone");
+      var pr = phone.getBoundingClientRect(), r = el.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+      var shift = 0;
+      if (r.bottom > pr.bottom - 24 || r.top < pr.top + 24) {
+        var maxTop = phone.scrollHeight - phone.clientHeight;
+        var to = Math.max(0, Math.min(maxTop, phone.scrollTop + r.top - pr.top - pr.height / 2));
+        shift = to - phone.scrollTop;
+        phone.scrollTo({ top: to, behavior: "smooth" });
+      }
+      // The pointer appears right on the button (where it will be once the screen has scrolled), taps, and goes
+      pointer.classList.remove("is-on");
+      // placed with left/top (not a transform), so the press only shrinks it and never shifts it
+      pointer.style.left = (r.left - sr.left + r.width / 2) + "px";
+      pointer.style.top = (r.top - shift - sr.top + r.height / 2) + "px";
+      return hold(shift ? 500 : 250).then(function () {
+        pointer.classList.add("is-on");
+        return hold(300);
+      }).then(function () {
+        pointer.classList.remove("is-tapping");
+        void pointer.offsetWidth; // restart the pulse even on back-to-back taps
+        pointer.classList.add("is-tapping");
+        return hold(140);
+      }).then(function () {
+        el.dispatchEvent(new MouseEvent("click", { bubbles: true })); // the screen reacts at the deepest point of the press
+        return hold(700);
+      }).then(function () {
+        pointer.classList.remove("is-tapping");
+        pointer.classList.remove("is-on");
+      });
+    };
+    var q = function (root, sel, i) { return function () { return root().querySelectorAll(sel)[i || 0]; }; };
+    var w = function () { return W; }, pl = function () { return P; };
+
+    var run = function () {
+      build();
+      show(H);
+      markStep(0);
+      pointer.classList.remove("is-on");
+      return hold(1800)
+        .then(function () { return tap(function () { return H.querySelector(".hm-open"); }); })
+        .then(function () { show(W); markStep(1); return hold(1000); })
+        .then(function () { return tap(q(w, '.sp-days [data-day="12"]')); })
+        .then(function () { return tap(q(w, '[data-t="off"]')); })
+        .then(function () { return tap(q(w, ".wd-add")); })
+        .then(function () { return tap(q(w, ".wd-add")); })
+        .then(function () { return hold(900); }) // the limit note
+        .then(function () { return tap(q(w, ".wd-remove", 1)); })
+        .then(function () { return tap(q(w, ".fw-save")); })
+        .then(function () { return hold(1400); }) // the calendar, now with four wishes
+        .then(function () { pointer.classList.remove("is-on"); show(P); markStep(2); return hold(1400); })
+        .then(function () { return tap(q(pl, ".sp-rv__withdraw", 3)); })
+        .then(function () { return hold(700); })
+        .then(function () { return tap(q(pl, ".sp-toast__undo")); })
+        .then(function () { return tap(q(pl, ".sp-handin")); })
+        .then(function () { pointer.classList.remove("is-on"); moment("closed"); markStep(3); return hold(2800); })
+        .then(function () { moment("out"); markStep(4); return hold(1800); })
+        .then(function () {
+          var ph = phoneOf(P);
+          ph.scrollTo({ top: ph.scrollHeight, behavior: "smooth" });
+          return hold(3200);
+        })
+        .then(run); // start the round again
+    };
+
+    var setPaused = function (p) {
+      walkPaused = p;
+      walkEl.classList.toggle("is-paused", p);
+      walkToggle.textContent = p ? "Play walkthrough" : "Pause walkthrough";
+      walkToggle.setAttribute("aria-pressed", p ? "true" : "false");
+    };
+    setPaused(walkPaused);
+    walkToggle.addEventListener("click", function () { setPaused(!walkPaused); });
+    build();
+    show(H);
+    markStep(0);
+    new IntersectionObserver(function (entries) {
+      walkOff = !entries[0].isIntersecting;
+      if (!walkOff && !walkStarted) { walkStarted = true; run(); }
+    }, { threshold: 0.35 }).observe(stage);
   }
 
   // tvguideplus: live search with labeled results
