@@ -22,7 +22,7 @@ Text secondary: #4A4A4A (7.3:1 on #E9E9E9, WCAG AAA). The reference uses #6A6A6A
 Hero rotating line only (64px, large text): #686868 (4.59:1, AAA for large text), lighter than other secondary text so it separates from the headline the way it does in dark mode.
 Dividers and lines: black at 10–55% opacity (the same roles as the white values in dark mode). Background stripes are lighter, black at 8% at their darkest.
 Accent: #1F00FF, unchanged. Text on the accent is always white (--on-accent), in both themes.
-Framed project images keep their dark panels in both themes; they're images, not page colors.
+Redesign screens in the case studies are HiFi boards (owner's choice, 2026-11-05): the screens rebuilt from my designs and shown on a light grey board in white phones with a status bar, with small labels in the top corners (project name, what the screens show), after the owner's reference. Stock photos (Unsplash License) stand in for the original photos. The boards are images with 18px corners, the same in both themes; their source pages and render script are in 01 Projects/boards. The "before" screenshots of the original products stay as they are.
 
 ## Highlighted phrases (case studies)
 

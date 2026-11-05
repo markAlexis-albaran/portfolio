@@ -64,16 +64,31 @@
     }, { threshold: 0.15 }).observe(contactSection);
   }
 
+  // Prototypes. Each one is set up by a function, so a walkthrough at the end of a case study
+  // can run its own copy. The copies are taken here, before any prototype starts, so every
+  // walkthrough round begins from the same state as the page did.
+  var DEMOS = {};
+  var PRISTINE = {};
+  if (document.querySelector(".walk")) {
+    document.querySelectorAll(".try").forEach(function (t) {
+      t.classList.forEach(function (c) { if (c !== "try" && !PRISTINE[c]) PRISTINE[c] = t.cloneNode(true); });
+    });
+  }
+  var demo = function (key, init) {
+    DEMOS[key] = init;
+    var el = document.querySelector(".try." + key);
+    if (el) init(el);
+  };
+
   // Columna: token switcher. The card stays the same component; only its tokens change.
-  var tkDemo = document.querySelector(".tokens-demo");
-  if (tkDemo) {
+  demo("tokens-demo", function (tkDemo) {
     var brands = {
       kochzeit:   { color: "#B4441C", font: "Serif", rcard: "14", rbtn: "26", tag: "Rezept",   title: "Herbstsuppe in 20 Minuten",     btn: "Zum Rezept",  logo: "Kochzeit" },
       sternblick: { color: "#E0004F", font: "Sans, bold", rcard: "2", rbtn: "2", tag: "Exklusiv", title: "Das große Comeback des Jahres", btn: "Weiterlesen", logo: "Sternblick" },
       fernweg:    { color: "#1F6F6A", font: "Sans, regular", rcard: "24", rbtn: "26", tag: "Reisen", title: "Drei Tage an der Ostsee",    btn: "Zur Reise",   logo: "Fernweg" }
     };
     var card = tkDemo.querySelector(".tk-card");
-    tkDemo.querySelectorAll('input[name="tk-brand"]').forEach(function (r) {
+    tkDemo.querySelectorAll('input[name^="tk-brand"]').forEach(function (r) {
       r.addEventListener("change", function () {
         var b = brands[r.value];
         card.setAttribute("data-brand", r.value);
@@ -88,11 +103,10 @@
         });
       });
     });
-  }
+  });
 
   // yumm: compare two grills. Ticking products fills the bar; at two, "Jetzt vergleichen" opens the table.
-  var cmp = document.querySelector(".compare-demo");
-  if (cmp) {
+  demo("compare-demo", function (cmp) {
     var boxes = cmp.querySelectorAll(".cd-check input");
     var bar = cmp.querySelector(".cd-bar");
     var table = cmp.querySelector(".cd-table");
@@ -127,11 +141,10 @@
       update();
       boxes[0].focus();
     });
-  }
+  });
 
   // tvguideplus: jetzt / 20:15 / 22:00 tabs switch the list
-  var guide = document.querySelector(".guide-demo");
-  if (guide) {
+  demo("guide-demo", function (guide) {
     var slots = {
       now: { label: "jetzt", items: [
         ["SAT.1", "Spielfilm · Doku-Soap", "Auf Streife", "12:30–13:45", 45, true],
@@ -178,11 +191,10 @@
       });
     });
     show("now");
-  }
+  });
 
   // pflegePro: the heart saves the lesson, and Favoriten switches from its empty state
-  var fav = document.querySelector(".fav-demo");
-  if (fav) {
+  demo("fav-demo", function (fav) {
     var heartBtn = fav.querySelector(".pf-heart");
     heartBtn.addEventListener("click", function () {
       var saved = heartBtn.getAttribute("aria-pressed") !== "true";
@@ -191,7 +203,7 @@
       fav.querySelector(".pf-saved").hidden = !saved;
       fav.querySelector("[role=status]").textContent = saved ? "Saved. It now appears in Favoriten." : "Removed. Favoriten is empty again.";
     });
-  }
+  });
 
   // SpringIn, decision 1: write a wish on the calendar, then add alternatives. One prototype.
   // Written as a function so the walkthrough at the end of the page can run its own copy.
@@ -388,160 +400,11 @@
     drawRv();
   };
 
-  // Copies for the walkthrough are taken before the prototypes start, so each run begins fresh
-  var fwSource = document.querySelector(".flow-write"), fpSource = document.querySelector(".flow-plan");
-  var walkEl = document.querySelector(".walk");
-  var fwPristine = walkEl && fwSource ? fwSource.cloneNode(true) : null;
-  var fpPristine = walkEl && fpSource ? fpSource.cloneNode(true) : null;
-  if (fwSource) initFlowWrite(fwSource);
-  if (fpSource) initFlowPlan(fpSource);
-
-  // SpringIn walkthrough: a pointer clicks through the whole wish round on its own, from writing
-  // a wish to the plan coming out. It drives a real copy of the two prototypes above, so every
-  // screen is the prototype's own. Visitors can pause it; it waits while off screen, and with
-  // reduced motion it only starts when asked.
-  if (walkEl && fwPristine && fpPristine) {
-    var stage = walkEl.querySelector(".walk__stage");
-    var pointer = walkEl.querySelector(".walk__pointer");
-    var walkToggle = walkEl.querySelector(".walk__toggle");
-    var walkSteps = walkEl.querySelectorAll(".walk__steps li");
-    var walkPaused = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var walkOff = true, walkStarted = false, W = null, P = null;
-    var H = walkEl.querySelector(".walk__home"); // the home screen: static, rebuilt from the screenshot
-
-    // Waits that stand still while paused or off screen
-    var hold = function (ms) {
-      return new Promise(function (done) {
-        var left = ms, t0 = performance.now();
-        (function loop() {
-          var now = performance.now();
-          if (!walkPaused && !walkOff) left -= now - t0;
-          t0 = now;
-          if (left <= 0) done(); else setTimeout(loop, 40);
-        })();
-      });
-    };
-    var scene = function (pristine, cls) {
-      var src = pristine.cloneNode(true);
-      var el = document.createElement("div");
-      el.className = "wish-demo walk__scene " + cls;
-      var sw = src.querySelector(".fp-switch");
-      if (sw) el.appendChild(sw); // kept, hidden: the walkthrough uses it to move between moments
-      el.appendChild(src.querySelector(".wish-demo__phone"));
-      el.querySelectorAll("input[type=radio]").forEach(function (r) { r.name += "-walk"; });
-      return el;
-    };
-    var build = function () {
-      stage.querySelectorAll(".walk__scene:not(.walk__home)").forEach(function (el) { el.remove(); });
-      W = scene(fwPristine, "flow-write");
-      P = scene(fpPristine, "flow-plan");
-      P.hidden = true;
-      stage.insertBefore(P, pointer);
-      stage.insertBefore(W, P);
-      initFlowWrite(W);
-      initFlowPlan(P);
-    };
-    var phoneOf = function (el) { return el.querySelector(".wish-demo__phone"); };
-    var markStep = function (n) {
-      walkSteps.forEach(function (li, i) { li.classList.toggle("is-current", i === n); });
-    };
-    var show = function (el) {
-      [H, W, P].forEach(function (s) { s.hidden = s !== el; });
-      phoneOf(el).scrollTop = 0;
-    };
-    var moment = function (value) {
-      var r = P.querySelector('input[value="' + value + '"]');
-      r.checked = true;
-      r.dispatchEvent(new Event("change", { bubbles: true }));
-      phoneOf(P).scrollTop = 0;
-    };
-    // Scroll the phone's screen if the next button is below the fold, glide the pointer to it, tap
-    var tap = function (find) {
-      var el = find();
-      var phone = el.closest(".wish-demo__phone");
-      var pr = phone.getBoundingClientRect(), r = el.getBoundingClientRect(), sr = stage.getBoundingClientRect();
-      var shift = 0;
-      if (r.bottom > pr.bottom - 24 || r.top < pr.top + 24) {
-        var maxTop = phone.scrollHeight - phone.clientHeight;
-        var to = Math.max(0, Math.min(maxTop, phone.scrollTop + r.top - pr.top - pr.height / 2));
-        shift = to - phone.scrollTop;
-        phone.scrollTo({ top: to, behavior: "smooth" });
-      }
-      // The pointer appears right on the button (where it will be once the screen has scrolled), taps, and goes
-      pointer.classList.remove("is-on");
-      // placed with left/top (not a transform), so the press only shrinks it and never shifts it
-      pointer.style.left = (r.left - sr.left + r.width / 2) + "px";
-      pointer.style.top = (r.top - shift - sr.top + r.height / 2) + "px";
-      return hold(shift ? 500 : 250).then(function () {
-        pointer.classList.add("is-on");
-        return hold(300);
-      }).then(function () {
-        pointer.classList.remove("is-tapping");
-        void pointer.offsetWidth; // restart the pulse even on back-to-back taps
-        pointer.classList.add("is-tapping");
-        return hold(140);
-      }).then(function () {
-        el.dispatchEvent(new MouseEvent("click", { bubbles: true })); // the screen reacts at the deepest point of the press
-        return hold(700);
-      }).then(function () {
-        pointer.classList.remove("is-tapping");
-        pointer.classList.remove("is-on");
-      });
-    };
-    var q = function (root, sel, i) { return function () { return root().querySelectorAll(sel)[i || 0]; }; };
-    var w = function () { return W; }, pl = function () { return P; };
-
-    var run = function () {
-      build();
-      show(H);
-      markStep(0);
-      pointer.classList.remove("is-on");
-      return hold(1800)
-        .then(function () { return tap(function () { return H.querySelector(".hm-open"); }); })
-        .then(function () { show(W); markStep(1); return hold(1000); })
-        .then(function () { return tap(q(w, '.sp-days [data-day="12"]')); })
-        .then(function () { return tap(q(w, '[data-t="off"]')); })
-        .then(function () { return tap(q(w, ".wd-add")); })
-        .then(function () { return tap(q(w, ".wd-add")); })
-        .then(function () { return hold(900); }) // the limit note
-        .then(function () { return tap(q(w, ".wd-remove", 1)); })
-        .then(function () { return tap(q(w, ".fw-save")); })
-        .then(function () { return hold(1400); }) // the calendar, now with four wishes
-        .then(function () { pointer.classList.remove("is-on"); show(P); markStep(2); return hold(1400); })
-        .then(function () { return tap(q(pl, ".sp-rv__withdraw", 3)); })
-        .then(function () { return hold(700); })
-        .then(function () { return tap(q(pl, ".sp-toast__undo")); })
-        .then(function () { return tap(q(pl, ".sp-handin")); })
-        .then(function () { pointer.classList.remove("is-on"); moment("closed"); markStep(3); return hold(2800); })
-        .then(function () { moment("out"); markStep(4); return hold(1800); })
-        .then(function () {
-          var ph = phoneOf(P);
-          ph.scrollTo({ top: ph.scrollHeight, behavior: "smooth" });
-          return hold(3200);
-        })
-        .then(run); // start the round again
-    };
-
-    var setPaused = function (p) {
-      walkPaused = p;
-      walkEl.classList.toggle("is-paused", p);
-      walkToggle.textContent = p ? "Play walkthrough" : "Pause walkthrough";
-      walkToggle.setAttribute("aria-pressed", p ? "true" : "false");
-    };
-    setPaused(walkPaused);
-    walkToggle.addEventListener("click", function () { setPaused(!walkPaused); });
-    build();
-    show(H);
-    markStep(0);
-    new IntersectionObserver(function (entries) {
-      walkOff = !entries[0].isIntersecting;
-      if (!walkOff && !walkStarted) { walkStarted = true; run(); }
-    }, { threshold: 0.35 }).observe(stage);
-  }
+  demo("flow-write", initFlowWrite);
+  demo("flow-plan", initFlowPlan);
 
   // tvguideplus: live search with labeled results
-  var sr = document.querySelector(".search-demo");
-  if (sr) {
+  demo("search-demo", function (sr) {
     var srData = [
       ["Baracks", "08:00 – 10:00 · Freitag 20.12 · SuperRTL", "Sendung"],
       ["Baracuda", "08:00 – 10:00 · Freitag 20.12 · ARD", "Sendung"],
@@ -578,13 +441,12 @@
     };
     srIn.addEventListener("input", srDraw);
     srDraw();
-  }
+  });
 
   // tvguideplus: filter panel with removable chips
-  var fl = document.querySelector(".filter-demo");
-  if (fl) {
+  demo("filter-demo", function (fl) {
     var flDraw = function () {
-      var time = fl.querySelector('input[name="fl-time"]:checked').value;
+      var time = fl.querySelector('input[name^="fl-time"]:checked').value;
       var types = Array.prototype.map.call(fl.querySelectorAll('input[type="checkbox"]:checked'), function (c) { return c.value; });
       var chips = [];
       chips.push(time === "Jetzt im TV" ? '<span class="fl-chip fl-chip--default">Jetzt im TV</span>' :
@@ -599,18 +461,17 @@
           if (k === "time") { fl.querySelector('input[value="Jetzt im TV"]').checked = true; }
           else { fl.querySelector('input[type="checkbox"][value="' + k + '"]').checked = false; }
           flDraw();
-          fl.querySelector('input[name="fl-time"]:checked').focus();
+          fl.querySelector('input[name^="fl-time"]:checked').focus();
         });
       });
     };
     fl.querySelectorAll("input").forEach(function (i) { i.addEventListener("change", flDraw); });
     flDraw();
-  }
+  });
 
   // yumm: "Jump to Best Price" appears once you're reading, and hides at the product
-  var st = document.querySelector(".sticky-demo");
-  if (st) {
-    var sc = st.querySelector(".st-scroll"), jump = st.querySelector(".st-jump"), best = st.querySelector("#st-best");
+  demo("sticky-demo", function (st) {
+    var sc = st.querySelector(".st-scroll"), jump = st.querySelector(".st-jump"), best = st.querySelector('[id^="st-best"]');
     var stCheck = function () {
       var pTop = best.offsetTop - sc.offsetTop, pBottom = pTop + best.offsetHeight;
       var inView = pBottom > sc.scrollTop && pTop < sc.scrollTop + sc.clientHeight;
@@ -622,21 +483,22 @@
       best.focus({ preventScroll: true });
     });
     stCheck();
-  }
+  });
 
   // yumm: product card sections open on demand
-  document.querySelectorAll(".card-demo .pc-toggle").forEach(function (b) {
-    b.addEventListener("click", function () {
-      var open = b.getAttribute("aria-expanded") !== "true";
-      b.setAttribute("aria-expanded", open ? "true" : "false");
-      document.getElementById(b.getAttribute("aria-controls")).hidden = !open;
+  demo("card-demo", function (cardDemo) {
+    cardDemo.querySelectorAll(".pc-toggle").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var open = b.getAttribute("aria-expanded") !== "true";
+        b.setAttribute("aria-expanded", open ? "true" : "false");
+        cardDemo.querySelector('[id="' + b.getAttribute("aria-controls") + '"]').hidden = !open;
+      });
     });
   });
 
   // Columna: block editor with a slash menu and autosave
-  var ed = document.querySelector(".editor-demo");
-  if (ed) {
-    var edIn = ed.querySelector("#ed-input"), menu = ed.querySelector(".ed-menu"), blocks = ed.querySelector(".ed-blocks");
+  demo("editor-demo", function (ed) {
+    var edIn = ed.querySelector('[id^="ed-input"]'), menu = ed.querySelector(".ed-menu"), blocks = ed.querySelector(".ed-blocks");
     var status = ed.querySelector(".ed-status"), saveT = null;
     var saved = function () {
       status.classList.add("is-saving"); status.querySelector("span").textContent = "Saving…";
@@ -672,11 +534,10 @@
         if (e.key === "Escape") { closeMenu(); edIn.value = ""; edIn.focus(); }
       });
     });
-  }
+  });
 
   // Columna: schedule or publish, and the status changes
-  var sch = document.querySelector(".schedule-demo");
-  if (sch) {
+  demo("schedule-demo", function (sch) {
     var pill = sch.querySelector(".sc-pill"), panel = sch.querySelector(".sc-panel"), acts = sch.querySelector(".sc-actions"), reset = sch.querySelector(".sc-reset");
     var setState = function (label, cls) {
       pill.textContent = label; pill.className = "sc-pill" + (cls ? " " + cls : "");
@@ -688,11 +549,10 @@
       setState("Scheduled · " + sch.querySelector(".sc-date").value + ", " + sch.querySelector(".sc-time").value, "is-scheduled"); reset.focus();
     });
     reset.addEventListener("click", function () { setState("Draft", ""); sch.querySelector('[data-a="schedule"]').focus(); });
-  }
+  });
 
   // pflegePro: watching lessons moves the progress on the home screen
-  var pg = document.querySelector(".progress-demo");
-  if (pg) {
+  demo("progress-demo", function (pg) {
     var lessonsBtns = pg.querySelectorAll(".pg-lesson");
     var pgDraw = function () {
       var done = pg.querySelectorAll('.pg-lesson[aria-pressed="true"]').length, total = lessonsBtns.length;
@@ -703,11 +563,10 @@
       b.addEventListener("click", function () { b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") === "true" ? "false" : "true"); pgDraw(); });
     });
     pgDraw();
-  }
+  });
 
   // pflegePro: filter exercises by need
-  var exf = document.querySelector(".exfilter-demo");
-  if (exf) {
+  demo("exfilter-demo", function (exf) {
     exf.querySelectorAll(".ex-chips button").forEach(function (chip) {
       chip.addEventListener("click", function () {
         var f = chip.getAttribute("data-f");
@@ -715,7 +574,517 @@
         exf.querySelectorAll(".ex-list li").forEach(function (li) { li.hidden = f !== "Alle" && li.getAttribute("data-cat") !== f; });
       });
     });
-  }
+  });
+
+  // Walkthrough at the end of a case study: a pointer taps through the project's prototypes on its
+  // own, from beginning to end. It drives real copies of the prototypes above, so every screen is
+  // the prototype's own; a page can add static screens of its own inside the stage (data-scene).
+  // Visitors can pause it, it waits while off screen, and with reduced motion it only starts when asked.
+  // Each case study's script is in WALKS below, under the walk's data-walk name.
+  var WALKS = {
+    springin: {
+      scroller: ".wish-demo__phone", // the phone's screen scrolls; the frame stays put
+      scenes: ["flow-write", "flow-plan"],
+      run: function (w) {
+        var moment = function (value) {
+          var r = w.scene("flow-plan").querySelector('input[value="' + value + '"]');
+          r.checked = true;
+          r.dispatchEvent(new Event("change", { bubbles: true }));
+          w.scene("flow-plan").querySelector(".wish-demo__phone").scrollTop = 0;
+        };
+        return w.seq([
+          function () { w.show("home"); w.step(0); return w.hold(1800); },
+          function () { return w.tap("home", ".hm-open"); },
+          function () { w.show("flow-write"); w.step(1); return w.hold(1000); },
+          function () { return w.tap("flow-write", '.sp-days [data-day="12"]'); },
+          function () { return w.tap("flow-write", '[data-t="off"]'); },
+          function () { return w.tap("flow-write", ".wd-add"); },
+          function () { return w.tap("flow-write", ".wd-add"); },
+          function () { return w.hold(900); }, // the limit note
+          function () { return w.tap("flow-write", ".wd-remove", 1); },
+          function () { return w.tap("flow-write", ".fw-save"); },
+          function () { return w.hold(1400); }, // the calendar, now with four wishes
+          function () { w.step(2); return w.tap("flow-write", ".sp-sum"); }, // the summary card opens the list
+          function () { w.show("flow-plan"); return w.hold(1400); },
+          function () { return w.tap("flow-plan", ".sp-rv__withdraw", 3); },
+          function () { return w.hold(700); },
+          function () { return w.tap("flow-plan", ".sp-toast__undo"); },
+          function () { return w.tap("flow-plan", ".sp-handin"); },
+          function () { moment("closed"); w.step(3); return w.hold(2800); },
+          function () { moment("out"); w.step(4); return w.hold(1800); },
+          function () { return w.scrollTo("flow-plan", ".wish-demo__phone", "end", 3200); }
+        ]);
+      }
+    },
+    tvguideplus: {
+      // One flow from Home (rebuilt from my Home design, with the menu) through search, the TV
+      // guide and its filter
+      scenes: ["search-demo", "guide-demo"],
+      compose: function (copy) {
+        var fl = copy("filter-demo");
+        var close = document.createElement("button");
+        close.type = "button";
+        close.className = "wk-fl-close";
+        close.textContent = "×";
+        fl.querySelector(".fl-top").appendChild(close);
+        DEMOS["filter-demo"](fl);
+        return { "filter-demo": fl };
+      },
+      run: function (w) {
+        var home = w.scene("home");
+        return w.seq([
+          function () { home.querySelector(".tgh-menu-panel").hidden = true; w.show("home"); w.step(0); return w.hold(2200); },
+          function () { w.step(1); return w.tap("home", ".tgh-search"); },
+          function () { w.show("search-demo"); return w.hold(700); },
+          function () { return w.tap("search-demo", "input"); },
+          function () { return w.type("search-demo", "input", "bar"); },
+          function () { return w.hold(2600); }, // results, each labeled Sendung, VOD or News
+          function () { w.step(2); return w.tap("search-demo", ".tg-logo"); }, // the logo goes back to Home
+          function () { w.show("home"); return w.hold(800); },
+          function () { return w.tap("home", ".tgh-menu"); },
+          function () { home.querySelector(".tgh-menu-panel").hidden = false; return w.hold(900); },
+          function () { return w.tap("home", ".tgh-menu-item"); },
+          function () { w.show("guide-demo"); return w.hold(1300); },
+          function () { return w.tap("guide-demo", '[data-slot="2015"]'); },
+          function () { return w.hold(1400); },
+          function () { w.step(3); return w.tap("guide-demo", ".tg-filter"); },
+          function () { w.show("filter-demo"); return w.hold(1000); },
+          function () { return w.tap("filter-demo", 'input[value="Heute um 20:15"]'); },
+          function () { return w.tap("filter-demo", 'input[value="Spielfilme"]'); },
+          function () { return w.hold(800); },
+          function () { return w.tap("filter-demo", ".wk-fl-close"); },
+          function () { // back in the guide: only the 20:15 films
+            w.scene("guide-demo").querySelectorAll(".tg-list li").forEach(function (li) {
+              li.hidden = li.querySelector(".tg-genre").textContent.indexOf("Spielfilm") !== 0;
+            });
+            w.show("guide-demo");
+            return w.hold(2800);
+          }
+        ]);
+      }
+    },
+    columna: {
+      // Writing and scheduling in one CMS window (the same article), then the article's card as a
+      // preview, where the brand swaps
+      scenes: [],
+      compose: function (copy) {
+        var ed = copy("editor-demo"), sch = copy("schedule-demo"), tk = copy("tokens-demo");
+        ed.querySelector(".ed-bar").appendChild(sch.querySelector(".sc-pill"));
+        var body = sch.querySelector(".sc-body");
+        var prev = document.createElement("button");
+        prev.type = "button";
+        prev.className = "sc-btn sc-btn--ghost wk-preview";
+        prev.textContent = "Preview";
+        prev.hidden = true;
+        body.appendChild(prev);
+        ed.querySelector(".ed-window").appendChild(body);
+        DEMOS["editor-demo"](ed);
+        DEMOS["schedule-demo"](ed);
+        // The preview opens in the same kind of window as the editor
+        var win = document.createElement("div");
+        win.className = "ed-window wk-win";
+        win.innerHTML = '<div class="ed-bar"><span class="ed-dots" aria-hidden="true"><i></i><i></i><i></i></span><strong>Columna</strong><span class="ed-crumb">Preview · Herbstsuppe in 20 Minuten</span></div><div class="wk-win__body"></div>';
+        var winBody = win.querySelector(".wk-win__body");
+        while (tk.firstChild) winBody.appendChild(tk.firstChild);
+        tk.appendChild(win);
+        DEMOS["tokens-demo"](tk);
+        return { "editor-demo": ed, "tokens-demo": tk };
+      },
+      run: function (w) {
+        return w.seq([
+          function () { w.show("editor-demo"); w.step(0); return w.hold(1400); },
+          function () { return w.tap("editor-demo", "input"); },
+          function () { return w.type("editor-demo", "input", "Fertig in 20 Minuten."); },
+          function () { return w.key("editor-demo", "input", "Enter"); },
+          function () { return w.hold(1300); }, // Saving…, then Draft saved
+          function () { return w.type("editor-demo", "input", "/"); },
+          function () { return w.hold(600); },
+          function () { return w.tap("editor-demo", '[data-b="recipe"]'); },
+          function () { return w.hold(1600); },
+          function () { w.step(1); return w.tap("editor-demo", '[data-a="schedule"]'); },
+          function () { return w.hold(700); },
+          function () { return w.tap("editor-demo", '[data-a="confirm"]'); },
+          function () { w.scene("editor-demo").querySelector(".wk-preview").hidden = false; return w.hold(1800); },
+          function () { w.step(2); return w.tap("editor-demo", ".wk-preview"); },
+          function () { w.show("tokens-demo"); return w.hold(1600); },
+          function () { return w.tap("tokens-demo", 'input[value="sternblick"]'); },
+          function () { return w.hold(1800); },
+          function () { return w.tap("tokens-demo", 'input[value="fernweg"]'); },
+          function () { return w.hold(2400); }
+        ]);
+      }
+    },
+    yumm: {
+      // One article page: the comparison at the top, the article, and the Best Overall card further
+      // down, with the Jump to Best Price button over it all
+      scroller: ".st-scroll",
+      scenes: [],
+      compose: function (copy) {
+        var page = copy("sticky-demo"), cmp = copy("compare-demo"), card = copy("card-demo");
+        var sc = page.querySelector(".st-scroll"), first = sc.firstChild;
+        ["cd-h", "cd-products", "cd-table", "cd-bar"].forEach(function (c) { sc.insertBefore(cmp.querySelector("." + c), first); });
+        var status = cmp.querySelector("[role=status]");
+        if (status) page.querySelector(".st-phone").appendChild(status);
+        var best = page.querySelector('[id^="st-best"]'), pc = card.querySelector(".pc-card");
+        pc.id = best.id;
+        pc.tabIndex = -1;
+        pc.classList.add("wk-best");
+        best.replaceWith(pc);
+        DEMOS["sticky-demo"](page);
+        DEMOS["compare-demo"](page);
+        DEMOS["card-demo"](page);
+        return { article: page };
+      },
+      run: function (w) {
+        return w.seq([
+          function () { w.show("article"); w.step(0); return w.hold(1400); },
+          function () { return w.tap("article", ".cd-check input", 0); },
+          function () { return w.tap("article", ".cd-check input", 1); },
+          function () { return w.hold(500); },
+          function () { return w.tap("article", ".cd-go"); },
+          function () { return w.hold(2600); }, // both grills side by side
+          function () { // reading on: the button appears once the article starts
+            w.step(1);
+            var sc = w.scene("article").querySelector(".st-scroll");
+            return w.scrollTo("article", ".st-scroll", sc.querySelector(".st-h").offsetTop - sc.offsetTop - 60, 2400);
+          },
+          function () { return w.hold(600); },
+          function () { return w.tap("article", ".st-jump"); },
+          function () { return w.hold(1800); },
+          function () { w.step(2); return w.tap("article", ".pc-toggle", 0); },
+          function () { return w.hold(1200); },
+          function () { return w.tap("article", ".pc-toggle", 1); },
+          function () { return w.hold(2400); }
+        ]);
+      }
+    },
+    pflegepro: {
+      // One phone, built in the page from the prototypes' screens (plus a placeholder video player):
+      // Home, the program, a lesson, the player and Favoriten. The script moves between them.
+      scenes: [],
+      run: function (w) {
+        var app = w.scene("app");
+        var $ = function (sel) { return app.querySelector(sel); };
+        var screen = function (name) {
+          app.querySelectorAll(".wk-screen").forEach(function (el) { el.hidden = el.getAttribute("data-screen") !== name; });
+        };
+        var lesson = function (title, meta) {
+          $(".wk-les-title").textContent = title;
+          $(".wk-les-meta").textContent = meta;
+          $('[data-screen="lesson"] .pf-heart').setAttribute("aria-pressed", "false");
+        };
+        var bar = function (pct, ms) {
+          var b = $(".hm2-bar span");
+          b.style.transition = ms ? "width " + ms + "ms cubic-bezier(0.12, 0.23, 0.5, 1)" : "none";
+          b.style.width = pct + "%";
+        };
+        var reset = function () {
+          bar(0);
+          $(".hm2-meta").textContent = "0 of 5 lessons watched";
+          app.querySelectorAll(".pg-lesson").forEach(function (l) { l.setAttribute("aria-pressed", "false"); });
+          $(".pf-empty").hidden = false;
+          $(".pf-saved").hidden = true;
+          $(".wk-pl__bar span").style.transition = "none";
+          $(".wk-pl__bar span").style.width = "0";
+          $(".wk-pl__now").textContent = "0:00";
+        };
+        // The placeholder video plays to the end: the line fills and the clock runs (sped up)
+        var play = function () {
+          var line = $(".wk-pl__bar span");
+          void line.offsetWidth;
+          line.style.transition = "width 3600ms linear";
+          line.style.width = "100%";
+          var t = 0;
+          var tick = function () {
+            t += 6;
+            $(".wk-pl__now").textContent = "0:" + (t < 10 ? "0" : "") + (t === 60 ? "00" : t);
+            if (t === 60) { $(".wk-pl__now").textContent = "1:00"; return w.hold(500); }
+            return w.hold(360).then(tick);
+          };
+          return w.hold(360).then(tick);
+        };
+        return w.seq([
+          function () { reset(); screen("home"); w.step(0); return w.hold(1600); },
+          function () { return w.tap("app", '[data-screen="home"] .hm2-prog'); },
+          function () { screen("program"); w.step(1); return w.hold(1000); },
+          function () { return w.tap("app", ".pg-lesson", 0); },
+          function () { lesson("Grundwissen", "Beine Lagern · ▶ 1 min"); screen("lesson"); return w.hold(1000); },
+          function () { return w.tap("app", '[data-screen="lesson"] .pf-play'); },
+          function () { screen("player"); return w.hold(500); },
+          play,
+          function () { // back on Home, the bar fills
+            app.querySelectorAll(".pg-lesson")[0].setAttribute("aria-pressed", "true");
+            screen("home");
+            w.step(2);
+            return w.hold(700);
+          },
+          function () {
+            bar(20, 1200);
+            $(".hm2-meta").textContent = "1 of 5 lessons watched";
+            return w.hold(2200);
+          },
+          function () { w.step(3); return w.tap("app", '[data-screen="home"] .hm2-prog'); },
+          function () { screen("program"); return w.hold(900); },
+          function () { return w.tap("app", ".pg-lesson", 1); },
+          function () { lesson("Ausführung", "Beine Lagern · ▶ 40 sec"); screen("lesson"); return w.hold(1000); },
+          function () { return w.tap("app", '[data-screen="lesson"] .pf-heart'); },
+          function () { $('[data-screen="lesson"] .pf-heart').setAttribute("aria-pressed", "true"); return w.hold(1200); },
+          function () { w.step(4); return w.tap("app", '[data-screen="lesson"] .pf-tabbar span'); }, // Home
+          function () { screen("home"); return w.hold(800); },
+          function () { return w.tap("app", '[data-screen="home"] .hm2-tiles span', 1); }, // the Favoriten tile
+          function () { screen("favoriten"); return w.hold(1300); },
+          function () { $(".pf-empty").hidden = true; $(".pf-saved").hidden = false; return w.hold(2800); }
+        ]);
+      }
+    }
+  };
+
+  document.querySelectorAll(".walk").forEach(function (walkEl) {
+    var cfg = WALKS[walkEl.getAttribute("data-walk")];
+    if (!cfg) return;
+    var stage = walkEl.querySelector(".walk__stage");
+    var pointer = walkEl.querySelector(".walk__pointer");
+    var toggle = walkEl.querySelector(".walk__toggle");
+    var stepList = walkEl.querySelector(".walk__steps");
+    var stepEls = walkEl.querySelectorAll(".walk__steps li");
+    var paused = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var off = true, started = false, scenes = {};
+    stage.querySelectorAll("[data-scene]").forEach(function (el) { scenes[el.getAttribute("data-scene")] = el; });
+
+    // How the round is running. "normal": as visitors see it. "fast": skipping ahead to a step the
+    // visitor clicked, with no waiting. "tally": an instant dry run that adds up every wait, so the
+    // walkthrough knows how long each step takes.
+    var mode = "normal", target = 0, runId = 0, CANCEL = {};
+    var cur = 0, inStep = 0, stepMs = [], stepStart = [], total = 0;
+    var TAP_MS = 1390; // a tap's own waits: appear, press, click, let go
+
+    // Waits that stand still while paused or off screen, and end at once when the round is restarted
+    var hold = function (ms) {
+      var id = runId;
+      if (mode === "tally") { stepMs[cur] = (stepMs[cur] || 0) + ms; return Promise.resolve(); }
+      if (mode === "fast") return id === runId ? Promise.resolve() : Promise.reject(CANCEL);
+      return new Promise(function (done, fail) {
+        var left = ms, t0 = performance.now();
+        (function loop() {
+          if (id !== runId) return fail(CANCEL);
+          var now = performance.now();
+          if (!paused && !off) { left -= now - t0; inStep += now - t0; }
+          t0 = now;
+          progress();
+          if (left <= 0) done(); else setTimeout(loop, 40);
+        })();
+      });
+    };
+
+    // Progress: the line between the numbers fills blue as the round moves on, numbers already
+    // passed turn blue, and the timer shows time played out of the whole round
+    var fill = document.createElement("span");
+    fill.className = "walk__fill";
+    fill.setAttribute("aria-hidden", "true");
+    stepList.appendChild(fill);
+    var clock = document.createElement("span");
+    clock.className = "walk__time label";
+    clock.setAttribute("aria-hidden", "true");
+    toggle.parentNode.insertBefore(clock, toggle);
+    var fmt = function (ms) { var t = Math.round(ms / 1000); return Math.floor(t / 60) + ":" + (t % 60 < 10 ? "0" : "") + (t % 60); };
+    var progress = function () {
+      if (!total) return;
+      var n = stepEls.length, f = stepMs[cur] ? Math.min(1, inStep / stepMs[cur]) : 0;
+      var frac = cur >= n - 1 ? 1 : (cur + f) / (n - 1);
+      fill.style.width = "calc((100% - 40px) * " + frac.toFixed(4) + ")";
+      clock.textContent = fmt(Math.min(total, stepStart[cur] + inStep)) + " / " + fmt(total);
+    };
+
+    // A fresh copy of a prototype: no panel, title, caption or notes, and its own ids and radio
+    // names, so it never steers the prototype above it
+    var copy = function (key) {
+      var el = PRISTINE[key].cloneNode(true);
+      el.querySelectorAll(".try__head, .try__caption, .callouts").forEach(function (x) { x.remove(); });
+      el.querySelectorAll(".try__body").forEach(function (b) { while (b.firstChild) b.parentNode.insertBefore(b.firstChild, b); b.remove(); });
+      el.querySelectorAll("[id]").forEach(function (x) { x.id += "-walk"; });
+      ["for", "aria-controls", "aria-labelledby", "aria-describedby"].forEach(function (a) {
+        el.querySelectorAll("[" + a + "]").forEach(function (x) {
+          x.setAttribute(a, x.getAttribute(a).split(" ").map(function (v) { return v + "-walk"; }).join(" "));
+        });
+      });
+      el.querySelectorAll("input[name]").forEach(function (r) { r.name += "-walk"; });
+      el.classList.remove("try");
+      el.classList.add("walk__scene");
+      el.setAttribute("data-copy", key);
+      return el;
+    };
+    var made = [];
+    var build = function () {
+      if (cfg.compose) {
+        // A walkthrough that merges prototypes: compose returns the screens it built and started
+        made.forEach(function (k) { scenes[k].remove(); delete scenes[k]; });
+        var built = cfg.compose(copy);
+        made = Object.keys(built);
+        made.forEach(function (k) {
+          scenes[k] = built[k];
+          scenes[k].classList.add("walk__scene");
+          stage.insertBefore(scenes[k], pointer);
+        });
+      }
+      cfg.scenes.forEach(function (key) {
+        if (scenes[key]) scenes[key].remove();
+        scenes[key] = copy(key);
+        stage.insertBefore(scenes[key], pointer);
+        DEMOS[key](scenes[key]);
+      });
+      fit();
+    };
+    // The stage is as tall as its tallest screen, so the page doesn't jump between screens
+    var fit = function () {
+      var current = Object.keys(scenes).filter(function (k) { return !scenes[k].hidden; })[0];
+      var tallest = 0;
+      stage.style.minHeight = "";
+      Object.keys(scenes).forEach(function (k) {
+        Object.keys(scenes).forEach(function (j) { scenes[j].hidden = j !== k; });
+        tallest = Math.max(tallest, scenes[k].offsetHeight);
+      });
+      Object.keys(scenes).forEach(function (j) { scenes[j].hidden = j !== current; });
+      stage.style.minHeight = tallest + "px";
+    };
+    var api = {
+      hold: hold,
+      seq: function (fns) { return fns.reduce(function (p, f) { return p.then(f); }, Promise.resolve()); },
+      scene: function (name) { return scenes[name]; },
+      show: function (name) {
+        Object.keys(scenes).forEach(function (k) { scenes[k].hidden = k !== name; });
+        if (cfg.scroller) { var sc = scenes[name].querySelector(cfg.scroller); if (sc) sc.scrollTop = 0; }
+      },
+      step: function (n) {
+        cur = n;
+        inStep = 0;
+        if (mode === "fast" && n >= target) mode = "normal"; // arrived: play on as usual from here
+        if (mode === "tally") return;
+        stepEls.forEach(function (li, i) {
+          li.classList.toggle("is-current", i === n);
+          li.classList.toggle("is-done", i < n);
+          var b = li.querySelector(".walk__n");
+          if (i === n) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current");
+        });
+        progress();
+      },
+      // The pointer appears on the element (a checkbox or radio: on its label), presses in while two
+      // rings pulse out, and the element is clicked at the deepest point of the press
+      tap: function (name, sel, i) {
+        var el = scenes[name].querySelectorAll(sel)[i || 0];
+        if (mode !== "normal") {
+          el.dispatchEvent(new MouseEvent("click", { bubbles: true })); // no pointer while skipping or measuring
+          return hold(TAP_MS);
+        }
+        var aim = el.matches("input[type=checkbox], input[type=radio]") ? (el.closest("label") || el) : el;
+        var sr = stage.getBoundingClientRect(), r = aim.getBoundingClientRect(), shift = 0;
+        var sc = cfg.scroller ? el.closest(cfg.scroller) : null;
+        if (sc) {
+          var pr = sc.getBoundingClientRect();
+          if (r.bottom > pr.bottom - 24 || r.top < pr.top + 24) {
+            var to = Math.max(0, Math.min(sc.scrollHeight - sc.clientHeight, sc.scrollTop + r.top - pr.top - pr.height / 2));
+            shift = to - sc.scrollTop;
+            sc.scrollTo({ top: to, behavior: "smooth" });
+          }
+        }
+        pointer.classList.remove("is-on");
+        pointer.style.left = (r.left - sr.left + r.width / 2) + "px"; // left/top, so the press never shifts it
+        pointer.style.top = (r.top - shift - sr.top + r.height / 2) + "px";
+        return hold(shift ? 500 : 250).then(function () {
+          pointer.classList.add("is-on");
+          return hold(300);
+        }).then(function () {
+          pointer.classList.remove("is-tapping");
+          void pointer.offsetWidth; // restart the pulse even on back-to-back taps
+          pointer.classList.add("is-tapping");
+          return hold(140);
+        }).then(function () {
+          el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+          return hold(700);
+        }).then(function () {
+          pointer.classList.remove("is-tapping");
+          pointer.classList.remove("is-on");
+        });
+      },
+      // Typing, one letter at a time
+      type: function (name, sel, text) {
+        var input = scenes[name].querySelector(sel);
+        return text.split("").reduce(function (p, ch) {
+          return p.then(function () {
+            input.value += ch;
+            input.dispatchEvent(new Event("input", { bubbles: true }));
+            return hold(110);
+          });
+        }, Promise.resolve());
+      },
+      key: function (name, sel, key) {
+        scenes[name].querySelector(sel).dispatchEvent(new KeyboardEvent("keydown", { key: key, bubbles: true }));
+        return hold(300);
+      },
+      // Scroll a screen to a position ("end" for the bottom), smoothly, over ms
+      scrollTo: function (name, sel, top, ms) {
+        var sc = scenes[name].querySelector(sel);
+        var to = top === "end" ? sc.scrollHeight : top;
+        if (mode === "normal") sc.scrollTo({ top: to, behavior: "smooth" }); else sc.scrollTop = to;
+        return hold(ms);
+      }
+    };
+
+    // Start a round, from the beginning or from a step: rebuild the screens, then skip ahead
+    // instantly to that step and play on from there. Starting again cancels the round before.
+    var start = function (k) {
+      runId++;
+      var id = runId;
+      target = k || 0;
+      mode = target > 0 ? "fast" : "normal";
+      pointer.classList.remove("is-on", "is-tapping");
+      build();
+      cfg.run(api).then(function () {
+        if (id === runId) start(0); // round again
+      }, function (e) { if (e !== CANCEL) throw e; });
+    };
+
+    var setPaused = function (p) {
+      paused = p;
+      walkEl.classList.toggle("is-paused", p);
+      toggle.textContent = p ? "Play walkthrough" : "Pause walkthrough";
+      toggle.setAttribute("aria-pressed", p ? "true" : "false");
+    };
+    setPaused(paused);
+    toggle.addEventListener("click", function () { setPaused(!paused); });
+
+    // Every number goes to its step
+    stepEls.forEach(function (li, i) {
+      var n = li.querySelector(".walk__n");
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "walk__n";
+      b.textContent = n.textContent;
+      b.setAttribute("aria-label", "Go to step " + n.textContent + ": " + li.querySelector(".walk__name").textContent);
+      n.replaceWith(b);
+      b.addEventListener("click", function () { started = true; start(i); });
+    });
+
+    // The dry run that measures each step, then the stage set for the first round
+    mode = "tally";
+    build();
+    cfg.run(api).then(function () {
+      stepStart = [];
+      total = 0;
+      stepEls.forEach(function (li, i) { stepStart[i] = total; total += stepMs[i] || 0; });
+      mode = "normal";
+      cur = 0;
+      inStep = 0;
+      build();
+      api.show(cfg.first || Object.keys(scenes)[0]);
+      api.step(0);
+      new IntersectionObserver(function (entries) {
+        off = !entries[0].isIntersecting;
+        if (!off && !started) { started = true; start(0); }
+      }, { threshold: 0.35 }).observe(stage);
+    });
+    window.addEventListener("resize", fit);
+    if (document.fonts) document.fonts.ready.then(fit);
+  });
 
   // Projects: a flight through the work (after vadimcarazan.com). The section pins under the nav,
   // a full screen tall, and scrolling moves the camera forward: each project's loading-screen

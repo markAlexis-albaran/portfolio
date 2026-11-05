@@ -49,6 +49,7 @@
           <li><a href="#insight">Insight</a></li>
           <li><a href="#making">Making</a></li>
           <li><a href="#outcome">Outcome</a></li>
+          <li><a href="#walkthrough">Walkthrough</a></li>
         </ul>
       </div>
     </nav>
@@ -162,6 +163,29 @@
         <div data-reveal data-delay="120">
           <p>The project was stopped before its official launch, so there are no usage numbers to show.</p>
           <p>What I take from it: designing two systems for two very different audiences, and building on tokens so one component can serve many brands. Both carry over to any product that has to look different for different customers while staying one system underneath.</p>
+        </div>
+      </section>
+      <section class="case-section" id="walkthrough">
+        <h2 data-reveal>Walkthrough</h2>
+        <div data-reveal data-delay="120">
+          <p>The prototypes from this case study, joined into one flow: writing an article straight into the CMS, scheduling it in the same window, and previewing its card in each brand.</p>
+          <div class="walk" data-walk="columna">
+            <div class="walk__head">
+              <p class="walk__title">From draft to scheduled, then a new brand</p>
+              <button class="walk__toggle label" type="button" aria-pressed="false">Pause walkthrough</button>
+            </div>
+            <div class="walk__body">
+              <ol class="walk__steps">
+                <li class="is-current"><span class="walk__n" aria-hidden="true">1</span><div class="walk__d"><p class="walk__name">Write in the CMS</p><p>Type a sentence and press Enter, then type / and add a recipe card. The draft saves on its own.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">2</span><div class="walk__d"><p class="walk__name">Schedule it</p><p>In the same window, open Schedule, keep the date and time, and confirm. The status changes to Scheduled.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">3</span><div class="walk__d"><p class="walk__name">Preview and swap the brand</p><p>Open the preview: the article's card in Kochzeit. Switch to Sternblick, then Fernweg. Only the tokens change.</p></div></li>
+              </ol>
+              <div class="walk__stage" aria-hidden="true" inert>
+                <span class="walk__pointer"></span>
+              </div>
+            </div>
+          </div>
+          <p class="try__caption label">Plays on its own, using the same rebuilt prototypes as above. Pause it any time.</p>
         </div>
       </section>
       <nav class="case-end" aria-label="More projects">

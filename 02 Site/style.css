@@ -1382,7 +1382,7 @@ mark.hl {
   background: linear-gradient(90deg, #e2493b, var(--pf-red)); color: #fff; font-weight: 700;
 }
 
-.pf-head { position: relative; padding: 14px; text-align: center; }
+.pf-head { position: relative; flex-shrink: 0; padding: 14px; text-align: center; }
 .pf-head .pf-back { top: 9px; }
 .fav-demo .pf-head p { margin: 0; font-weight: 700; font-size: 15px; color: #1f1f1f; }
 .pf-ftabs { display: flex; gap: 6px; padding: 0 12px 12px; }
@@ -1503,7 +1503,7 @@ mark.hl {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: var(--space-2) var(--space-4);
 }
 .case-section .walk__title { margin: 0; font-weight: 500; font-size: 18px; color: var(--text); }
@@ -1547,7 +1547,24 @@ mark.hl {
   font-family: var(--font-mono); font-size: 14px; color: var(--text-secondary);
   transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
 }
-.walk__steps li.is-current .walk__n { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.walk__steps li.is-current .walk__n,
+.walk__steps li.is-done .walk__n { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+/* Each number is a button that goes to its step */
+button.walk__n { padding: 0; cursor: pointer; }
+.walk__steps li:not(.is-current):not(.is-done) .walk__n:hover { border-color: var(--text); color: var(--text); }
+/* The blue fill that grows along the line as the round plays */
+.walk__fill {
+  position: absolute;
+  top: 19px;
+  left: 20px;
+  width: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--accent);
+  pointer-events: none;
+}
+.walk__steps .walk__n { z-index: 1; } /* the numbers sit on top of the line */
+.walk__time { margin-left: auto; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
 .walk__d {
   position: absolute;
   left: 0;
@@ -1561,15 +1578,141 @@ mark.hl {
 .case-section .walk__d p { margin: 0; font-size: 16px; color: var(--text-secondary); }
 .case-section .walk__d .walk__name { margin-bottom: 2px; font-weight: 500; color: var(--text); }
 .walk__stage { position: relative; }
+/* pflegePro walkthrough: one phone that moves between screens rebuilt from the prototypes */
+.walk__app { --pf-red: #d93a30; display: flex; justify-content: center; }
+.walk__app .pf-phone { flex-shrink: 0; }
+.wk-screen { display: flex; flex-direction: column; flex: 1; min-height: 0; animation: wd-in 0.3s ease-out; }
+.wk-screen[hidden] { display: none; }
+/* Home in the walkthrough, rebuilt from the app's Home design in the prototypes' flat style.
+   It fills the phone's height and is cut off at the bottom, as if it scrolls. */
+.hm2 { padding: 12px 14px 0; }
+.hm2 > * { flex-shrink: 0; } /* nothing squeezed: what doesn't fit is cut off, as if it scrolls */
+.hm2-top { display: flex; align-items: center; gap: 8px; }
+.hm2-logo { width: 26px; height: 26px; color: var(--pf-red); }
+.hm2-logo svg, .hm2-avatar svg, .hm2-icons svg, .hm2-tiles svg, .hm2-card__heart svg { display: block; width: 100%; height: 100%; }
+.hm2-points { font-size: 15px; color: #1f1f1f; }
+.hm2-avatar { width: 24px; height: 24px; padding: 3px; border-radius: 50%; background: #e9e9e9; color: #9a9a9a; }
+.hm2-icons { display: flex; gap: 12px; margin-left: auto; color: #2b2b2b; }
+.hm2-icons svg { width: 20px; height: 20px; }
+.case-section .walk__app .hm2-hello { margin: 12px 0 0; font-size: 14px; color: #1f1f1f; }
+.hm2-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+.hm2-tiles span { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 9px 4px 8px; border-radius: 8px; background: #f2f2f2; font-size: 11px; color: #333; }
+.hm2-tiles svg { width: 20px; height: 20px; color: #2b2b2b; }
+.case-section .walk__app .hm2-sec { display: flex; justify-content: space-between; align-items: baseline; margin: 14px 0 6px; font-size: 14px; color: #1f1f1f; }
+.hm2-sec span { font-size: 11px; color: var(--pf-red); }
+.hm2-prog { position: relative; flex-shrink: 0; border-radius: 10px; overflow: hidden; }
+.hm2-prog svg { display: block; width: 100%; height: 104px; object-fit: cover; }
+.hm2-prog__txt { position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; padding: 18px 12px 10px; background: linear-gradient(transparent, rgba(31, 31, 31, 0.62)); color: #fff; }
+.hm2-prog__txt strong { font-size: 14px; }
+.hm2-meta { font-size: 11px; opacity: 0.92; }
+.hm2-bar { display: block; height: 4px; margin-top: 6px; border-radius: 2px; background: rgba(255, 255, 255, 0.85); }
+.hm2-bar span { display: block; width: 0; height: 100%; border-radius: 2px; background: var(--pf-red); }
+.hm2-news { display: flex; gap: 8px; margin-right: -14px; overflow: hidden; }
+.hm2-card { display: flex; flex-direction: column; flex: 0 0 82%; padding-bottom: 8px; border-radius: 10px; background: #f5f5f5; overflow: hidden; font-size: 11px; color: #555; }
+.hm2-card--peek { flex-basis: 30%; }
+.hm2-card__img { position: relative; display: block; height: 96px; background: linear-gradient(135deg, #f6c9a5, #e9a06e); }
+.hm2-card--peek .hm2-card__img { opacity: 0.7; }
+.hm2-card__heart { position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; color: var(--pf-red); }
+.hm2-card strong { margin: 8px 10px 0; font-size: 12.5px; color: #1f1f1f; }
+.hm2-card > span:not(.hm2-card__img) { margin: 2px 10px 0; }
+.hm2-card small { align-self: flex-end; margin: 6px 10px 0; font-size: 10px; color: #888; }
+.hm2-cats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; flex-shrink: 0; }
+.hm2-cats span { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 6px 9px; border-radius: 8px; background: #f2f2f2; font-size: 11.5px; color: #333; }
+.hm2-cats svg { width: 22px; height: 22px; color: #2b2b2b; }
+
+/* tvguideplus walkthrough: Home, rebuilt from my Home design (topic chips, TV tips, NEWS), and its menu */
+.tgh { position: relative; }
+.tgh-bar { display: flex; align-items: center; justify-content: space-between; }
+.tgh-icons { display: flex; align-items: center; gap: 12px; color: #fff; }
+.tgh-icons span, .tgh-icons button { display: flex; width: 22px; height: 22px; padding: 0; border: 0; background: none; color: inherit; }
+.tgh-icons svg { width: 100%; height: 100%; }
+.tgh-chips { display: flex; gap: 8px; padding: 14px 16px 0; overflow: hidden; white-space: nowrap; }
+.tgh-chips span { padding: 6px 10px; border: 2px solid var(--tg-red); color: var(--tg-red); font-weight: 600; font-size: 13px; }
+.case-section .tgh-h { margin: 16px 16px 10px; font-weight: 700; font-size: 18px; color: #1a1a1a; }
+.tgh-carousel { display: grid; grid-template-columns: 14px 1fr 14px; gap: 8px; margin: 0 -6px; }
+.tgh-tip { display: flex; flex-direction: column; border-radius: 6px; overflow: hidden; background: #dde0ea; }
+.tgh-tip--peek { height: 100%; }
+.tgh-img { position: relative; display: block; height: 116px; background: #d3d7e3; }
+.tgh-ch { position: absolute; top: 8px; left: 8px; padding: 4px 6px; border-radius: 4px; background: #fff; color: #e2711d; font-weight: 700; font-size: 11px; }
+.tgh-cap { display: flex; flex-direction: column; padding: 8px 10px; background: var(--tg-navy); color: #fff; font-size: 12px; }
+.tgh-cap strong { font-size: 13.5px; }
+.tgh-cap span { opacity: 0.8; }
+.tgh-dots { display: flex; justify-content: center; gap: 5px; margin-top: 8px; }
+.tgh-dots i { width: 4px; height: 4px; border-radius: 2px; background: #c9ccd6; }
+.tgh-dots i.is-on { width: 22px; background: var(--tg-navy); }
+.case-section .tgh-news { display: flex; align-items: center; gap: 10px; margin: 18px 16px 12px; font-weight: 700; font-size: 16px; color: #1a1a1a; }
+.tgh-news::before, .tgh-news::after { content: ""; flex: 1; height: 2px; background: #1a1a1a; }
+.tgh-newsimg { height: 140px; margin: 0 16px; background: #e6e2d6; }
+.tgh-newstxt { display: grid; gap: 7px; margin: 12px 16px 0; }
+.tgh-newstxt span { display: block; height: 11px; border-radius: 3px; background: #eceef4; }
+.tgh-newstxt span:first-child { height: 14px; width: 85%; background: #dfe2ea; }
+.tgh-newstxt span:last-child { width: 55%; }
+.tgh-menu-panel { position: absolute; top: 50px; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: 14px; padding: 18px 18px; background: #fff; animation: wd-in 0.25s ease-out; }
+.tgh-menu-panel[hidden] { display: none; }
+.tgh-menu-item { align-self: flex-start; padding: 0; border: 0; background: none; font: inherit; font-weight: 700; font-size: 16px; color: #1a1a1a; }
+.tgh-ph { display: block; width: 60%; height: 12px; border-radius: 3px; background: #eceef4; }
+.tgh-ph:nth-child(odd) { width: 45%; }
+/* The filter's close button, for the walkthrough */
+.wk-fl-close { width: 28px; height: 28px; padding: 0; border: 0; background: none; font-size: 20px; line-height: 1; color: #1a1a1a; }
+.tg-list li[hidden] { display: none; }
+/* Columna walkthrough: the preview button under the scheduled article */
+.wk-preview { display: block; margin-top: 14px; }
+.wk-preview[hidden] { display: none; }
+/* yumm walkthrough: the Best Overall card sits in the article like the other content */
+.st-scroll .wk-best { margin: 14px 0; }
+
+/* Placeholder video player */
+.wk-pl { padding-bottom: 14px; }
+.wk-pl__video { position: relative; margin: 0 12px; border-radius: 10px; overflow: hidden; }
+.wk-pl__video svg { display: block; width: 100%; height: auto; }
+.wk-pl__icon { position: absolute; left: 50%; top: 50%; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: rgba(31, 31, 31, 0.6); color: #fff; font-size: 16px; }
+.wk-pl__bar { height: 4px; margin: 12px 12px 0; border-radius: 2px; background: #ececec; }
+.wk-pl__bar span { display: block; width: 0; height: 100%; border-radius: 2px; background: var(--pf-red); }
+.wk-pl__time { display: flex; justify-content: space-between; margin: 4px 12px 0; font-size: 11px; color: #6b6b6b; }
+.wk-pl__title { margin: 14px 14px 0; font-weight: 700; font-size: 16px; color: #1f1f1f; }
+.wk-pl__meta { margin: 2px 14px 0; font-size: 12px; color: #6b6b6b; }
+.case-section .walk__app .wk-pl__meta { margin-top: 2px; } /* not the page's paragraph spacing */
+.case-section .walk__app .wk-pl__next { margin-top: 16px; }
+.wk-pl .pg-lesson { cursor: default; }
+.wk-pl .pg-lesson:hover { background: none; }
+
+/* Wider prototypes get a wider column: Columna's editor windows */
+.walk[data-walk="columna"] .walk__body { max-width: 560px; }
+
 .walk__scene[hidden] { display: none; }
 .walk__scene { animation: wd-in 0.35s ease-out; }
 .walk .fp-switch { display: none; }
 .walk .co-pin { display: none; } /* the numbered notes belong to the prototypes above */
-.walk .wish-demo__phone {
+/* One phone frame for every walkthrough phone (the frame pflegePro's screens were designed in):
+   the same width and height on every case study, so the stage never changes size. The screen
+   scrolls inside the frame. */
+.walk .wish-demo__phone,
+.walk .tg-phone,
+.walk .cd-phone,
+.walk .pf-phone {
+  width: 100%;
+  max-width: 340px;
   height: 640px;
-  margin: 0;
+  margin: 0 auto;
+  border: 6px solid #d3d6db; /* silver */
+  border-radius: 40px;
   overflow: hidden;
 }
+.walk .st-scroll { height: 100%; }
+.walk .st-scroll .cd-bar { margin: 14px -16px; } /* in the article, the bar keeps its own space */
+/* Columna is a desktop tool, so it keeps a browser window instead: one window size for the
+   editor and the preview */
+.walk .ed-window { display: flex; flex-direction: column; height: 520px; margin-top: 0; overflow: hidden; }
+.walk .ed-window .ed-doc { flex: 1; min-height: 0; overflow: hidden; }
+.wk-win__body { flex: 1; padding: 20px 24px; overflow: hidden; }
+.walk .wk-win .tk-switch { margin-top: 0; background: #ffffff; border-color: #e4e4e7; }
+.walk .wk-win .tk-switch span { color: #52525b; }
+.walk .wk-win .tk-switch input:checked + span { color: #ffffff; }
+.walk .wk-win .tk-stage { grid-template-columns: minmax(0, 230px) 1fr; gap: 24px; margin-top: 20px; }
+.walk .wk-win .tk-tokens { font-size: 12.5px; }
+.walk .wk-win .tk-tokens div { grid-template-columns: 110px 1fr; border-bottom-color: #e4e4e7; }
+.walk .wk-win .tk-tokens dt { color: #71717a; }
+.walk .wk-win .tk-tokens dd { color: #18181b; }
 /* SpringIn home screen, rebuilt from the prototype screenshot (02-home) */
 .walk__home .sp-phone { padding-top: 28px; }
 .hm-top { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
@@ -1646,7 +1789,6 @@ mark.hl {
 }
 @media (max-width: 809px) {
   .walk { padding: var(--space-6) var(--space-4); }
-  .walk .wish-demo__phone { height: 560px; }
 }
 
 /* SpringIn, decision 1: calendar, then the wish screen */
@@ -1847,10 +1989,14 @@ mark.hl {
 .pg-bar { display: block; width: 130px; height: 4px; margin-top: 6px; border-radius: 2px; background: #ececec; }
 .pg-bar span { display: block; height: 100%; width: 0; border-radius: 2px; background: var(--pf-red); transition: width 0.4s var(--ease-out); }
 .pg-tip { height: 90px; border-radius: 10px; background: linear-gradient(135deg, #f6c9a5, #e9a06e); }
+/* More Wissenswertes placeholders under the first card, so the home screen isn't half empty */
+.pg-tips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex-shrink: 0; }
+.pg-tips .pg-tip { display: block; height: 72px; }
+.pg-tips .pg-tip:nth-child(2), .pg-tips .pg-tip:nth-child(3) { opacity: 0.7; }
 
 /* ---------- pflegePro: exercise filter ---------- */
 .ex-phone { margin-top: var(--space-6); --pf-red: #d93a30; }
-.ex-chips { display: flex; gap: 6px; padding: 0 12px 10px; overflow-x: auto; scrollbar-width: none; }
+.ex-chips { display: flex; flex-shrink: 0; gap: 6px; padding: 0 12px 10px; overflow-x: auto; scrollbar-width: none; } /* never squeezed by the long list under it */
 .ex-chips button { flex-shrink: 0; padding: 7px 10px; border: 1px solid #e6e6e6; border-radius: 8px; background: #fff; font: inherit; font-size: 11.5px; font-weight: 600; color: #333; cursor: pointer; }
 .ex-chips button[aria-pressed="true"] { background: var(--pf-red); border-color: var(--pf-red); color: #fff; }
 .ex-chips button:focus-visible { outline: 2px solid var(--pf-red); outline-offset: 2px; }
@@ -2787,6 +2933,9 @@ mark.hl {
 }
 
 .case-figure figcaption { margin-top: var(--space-4); }
+
+/* HiFi boards (rebuilt screens on a light board): rounded, so they sit on the page like a card */
+.case-figure img.case-figure__board { border-radius: 18px; }
 
 .case-section h3 {
   font-weight: 500;

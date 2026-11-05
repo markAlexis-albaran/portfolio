@@ -234,7 +234,7 @@
         <h2 data-reveal>Walkthrough</h2>
         <div data-reveal data-delay="120">
           <p>The whole wish round from start to finish, clicked through in the prototype: writing a wish with alternatives, checking the list before handing it in, the deadline passing, and the plan coming out.</p>
-          <div class="walk">
+          <div class="walk" data-walk="springin">
             <div class="walk__head">
               <p class="walk__title">One wish round, start to finish</p>
               <button class="walk__toggle label" type="button" aria-pressed="false">Pause walkthrough</button>
@@ -243,12 +243,12 @@
               <ol class="walk__steps">
                 <li class="is-current"><span class="walk__n" aria-hidden="true">1</span><div class="walk__d"><p class="walk__name">Open the app</p><p>The home screen shows the deadline, days left and wishes written. Open the Wunschplaner.</p></div></li>
                 <li><span class="walk__n" aria-hidden="true">2</span><div class="walk__d"><p class="walk__name">Write a wish</p><p>Tap 12 March, choose a day off, add alternatives up to the limit of two, remove one, then save.</p></div></li>
-                <li><span class="walk__n" aria-hidden="true">3</span><div class="walk__d"><p class="walk__name">Check before handing in</p><p>All four wishes in one list. Withdraw one, bring it back with Undo, then hand them in.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">3</span><div class="walk__d"><p class="walk__name">Check before handing in</p><p>Tap the summary card to see all four wishes in one list. Withdraw one, bring it back with Undo, then hand them in.</p></div></li>
                 <li><span class="walk__n" aria-hidden="true">4</span><div class="walk__d"><p class="walk__name">The deadline passes</p><p>The round closes, the wishes are read-only, and the screen says who to ask about a late wish.</p></div></li>
                 <li><span class="walk__n" aria-hidden="true">5</span><div class="walk__d"><p class="walk__name">The plan is out</p><p>Each wish shows whether it was granted, with a next step for the one that wasn't.</p></div></li>
               </ol>
               <div class="walk__stage" aria-hidden="true" inert>
-                <div class="wish-demo walk__scene walk__home">
+                <div class="wish-demo walk__scene walk__home" data-scene="home">
                   <div class="wish-demo__phone sp-phone">
                     <div class="hm-top">
                       <span class="hm-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="4" fill="currentColor"/><path d="M4.5 20c.8-3.6 3.9-6 7.5-6s6.7 2.4 7.5 6z" fill="currentColor"/></svg></span>

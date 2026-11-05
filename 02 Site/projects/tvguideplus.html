@@ -49,6 +49,7 @@
           <li><a href="#insight">Insight</a></li>
           <li><a href="#making">Making</a></li>
           <li><a href="#outcome">Outcome</a></li>
+          <li><a href="#walkthrough">Walkthrough</a></li>
         </ul>
       </div>
     </nav>
@@ -94,7 +95,7 @@
           <h3>Home: TV tips first, news clearly separated</h3>
           <p>I opened the homepage with trending topic chips and a "TV tips of the day" carousel, then a clear NEWS divider before the editorial content, instead of the large ad and mixed feed at the top. Participants said <mark class="hl">the oversized ad made the site feel like a scam</mark>, and that news articles were hard to tell apart from ads.</p>
           <figure class="case-figure">
-            <img src="../images/tvguideplus/home-redesign.jpg" alt="Redesigned homepage: topic chips, a TV tips carousel and a separate news section" loading="lazy">
+            <img class="case-figure__board" src="../images/tvguideplus/home-board.jpg" alt="Redesigned homepage: topic chips, a TV tips carousel and a separate news section" loading="lazy">
           </figure>
 
           <h3>Search: suggestions first, results labeled by type</h3>
@@ -111,7 +112,7 @@
             <p class="try__caption label">Rebuilt from my designs, in German as on the site. Results for &ldquo;bar&rdquo; come from my screens; the others are samples. Try &ldquo;bar&rdquo; or &ldquo;lu&rdquo;.</p>
           </div>
           <figure class="case-figure">
-            <img src="../images/tvguideplus/search-redesign.jpg" alt="Redesigned search: top searches before typing, then live results labeled Sendung, VOD and News" loading="lazy">
+            <img class="case-figure__board" src="../images/tvguideplus/search-board.jpg" alt="Redesigned search: top searches before typing, then live results labeled Sendung, VOD and News" loading="lazy">
           </figure>
 
           <h3>TV Guide: now, 20:15 and 22:00 one tap away</h3>
@@ -153,7 +154,7 @@
             <p class="try__caption label">Rebuilt from my designs. Pick a time or a type, then remove a chip with its &times;.</p>
           </div>
           <figure class="case-figure">
-            <img src="../images/tvguideplus/tvguide-redesign.jpg" alt="Redesigned TV guide: now, 20:15 and 22:00 tabs, and a filter panel for time, genre and channels" loading="lazy">
+            <img class="case-figure__board" src="../images/tvguideplus/tvguide-board.jpg" alt="Redesigned TV guide: now, 20:15 and 22:00 tabs, and a filter panel for time, genre and channels" loading="lazy">
           </figure>
         </div>
       </section>
@@ -163,6 +164,50 @@
         <div data-reveal data-delay="120">
           <p>I delivered a prioritized list of usability opportunities and redesigned the Home, Search and TV Guide screens around them.</p>
           <p>With a small sample, the next step I'd take is testing the redesign with more participants to confirm the improvements hold up.</p>
+        </div>
+      </section>
+      <section class="case-section" id="walkthrough">
+        <h2 data-reveal>Walkthrough</h2>
+        <div data-reveal data-delay="120">
+          <p>The prototypes from this case study, joined into one flow: starting on Home, searching for a show, opening the TV guide and filtering it. Home and its menu are rebuilt from my Home design; the menu's other items are placeholders.</p>
+          <div class="walk" data-walk="tvguideplus">
+            <div class="walk__head">
+              <p class="walk__title">From Home to tonight's films</p>
+              <button class="walk__toggle label" type="button" aria-pressed="false">Pause walkthrough</button>
+            </div>
+            <div class="walk__body">
+              <ol class="walk__steps">
+                <li class="is-current"><span class="walk__n" aria-hidden="true">1</span><div class="walk__d"><p class="walk__name">Start on Home</p><p>TV tips come first, and the news has its own section under a clear divider.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">2</span><div class="walk__d"><p class="walk__name">Search</p><p>Tap the search icon and type &ldquo;bar&rdquo;. Every result says what it is: Sendung, VOD or News.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">3</span><div class="walk__d"><p class="walk__name">What's on tonight</p><p>Back on Home, open the menu, pick TV-Programm, then switch the guide to 20:15.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">4</span><div class="walk__d"><p class="walk__name">Filter the guide</p><p>Pick Heute um 20:15 and Spielfilme, close the filter, and the guide shows only the two films.</p></div></li>
+              </ol>
+              <div class="walk__stage" aria-hidden="true" inert>
+                <div class="walk__scene tg-home" data-scene="home">
+                  <div class="tg-phone tgh">
+                    <div class="tg-bar tgh-bar"><span class="tg-logo">TVGuide+</span><span class="tgh-icons"><span class="tgh-user"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 20c.8-3.6 3.6-5.6 7-5.6s6.2 2 7 5.6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><button type="button" class="tgh-search"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 15l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="tgh-menu"><svg viewBox="0 0 24 24"><path d="M4 6.5h16M4 12h16M4 17.5h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></span></div>
+                    <div class="tgh-chips"><span>Dschungelcamp</span><span>Sommerhaus der Stars</span></div>
+                    <p class="tgh-h">Unsere TV-Tagestipps</p>
+                    <div class="tgh-carousel">
+                      <span class="tgh-tip tgh-tip--peek"></span>
+                      <span class="tgh-tip"><span class="tgh-img"><span class="tgh-ch">ZDF</span></span><span class="tgh-cap"><strong>Luther – The Fallen Sun</strong><span>Thriller</span></span></span>
+                      <span class="tgh-tip tgh-tip--peek"></span>
+                    </div>
+                    <div class="tgh-dots"><i></i><i class="is-on"></i><i></i><i></i><i></i></div>
+                    <p class="tgh-news"><span>NEWS</span></p>
+                    <div class="tgh-newsimg"></div>
+                    <div class="tgh-newstxt"><span></span><span></span><span></span></div>
+                    <div class="tgh-menu-panel" hidden>
+                      <button type="button" class="tgh-menu-item">TV-Programm</button>
+                      <span class="tgh-ph"></span><span class="tgh-ph"></span><span class="tgh-ph"></span><span class="tgh-ph"></span>
+                    </div>
+                  </div>
+                </div>
+                <span class="walk__pointer"></span>
+              </div>
+            </div>
+          </div>
+          <p class="try__caption label">Plays on its own. Home and its menu are rebuilt from my Home design; the rest uses the prototypes above. Pause it any time.</p>
         </div>
       </section>
       <nav class="case-end" aria-label="More projects">

@@ -49,6 +49,7 @@
           <li><a href="#insight">Insight</a></li>
           <li><a href="#making">Making</a></li>
           <li><a href="#outcome">Outcome</a></li>
+          <li><a href="#walkthrough">Walkthrough</a></li>
         </ul>
       </div>
     </nav>
@@ -136,7 +137,7 @@
             <figcaption class="label">Before</figcaption>
           </figure>
           <figure class="case-figure">
-            <img src="../images/yumm/comparison-redesign.jpg" alt="Redesigned comparison: badges, compare checkboxes, a selection bar, then a side-by-side spec table" loading="lazy">
+            <img class="case-figure__board" src="../images/yumm/comparison-board.jpg" alt="Redesigned comparison: badges, compare checkboxes, a selection bar, then a side-by-side spec table" loading="lazy">
             <figcaption class="label">After: select two grills, then compare them side by side</figcaption>
           </figure>
 
@@ -169,7 +170,7 @@
             <p class="try__caption label">Rebuilt from my designs, in German as on the site. Scroll the article: the button appears once you're reading, and takes you to the top pick.</p>
           </div>
           <figure class="case-figure">
-            <img src="../images/yumm/sticky-cta.jpg" alt="A floating Jump to Best Price button over the article, leading to the Best Overall product card" loading="lazy">
+            <img class="case-figure__board" src="../images/yumm/sticky-board.jpg" alt="A floating Jump to Best Price button over the article, leading to the Best Overall product card" loading="lazy">
             <figcaption class="label">After: the button stays on screen and jumps to the top pick</figcaption>
           </figure>
 
@@ -203,7 +204,7 @@
             <figcaption class="label">Before</figcaption>
           </figure>
           <figure class="case-figure">
-            <img src="../images/yumm/cards-redesign.jpg" alt="The compact product card, closed and with other sellers and specs expanded" loading="lazy">
+            <img class="case-figure__board" src="../images/yumm/cards-board.jpg" alt="The compact product card, closed and with other sellers and specs expanded" loading="lazy">
             <figcaption class="label">After: closed, and with sellers and specs opened</figcaption>
           </figure>
         </div>
@@ -220,6 +221,29 @@
           </ul>
           <p>More people reached the end of the guide: scroll depth past 75% went from 24% to 40%, and time on page rose from 1:42 to 2:35.</p>
           <p>Some users still questioned the ranking, so next I'd show the testing criteria and scoring method, and add picks by need, like best for balconies, for families or under &euro;100.</p>
+        </div>
+      </section>
+      <section class="case-section" id="walkthrough">
+        <h2 data-reveal>Walkthrough</h2>
+        <div data-reveal data-delay="120">
+          <p>The prototypes from this case study, joined into one article page: the comparison at the top, the article, and the Best Overall card further down.</p>
+          <div class="walk" data-walk="yumm">
+            <div class="walk__head">
+              <p class="walk__title">Reading a grill comparison</p>
+              <button class="walk__toggle label" type="button" aria-pressed="false">Pause walkthrough</button>
+            </div>
+            <div class="walk__body">
+              <ol class="walk__steps">
+                <li class="is-current"><span class="walk__n" aria-hidden="true">1</span><div class="walk__d"><p class="walk__name">Compare two grills</p><p>At the top of the article, tick Vergleichen on both grills, then open the side-by-side comparison.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">2</span><div class="walk__d"><p class="walk__name">Jump to the best price</p><p>Read on. The button appears once you're in the article and takes you to the top pick.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">3</span><div class="walk__d"><p class="walk__name">Open only what you need</p><p>On the Best Overall card, open Weitere Anbieter, then Technische Daten.</p></div></li>
+              </ol>
+              <div class="walk__stage" aria-hidden="true" inert>
+                <span class="walk__pointer"></span>
+              </div>
+            </div>
+          </div>
+          <p class="try__caption label">Plays on its own, using the same rebuilt prototypes as above. Pause it any time.</p>
         </div>
       </section>
       <nav class="case-end" aria-label="More projects">

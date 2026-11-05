@@ -49,6 +49,7 @@
           <li><a href="#insight">Insight</a></li>
           <li><a href="#making">Making</a></li>
           <li><a href="#outcome">Outcome</a></li>
+          <li><a href="#walkthrough">Walkthrough</a></li>
         </ul>
       </div>
     </nav>
@@ -113,6 +114,7 @@
                   </div>
                   <p class="pg-sec"><strong>Wissenswertes</strong><span>Alle anzeigen</span></p>
                   <div class="pg-tip" aria-hidden="true"></div>
+                  <div class="pg-tips" aria-hidden="true"><span class="pg-tip"></span><span class="pg-tip"></span><span class="pg-tip"></span><span class="pg-tip"></span></div>
                 </div>
                 <div class="pf-tabbar" aria-hidden="true"><span class="is-on"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Home</span><span class=""><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z M6 11v5c3 2 9 2 12 0v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Programme</span><span class=""><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 21l2-9h4l2 9M9 10l-3 3M15 10l3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Übungen</span><span class=""><svg viewBox="0 0 24 24"><path d="M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3M12 14v4M8 21h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Erfolge</span></div>
               </div>
@@ -120,7 +122,7 @@
             <p class="try__caption label">Rebuilt from my designs, in German as in the app. Tap lessons on the left to mark them watched.</p>
           </div>
           <figure class="case-figure">
-            <img src="../images/pflegepro/home.jpg" alt="The home screen with a Your programme card and progress bar, knowledge articles and quick exercises" loading="lazy">
+            <img class="case-figure__board" src="../images/pflegepro/home-board.jpg" alt="The home screen with a Your programme card and progress bar, knowledge articles and quick exercises" loading="lazy">
             <figcaption class="label">The current programme and its progress sit at the top</figcaption>
           </figure>
 
@@ -163,7 +165,7 @@
             <p class="try__caption label">Rebuilt from my designs, in German as in the app. Tap the heart on the left and watch Favoriten on the right.</p>
           </div>
           <figure class="case-figure">
-            <img src="../images/pflegepro/favorites.jpg" alt="An exercise with a heart icon, the empty Favorites screen explaining the heart, and Favorites with a saved item" loading="lazy">
+            <img class="case-figure__board" src="../images/pflegepro/favorites-board.jpg" alt="An exercise with a heart icon, the empty Favorites screen explaining the heart, and Favorites with a saved item" loading="lazy">
             <figcaption class="label">Save with the heart, and the empty state explains where it goes</figcaption>
           </figure>
 
@@ -187,11 +189,11 @@
             <p class="try__caption label">Rebuilt from my designs, in German as in the app. Pick a need; every exercise shows how long it takes.</p>
           </div>
           <figure class="case-figure">
-            <img src="../images/pflegepro/programmes.jpg" alt="The programme list with video thumbnails and progress, and a programme with short lessons and their lengths" loading="lazy">
+            <img class="case-figure__board" src="../images/pflegepro/programmes-board.jpg" alt="The programme list with video thumbnails and progress, and a programme with short lessons and their lengths" loading="lazy">
             <figcaption class="label">Programmes: video first, every lesson shows how long it takes</figcaption>
           </figure>
           <figure class="case-figure">
-            <img src="../images/pflegepro/exercises.jpg" alt="The exercise overview and a filtered exercise list" loading="lazy">
+            <img class="case-figure__board" src="../images/pflegepro/exercises-board.jpg" alt="The exercise overview and a filtered exercise list" loading="lazy">
             <figcaption class="label">Exercises: quick picks by need, filterable by topic</figcaption>
           </figure>
         </div>
@@ -208,6 +210,122 @@
           </ul>
           <p>A SUS score of 86 is in the excellent range, and ease of use per task (SEQ) rose from 4.1 to 6.2 out of 7.</p>
           <p>Next I'd add learning paths by role and experience, offline access for use on shift and, longer term, posture feedback using the phone's sensors.</p>
+        </div>
+      </section>
+      <section class="case-section" id="walkthrough">
+        <h2 data-reveal>Walkthrough</h2>
+        <div data-reveal data-delay="120">
+          <p>The prototypes from this case study, joined into one flow: opening a program from Home, watching a lesson, seeing the progress, and saving the next lesson to Favoriten.</p>
+          <div class="walk" data-walk="pflegepro">
+            <div class="walk__head">
+              <p class="walk__title">Follow a program, save a lesson</p>
+              <button class="walk__toggle label" type="button" aria-pressed="false">Pause walkthrough</button>
+            </div>
+            <div class="walk__body">
+              <ol class="walk__steps">
+                <li class="is-current"><span class="walk__n" aria-hidden="true">1</span><div class="walk__d"><p class="walk__name">Open your program</p><p>On Home, tap Beine Lagern under Programm fortsetzen.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">2</span><div class="walk__d"><p class="walk__name">Watch a lesson</p><p>Open Grundwissen and tap Abspielen. The short video plays to the end.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">3</span><div class="walk__d"><p class="walk__name">Progress on Home</p><p>Back on Home, the bar fills: 1 of 5 lessons watched.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">4</span><div class="walk__d"><p class="walk__name">Save the next lesson</p><p>Open Ausführung and tap the heart to save it.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">5</span><div class="walk__d"><p class="walk__name">Find it in Favoriten</p><p>On Home, tap Favoriten. It opens empty, then the saved lesson appears under Programm-Inhalte.</p></div></li>
+              </ol>
+              <div class="walk__stage" aria-hidden="true" inert>
+                <div class="walk__scene walk__app progress-demo fav-demo" data-scene="app">
+                <div class="pf-phone">
+                  <div class="wk-screen" data-screen="home">
+                    <div class="pf-screen hm2">
+                      <div class="hm2-top">
+                        <span class="hm2-logo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M8 11.5l2.5 2.5L16 9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                        <strong class="hm2-points">1234</strong>
+                        <span class="hm2-avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9.5" r="3.5" fill="currentColor"/><path d="M5.5 19c1-3.2 3.6-5 6.5-5s5.5 1.8 6.5 5z" fill="currentColor"/></svg></span>
+                        <span class="hm2-icons"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H10l-4 4v-4h0A2 2 0 0 1 4 14z" fill="currentColor"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 21c.6-4 4-6.5 8-6.5s7.4 2.5 8 6.5z" fill="currentColor"/></svg></span>
+                      </div>
+                      <p class="hm2-hello">Willkommen zurück, Tom!</p>
+                      <div class="hm2-tiles">
+                        <span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="currentColor"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Check-In</span>
+                        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="currentColor"/></svg>Favoriten</span>
+                        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>Mehr</span>
+                      </div>
+                      <p class="hm2-sec"><strong>Programm fortsetzen</strong><span>Mehr anzeigen</span></p>
+                      <div class="hm2-prog">
+                        <svg viewBox="0 0 280 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="280" height="150" fill="#eef0f3"/><rect x="0" y="118" width="280" height="32" fill="#e2e5ea"/><rect x="22" y="70" width="70" height="6" rx="3" fill="#cfd4db"/><rect x="28" y="76" width="4" height="42" fill="#cfd4db"/><rect x="82" y="76" width="4" height="42" fill="#cfd4db"/><circle cx="150" cy="56" r="11" fill="#b8bec7"/><path d="M134 118 L140 74 Q150 66 160 74 L166 118 Z" fill="#c6ccd4"/><path d="M140 82 L122 98 M160 82 L178 98" stroke="#b8bec7" stroke-width="7" stroke-linecap="round"/><circle cx="214" cy="60" r="10" fill="#b8bec7"/><path d="M200 118 L204 78 Q214 70 224 78 L228 118 Z" fill="#d3d8de"/></svg>
+                        <div class="hm2-prog__txt"><strong>Beine Lagern</strong><span class="hm2-meta">0 of 5 lessons watched</span><span class="hm2-bar"><span></span></span></div>
+                      </div>
+                      <p class="hm2-sec"><strong>Aktuelles für dich</strong><span>Mehr anzeigen</span></p>
+                      <div class="hm2-news">
+                        <div class="hm2-card">
+                          <span class="hm2-card__img"><span class="hm2-card__heart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                          <strong>Warum Helfen glücklich macht</strong>
+                          <span>Die schönste Seite deiner Arbeit</span>
+                          <small>Wissenswertes</small>
+                        </div>
+                        <div class="hm2-card hm2-card--peek"><span class="hm2-card__img"></span></div>
+                      </div>
+                      <div class="hm2-cats">
+                        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3L6 13h5l-1 8 7-10h-5z" fill="currentColor"/></svg>Verspannungen</span>
+                        <span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="16" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 10.5v3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="5.5" y="9.5" width="11" height="5" rx="1" fill="currentColor"/></svg>Anti-Stress</span>
+                        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17V5l8-2v11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7.5" cy="17" r="2.5" fill="currentColor"/><circle cx="15.5" cy="14" r="2.5" fill="currentColor"/></svg>Klangwelten</span>
+                        <span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="7.5" width="17" height="12" rx="2" fill="currentColor"/><path d="M9 7.5V5.5h6v2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h17" stroke="#f2f2f2" stroke-width="1.6"/></svg>Fit im Büro</span>
+                      </div>
+                    </div>
+                    <div class="pf-tabbar" aria-hidden="true"><span class="is-on"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Home</span><span class=""><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z M6 11v5c3 2 9 2 12 0v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Programme</span><span class=""><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 21l2-9h4l2 9M9 10l-3 3M15 10l3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Übungen</span><span class=""><svg viewBox="0 0 24 24"><path d="M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3M12 14v4M8 21h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Erfolge</span></div>
+                  </div>
+                  <div class="wk-screen" data-screen="program" hidden>
+                    <div class="pf-screen">
+                  <div class="pf-img pg-hero"><svg viewBox="0 0 280 150" aria-hidden="true" focusable="false"><rect width="280" height="150" fill="#eef0f3"/><rect x="0" y="118" width="280" height="32" fill="#e2e5ea"/><rect x="22" y="70" width="70" height="6" rx="3" fill="#cfd4db"/><rect x="28" y="76" width="4" height="42" fill="#cfd4db"/><rect x="82" y="76" width="4" height="42" fill="#cfd4db"/><circle cx="150" cy="56" r="11" fill="#b8bec7"/><path d="M134 118 L140 74 Q150 66 160 74 L166 118 Z" fill="#c6ccd4"/><path d="M140 82 L122 98 M160 82 L178 98" stroke="#b8bec7" stroke-width="7" stroke-linecap="round"/><circle cx="214" cy="60" r="10" fill="#b8bec7"/><path d="M200 118 L204 78 Q214 70 224 78 L228 118 Z" fill="#d3d8de"/></svg><span class="pf-back" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p class="pg-hero__title">Beine Lagern</p></div>
+                  <p class="pg-h">Programm-Inhalte</p>
+                  <ul class="pg-list"><li><button type="button" class="pg-lesson" aria-pressed="false"><span class="pg-thumb" aria-hidden="true"><svg viewBox="0 0 280 150" aria-hidden="true" focusable="false"><rect width="280" height="150" fill="#eef0f3"/><rect x="0" y="118" width="280" height="32" fill="#e2e5ea"/><rect x="22" y="70" width="70" height="6" rx="3" fill="#cfd4db"/><rect x="28" y="76" width="4" height="42" fill="#cfd4db"/><rect x="82" y="76" width="4" height="42" fill="#cfd4db"/><circle cx="150" cy="56" r="11" fill="#b8bec7"/><path d="M134 118 L140 74 Q150 66 160 74 L166 118 Z" fill="#c6ccd4"/><path d="M140 82 L122 98 M160 82 L178 98" stroke="#b8bec7" stroke-width="7" stroke-linecap="round"/><circle cx="214" cy="60" r="10" fill="#b8bec7"/><path d="M200 118 L204 78 Q214 70 224 78 L228 118 Z" fill="#d3d8de"/></svg></span><span class="pg-text"><strong>Grundwissen</strong><span>▶ 1 min</span></span><span class="pg-check" aria-hidden="true">✓</span><span class="visually-hidden">, mark as watched</span></button></li><li><button type="button" class="pg-lesson" aria-pressed="false"><span class="pg-thumb" aria-hidden="true"><svg viewBox="0 0 280 150" aria-hidden="true" focusable="false"><rect width="280" height="150" fill="#eef0f3"/><rect x="0" y="118" width="280" height="32" fill="#e2e5ea"/><rect x="22" y="70" width="70" height="6" rx="3" fill="#cfd4db"/><rect x="28" y="76" width="4" height="42" fill="#cfd4db"/><rect x="82" y="76" width="4" height="42" fill="#cfd4db"/><circle cx="150" cy="56" r="11" fill="#b8bec7"/><path d="M134 118 L140 74 Q150 66 160 74 L166 118 Z" fill="#c6ccd4"/><path d="M140 82 L122 98 M160 82 L178 98" stroke="#b8bec7" stroke-width="7" stroke-linecap="round"/><circle cx="214" cy="60" r="10" fill="#b8bec7"/><path d="M200 118 L204 78 Q214 70 224 78 L228 118 Z" fill="#d3d8de"/></svg></span><span class="pg-text"><strong>Ausführung</strong><span>▶ 40 sec</span></span><span class="pg-check" aria-hidden="true">✓</span><span class="visually-hidden">, mark as watched</span></button></li><li><button type="button" class="pg-lesson" aria-pressed="false"><span class="pg-thumb" aria-hidden="true"><svg viewBox="0 0 280 150" aria-hidden="true" focusable="false"><rect width="280" height="150" fill="#eef0f3"/><rect x="0" y="118" width="280" height="32" fill="#e2e5ea"/><rect x="22" y="70" width="70" height="6" rx="3" fill="#cfd4db"/><rect x="28" y="76" width="4" height="42" fill="#cfd4db"/><rect x="82" y="76" width="4" height="42" fill="#cfd4db"/><circle cx="150" cy="56" r="11" fill="#b8bec7"/><path d="M134 118 L140 74 Q150 66 160 74 L166 118 Z" fill="#c6ccd4"/><path d="M140 82 L122 98 M160 82 L178 98" stroke="#b8bec7" stroke-width="7" stroke-linecap="round"/><circle cx="214" cy="60" r="10" fill="#b8bec7"/><path d="M200 118 L204 78 Q214 70 224 78 L228 118 Z" fill="#d3d8de"/></svg></span><span class="pg-text"><strong>Einführung</strong><span>▶ 52 sec</span></span><span class="pg-check" aria-hidden="true">✓</span><span class="visually-hidden">, mark as watched</span></button></li><li><button type="button" class="pg-lesson" aria-pressed="false"><span class="pg-thumb" aria-hidden="true"><svg viewBox="0 0 280 150" aria-hidden="true" focusable="false"><rect width="280" height="150" fill="#eef0f3"/><rect x="0" y="118" width="280" height="32" fill="#e2e5ea"/><rect x="22" y="70" width="70" height="6" rx="3" fill="#cfd4db"/><rect x="28" y="76" width="4" height="42" fill="#cfd4db"/><rect x="82" y="76" width="4" height="42" fill="#cfd4db"/><circle cx="150" cy="56" r="11" fill="#b8bec7"/><path d="M134 118 L140 74 Q150 66 160 74 L166 118 Z" fill="#c6ccd4"/><path d="M140 82 L122 98 M160 82 L178 98" stroke="#b8bec7" stroke-width="7" stroke-linecap="round"/><circle cx="214" cy="60" r="10" fill="#b8bec7"/><path d="M200 118 L204 78 Q214 70 224 78 L228 118 Z" fill="#d3d8de"/></svg></span><span class="pg-text"><strong>Grundwissen</strong><span>▶ 1 min</span></span><span class="pg-check" aria-hidden="true">✓</span><span class="visually-hidden">, mark as watched</span></button></li><li><button type="button" class="pg-lesson" aria-pressed="false"><span class="pg-thumb" aria-hidden="true"><svg viewBox="0 0 280 150" aria-hidden="true" focusable="false"><rect width="280" height="150" fill="#eef0f3"/><rect x="0" y="118" width="280" height="32" fill="#e2e5ea"/><rect x="22" y="70" width="70" height="6" rx="3" fill="#cfd4db"/><rect x="28" y="76" width="4" height="42" fill="#cfd4db"/><rect x="82" y="76" width="4" height="42" fill="#cfd4db"/><circle cx="150" cy="56" r="11" fill="#b8bec7"/><path d="M134 118 L140 74 Q150 66 160 74 L166 118 Z" fill="#c6ccd4"/><path d="M140 82 L122 98 M160 82 L178 98" stroke="#b8bec7" stroke-width="7" stroke-linecap="round"/><circle cx="214" cy="60" r="10" fill="#b8bec7"/><path d="M200 118 L204 78 Q214 70 224 78 L228 118 Z" fill="#d3d8de"/></svg></span><span class="pg-text"><strong>Ausführung</strong><span>▶ 40 sec</span></span><span class="pg-check" aria-hidden="true">✓</span><span class="visually-hidden">, mark as watched</span></button></li></ul>
+                </div>
+                    <div class="pf-tabbar" aria-hidden="true"><span class=""><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Home</span><span class="is-on"><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z M6 11v5c3 2 9 2 12 0v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Programme</span><span class=""><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 21l2-9h4l2 9M9 10l-3 3M15 10l3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Übungen</span><span class=""><svg viewBox="0 0 24 24"><path d="M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3M12 14v4M8 21h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Erfolge</span></div>
+                  </div>
+                  <div class="wk-screen" data-screen="lesson" hidden>
+                    <div class="pf-screen">
+                  <div class="pf-img"><svg viewBox="0 0 280 150" aria-hidden="true" focusable="false"><rect width="280" height="150" fill="#eef0f3"/><rect x="0" y="118" width="280" height="32" fill="#e2e5ea"/><rect x="22" y="70" width="70" height="6" rx="3" fill="#cfd4db"/><rect x="28" y="76" width="4" height="42" fill="#cfd4db"/><rect x="82" y="76" width="4" height="42" fill="#cfd4db"/><circle cx="150" cy="56" r="11" fill="#b8bec7"/><path d="M134 118 L140 74 Q150 66 160 74 L166 118 Z" fill="#c6ccd4"/><path d="M140 82 L122 98 M160 82 L178 98" stroke="#b8bec7" stroke-width="7" stroke-linecap="round"/><circle cx="214" cy="60" r="10" fill="#b8bec7"/><path d="M200 118 L204 78 Q214 70 224 78 L228 118 Z" fill="#d3d8de"/></svg><span class="pf-back" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+                  <div class="pf-row">
+                    <div><p class="pf-title pf-title--lg wk-les-title">Grundwissen</p><p class="pf-meta wk-les-meta">Beine Lagern · ▶ 1 min</p></div>
+                    <button class="pf-heart" type="button" aria-pressed="false" aria-label="Save to Favoriten"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+                  </div>
+                  <p class="pf-desc">In dieser Lektion lernst du, wie du mehr lösungsorientiert handeln kannst. <strong>Mehr</strong></p>
+                  <span class="pf-play" aria-hidden="true">▶ Abspielen</span>
+                </div>
+                    <div class="pf-tabbar" aria-hidden="true"><span class=""><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Home</span><span class=""><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z M6 11v5c3 2 9 2 12 0v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Programme</span><span class="is-on"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 21l2-9h4l2 9M9 10l-3 3M15 10l3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Übungen</span><span class=""><svg viewBox="0 0 24 24"><path d="M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3M12 14v4M8 21h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Erfolge</span></div>
+                  </div>
+                  <div class="wk-screen" data-screen="player" hidden>
+                    <div class="pf-screen wk-pl">
+                      <div class="pf-head"><span class="pf-back" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>Grundwissen</p></div>
+                      <div class="wk-pl__video"><svg viewBox="0 0 280 150" aria-hidden="true" focusable="false"><rect width="280" height="150" fill="#eef0f3"/><rect x="0" y="118" width="280" height="32" fill="#e2e5ea"/><rect x="22" y="70" width="70" height="6" rx="3" fill="#cfd4db"/><rect x="28" y="76" width="4" height="42" fill="#cfd4db"/><rect x="82" y="76" width="4" height="42" fill="#cfd4db"/><circle cx="150" cy="56" r="11" fill="#b8bec7"/><path d="M134 118 L140 74 Q150 66 160 74 L166 118 Z" fill="#c6ccd4"/><path d="M140 82 L122 98 M160 82 L178 98" stroke="#b8bec7" stroke-width="7" stroke-linecap="round"/><circle cx="214" cy="60" r="10" fill="#b8bec7"/><path d="M200 118 L204 78 Q214 70 224 78 L228 118 Z" fill="#d3d8de"/></svg><span class="wk-pl__icon">▶</span></div>
+                      <div class="wk-pl__bar"><span></span></div>
+                      <p class="wk-pl__time"><span class="wk-pl__now">0:00</span><span>1:00</span></p>
+                      <p class="wk-pl__title">Grundwissen</p>
+                      <p class="wk-pl__meta">Beine Lagern · Lektion 1 von 5</p>
+                      <p class="pg-h wk-pl__next">Programm-Inhalte</p>
+                      <ul class="pg-list"><li><div class="pg-lesson"><span class="pg-thumb" aria-hidden="true"><svg viewBox="0 0 280 150" aria-hidden="true" focusable="false"><rect width="280" height="150" fill="#eef0f3"/><rect x="0" y="118" width="280" height="32" fill="#e2e5ea"/><rect x="22" y="70" width="70" height="6" rx="3" fill="#cfd4db"/><rect x="28" y="76" width="4" height="42" fill="#cfd4db"/><rect x="82" y="76" width="4" height="42" fill="#cfd4db"/><circle cx="150" cy="56" r="11" fill="#b8bec7"/><path d="M134 118 L140 74 Q150 66 160 74 L166 118 Z" fill="#c6ccd4"/><path d="M140 82 L122 98 M160 82 L178 98" stroke="#b8bec7" stroke-width="7" stroke-linecap="round"/><circle cx="214" cy="60" r="10" fill="#b8bec7"/><path d="M200 118 L204 78 Q214 70 224 78 L228 118 Z" fill="#d3d8de"/></svg></span><span class="pg-text"><strong>Ausführung</strong><span>▶ 40 sec</span></span></div></li><li><div class="pg-lesson"><span class="pg-thumb" aria-hidden="true"><svg viewBox="0 0 280 150" aria-hidden="true" focusable="false"><rect width="280" height="150" fill="#eef0f3"/><rect x="0" y="118" width="280" height="32" fill="#e2e5ea"/><rect x="22" y="70" width="70" height="6" rx="3" fill="#cfd4db"/><rect x="28" y="76" width="4" height="42" fill="#cfd4db"/><rect x="82" y="76" width="4" height="42" fill="#cfd4db"/><circle cx="150" cy="56" r="11" fill="#b8bec7"/><path d="M134 118 L140 74 Q150 66 160 74 L166 118 Z" fill="#c6ccd4"/><path d="M140 82 L122 98 M160 82 L178 98" stroke="#b8bec7" stroke-width="7" stroke-linecap="round"/><circle cx="214" cy="60" r="10" fill="#b8bec7"/><path d="M200 118 L204 78 Q214 70 224 78 L228 118 Z" fill="#d3d8de"/></svg></span><span class="pg-text"><strong>Einführung</strong><span>▶ 52 sec</span></span></div></li><li><div class="pg-lesson"><span class="pg-thumb" aria-hidden="true"><svg viewBox="0 0 280 150" aria-hidden="true" focusable="false"><rect width="280" height="150" fill="#eef0f3"/><rect x="0" y="118" width="280" height="32" fill="#e2e5ea"/><rect x="22" y="70" width="70" height="6" rx="3" fill="#cfd4db"/><rect x="28" y="76" width="4" height="42" fill="#cfd4db"/><rect x="82" y="76" width="4" height="42" fill="#cfd4db"/><circle cx="150" cy="56" r="11" fill="#b8bec7"/><path d="M134 118 L140 74 Q150 66 160 74 L166 118 Z" fill="#c6ccd4"/><path d="M140 82 L122 98 M160 82 L178 98" stroke="#b8bec7" stroke-width="7" stroke-linecap="round"/><circle cx="214" cy="60" r="10" fill="#b8bec7"/><path d="M200 118 L204 78 Q214 70 224 78 L228 118 Z" fill="#d3d8de"/></svg></span><span class="pg-text"><strong>Grundwissen</strong><span>▶ 1 min</span></span></div></li><li><div class="pg-lesson"><span class="pg-thumb" aria-hidden="true"><svg viewBox="0 0 280 150" aria-hidden="true" focusable="false"><rect width="280" height="150" fill="#eef0f3"/><rect x="0" y="118" width="280" height="32" fill="#e2e5ea"/><rect x="22" y="70" width="70" height="6" rx="3" fill="#cfd4db"/><rect x="28" y="76" width="4" height="42" fill="#cfd4db"/><rect x="82" y="76" width="4" height="42" fill="#cfd4db"/><circle cx="150" cy="56" r="11" fill="#b8bec7"/><path d="M134 118 L140 74 Q150 66 160 74 L166 118 Z" fill="#c6ccd4"/><path d="M140 82 L122 98 M160 82 L178 98" stroke="#b8bec7" stroke-width="7" stroke-linecap="round"/><circle cx="214" cy="60" r="10" fill="#b8bec7"/><path d="M200 118 L204 78 Q214 70 224 78 L228 118 Z" fill="#d3d8de"/></svg></span><span class="pg-text"><strong>Ausführung</strong><span>▶ 40 sec</span></span></div></li></ul>
+                    </div>
+                    
+                  </div>
+                  <div class="wk-screen" data-screen="favoriten" hidden>
+                    <div class="pf-screen">
+                  <div class="pf-head"><span class="pf-back" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>Favoriten</p></div>
+                  <div class="pf-ftabs" aria-hidden="true"><span class="is-on">Programm-Inhalte</span><span>Übungen</span><span>Wissenswertes</span></div>
+                  <div class="pf-empty">
+                    <span class="pf-empty__icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+                    <p><strong>Du hast noch keine Favoriten gespeichert.</strong></p>
+                    <p>Sobald du Inhalte mit einem ♡ markierst, findest du sie hier.</p>
+                  </div>
+                  <div class="pf-saved" hidden>
+                    <div class="pf-thumb" aria-hidden="true"><svg viewBox="0 0 280 150" aria-hidden="true" focusable="false"><rect width="280" height="150" fill="#eef0f3"/><rect x="0" y="118" width="280" height="32" fill="#e2e5ea"/><rect x="22" y="70" width="70" height="6" rx="3" fill="#cfd4db"/><rect x="28" y="76" width="4" height="42" fill="#cfd4db"/><rect x="82" y="76" width="4" height="42" fill="#cfd4db"/><circle cx="150" cy="56" r="11" fill="#b8bec7"/><path d="M134 118 L140 74 Q150 66 160 74 L166 118 Z" fill="#c6ccd4"/><path d="M140 82 L122 98 M160 82 L178 98" stroke="#b8bec7" stroke-width="7" stroke-linecap="round"/><circle cx="214" cy="60" r="10" fill="#b8bec7"/><path d="M200 118 L204 78 Q214 70 224 78 L228 118 Z" fill="#d3d8de"/></svg></div>
+                    <div><p class="pf-title">Ausführung</p><p class="pf-meta">Beine Lagern · ▶ 40 sec</p></div>
+                  </div>
+                </div>
+                    <div class="pf-tabbar" aria-hidden="true"><span class="is-on"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Home</span><span class=""><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z M6 11v5c3 2 9 2 12 0v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Programme</span><span class=""><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 21l2-9h4l2 9M9 10l-3 3M15 10l3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Übungen</span><span class=""><svg viewBox="0 0 24 24"><path d="M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3M12 14v4M8 21h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Erfolge</span></div>
+                  </div>
+                </div>
+                </div>
+                <span class="walk__pointer"></span>
+              </div>
+            </div>
+          </div>
+          <p class="try__caption label">Plays on its own. Screens rebuilt from the prototypes above; the video player is a placeholder. Pause it any time.</p>
         </div>
       </section>
       <nav class="case-end" aria-label="More projects">
