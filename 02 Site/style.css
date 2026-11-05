@@ -2644,9 +2644,10 @@ button.walk__n { padding: 0; cursor: pointer; }
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 .orbit__facts-inner.is-out { opacity: 0; transform: translateY(12px); }
-.orbit__big { font-weight: 300; font-size: 64px; line-height: 0.95; letter-spacing: -0.04em; }
-.orbit__small { font-size: 16px; line-height: 1.4; color: var(--text-secondary); }
-.orbit__desc { margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--folder-wire); font-weight: 300; font-size: 17px; line-height: 1.5; }
+.orbit__big { font-weight: 300; font-size: 44px; line-height: 1; letter-spacing: -0.03em; }
+.orbit__small { margin-top: var(--space-1, 4px); font-size: 17px; line-height: 1.4; color: var(--text); }
+.orbit__line { max-width: 36ch; font-weight: 300; font-size: 17px; line-height: 1.45; color: var(--text); } /* what the project is, under its name */
+.orbit__center.is-intro .orbit__line { display: none; }
 .orbit__center.is-intro .orbit__name { font-weight: 300; font-size: 88px; line-height: 1; letter-spacing: -0.04em; }
 @media (max-width: 809px) {
   .orbit__center.is-intro .orbit__name { font-size: 56px; }
@@ -2654,85 +2655,145 @@ button.walk__n { padding: 0; cursor: pointer; }
   .orbit__facts { top: auto; bottom: var(--space-6); width: 100%; }
   .orbit__facts-inner { flex-direction: row; flex-wrap: wrap; align-items: baseline; column-gap: var(--space-4); }
   .orbit__big { font-size: 40px; }
-  .orbit__small { font-size: 13px; flex: 1 1 140px; }
-  .orbit__desc { flex-basis: 100%; margin-top: var(--space-2); padding-top: var(--space-2); font-size: 14px; }
+  .orbit__small { font-size: 15px; flex: 1 1 140px; }
+  .orbit__line { max-width: 30ch; font-size: 14px; }
   .orbit__name { font-size: 20px; }
   .orbit__center { top: 58%; gap: var(--space-4); }
   .orbit__center.is-intro { top: 46%; } /* the opening line sits higher, closer to what comes before it */
 }
 
-/* The overview at the end of the flight (desktop): a hovered project's details sit under the
-   card that comes forward, its result and description on the left */
-/* An open project: a dimmed, blurred layer over the overview (a click on it closes), and one
-   framed panel on top: the cover on the left, everything about the project on the right, and a
-   round close button on its corner */
-.orbit__scrim {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
-}
-.orbit__panel {
-  position: absolute;
-  left: 50%;
+/* One left-aligned column for the project in focus, in groups: name and what it is; field, year
+   and reading time; the labeled result; the button. The opening line stays centered. */
+.orbit__center:not(.is-intro) {
+  right: auto;
   top: 50%;
-  z-index: 4;
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: var(--space-9);
-  align-items: center;
-  width: min(920px, calc(100% - 2 * var(--gutter)));
-  padding: var(--space-6);
-  border: 1px solid var(--outline-soft);
-  border-radius: 20px;
-  background: var(--bg);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.14);
-  opacity: 0;
-  visibility: hidden;
-  transform: translate(-50%, calc(-50% + 12px)) scale(0.98);
-  transition: opacity 0.25s ease, transform 0.3s var(--ease-out), visibility 0s linear 0.3s;
+  width: min(360px, 28%);
+  align-items: flex-start;
+  gap: var(--space-6);
+  text-align: left;
 }
-.orbit.is-active .orbit__scrim,
-.orbit.is-active .orbit__panel { opacity: 1; visibility: visible; transition-delay: 0s; }
-.orbit.is-active .orbit__panel { transform: translate(-50%, -50%); }
-.orbit__panel-cover { display: block; aspect-ratio: 31 / 20; border-radius: 14px; background: center / cover no-repeat; }
-.orbit__panel-body { display: flex; flex-direction: column; align-items: flex-start; padding-right: var(--space-6); }
-.orbit__panel-body p { margin: 0; }
-.orbit__panel-name { font-weight: 500; font-size: 28px; line-height: 1.2; color: var(--text); }
-.orbit__panel-meta { margin-top: var(--space-2) !important; color: var(--text-secondary); }
-.orbit__panel-big { margin-top: var(--space-6) !important; font-weight: 300; font-size: 56px; line-height: 0.95; letter-spacing: -0.04em; color: var(--text); }
-.orbit__panel-small { margin-top: var(--space-2) !important; font-size: 15px; line-height: 1.4; color: var(--text-secondary); }
-.orbit__panel-desc { margin-top: var(--space-4) !important; padding-top: var(--space-4); border-top: 1px solid var(--folder-wire); font-weight: 300; font-size: 16px; line-height: 1.5; color: var(--text); }
-.orbit__panel-link { margin-top: var(--space-6); }
-/* the close button: solid, high contrast, on the panel's top-right corner */
-.orbit__close {
-  position: absolute;
-  top: -18px;
-  right: -18px;
+.orbit__center:not(.is-intro) .orbit__caption { align-items: flex-start; gap: var(--space-3, 12px); }
+.orbit__center:not(.is-intro) .orbit__name { font-weight: 300; font-size: 40px; line-height: 1.05; letter-spacing: -0.03em; }
+.orbit__center .orbit__facts {
+  position: static;
+  width: 100%;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--folder-wire);
+}
+/* desktop: the problem and result in a column on the right, level with the name's column */
+.orbit > .orbit__facts {
+  left: auto;
+  right: 0;
+  top: 0;
+  bottom: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: var(--text);
-  color: var(--bg);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: transform 0.2s var(--ease-out);
+  width: min(340px, 26%);
 }
-.orbit__close svg { width: 18px; height: 18px; }
-.orbit__close:hover { transform: scale(1.08); }
-.orbit__close:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.orbit.is-active { cursor: pointer; } /* a click on the dimmed layer closes */
-.orbit.is-active .orbit__panel { cursor: auto; }
+.orbit > .orbit__facts .orbit__facts-inner { width: 100%; }
+.orbit__facts-label, .orbit__panel-label { font-size: 13px; font-weight: 500; letter-spacing: 0.02em; color: var(--text); opacity: 0.72; } /* clear enough to read, quieter than the content */
+.orbit__facts-label { margin-bottom: var(--space-2); }
+/* the problem, then the result: before and after, which is what the section's title promises */
+.orbit__problem { margin-bottom: var(--space-6); font-weight: 300; font-size: 17px; line-height: 1.45; color: var(--text); }
+.orbit__panel-problem { margin-top: var(--space-2) !important; max-width: 36ch; font-weight: 300; font-size: 18px; line-height: 1.45; color: var(--text); }
+.orbit__panel-label--result { margin-top: var(--space-6) !important; padding-top: 0 !important; border-top: 0 !important; }
+.folder__problem { display: block; margin-bottom: var(--space-4); color: var(--text-secondary); }
+.folder__label { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; margin-right: var(--space-2); }
+.orbit__panel-label { align-self: stretch; margin-top: var(--space-9) !important; padding-top: var(--space-9); border-top: 1px solid var(--folder-wire); }
+@media (max-width: 809px) {
+  .orbit__center:not(.is-intro) { right: 0; width: auto; top: var(--col-top, 62%); gap: var(--space-3, 12px); }
+  .orbit__center:not(.is-intro) .orbit__caption { gap: 6px; }
+  .orbit__center:not(.is-intro) .orbit__name { font-size: 26px; }
+  .orbit__center .orbit__facts { padding-top: var(--space-3, 12px); }
+  .orbit__center .orbit__facts-inner { gap: 2px; }
+  .orbit__center .orbit__big { font-size: 32px; }
+  .orbit__center .orbit__small { flex: none; } /* not the 140px basis from the old row layout */
+  .orbit__center .orbit__link { padding: 12px 20px; font-size: 14px; }
+  .orbit__problem { margin-bottom: var(--space-3, 12px); font-size: 15px; }
+  .orbit__panel-problem { font-size: 16px; }
+  .orbit__center .orbit__facts-inner { flex-direction: column; align-items: flex-start; }
+  .orbit__panel-label { margin-top: var(--space-6) !important; padding-top: var(--space-6); }
+}
+
+/* The overview at the end of the flight (desktop): a hovered project's details sit under the
+   card that comes forward, its result and description on the left */
+/* An open project: a full-screen view under the site's top bar, in the page color, with no box.
+   "← All projects" top-left; a large cover on the left and the details on the right (on phones the
+   cover on top, the details under it and "Read case study" pinned to the bottom). The cover grows
+   out of its spot in the overview (main.js), and the rest fades in around it. */
+.orbit__panel {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8; /* under the top bar, which stays in view */
+  overflow-y: auto;
+  overscroll-behavior: contain; /* scrolling inside it never carries on to the page under it */
+  background: var(--bg);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+.orbit__panel.is-open { opacity: 1; visibility: visible; transition-delay: 0s; }
+.orbit__panel.is-closing { opacity: 0; transition: opacity 0.38s ease; }
+
+.orbit__panel-inner { display: flex; flex-direction: column; min-height: 100%; padding-top: var(--space-6); padding-bottom: var(--space-12); }
+.orbit__close {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  border: 0;
+  background: none;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+}
+.orbit__close:hover { text-decoration: underline; text-underline-offset: 4px; }
+.orbit__close:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.orbit__panel-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: var(--space-12);
+  align-items: center;
+  margin-top: var(--space-6);
+}
+.orbit__panel-cover { display: block; aspect-ratio: 31 / 20; border-radius: 18px; background: center / cover no-repeat; transform-origin: 0 0; }
+.orbit__panel-body { display: flex; flex-direction: column; align-items: flex-start; }
+.orbit__panel-body p { margin: 0; }
+.orbit__panel-name { font-weight: 300; font-size: 56px; line-height: 1; letter-spacing: -0.03em; color: var(--text); }
+.orbit__panel-meta { margin-top: var(--space-4) !important; color: var(--text-secondary); }
+/* the result comes after what the project is, under a divider */
+.orbit__panel-big { margin-top: var(--space-2) !important; font-weight: 300; font-size: 44px; line-height: 1; letter-spacing: -0.03em; color: var(--text); }
+.orbit__panel-small { margin-top: var(--space-1, 4px) !important; font-size: 17px; line-height: 1.4; color: var(--text); }
+.orbit__panel-desc { margin-top: var(--space-4) !important; max-width: 34ch; font-weight: 300; font-size: 20px; line-height: 1.45; color: var(--text); }
+.orbit__panel-cta { margin-top: var(--space-9); }
+/* the details arrive just after the cover */
+.orbit__panel-body > * { opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.4s var(--ease-out); }
+.orbit__panel.is-open .orbit__panel-body > * { opacity: 1; transform: none; transition-delay: 0.18s; }
+.orbit__panel.is-closing .orbit__panel-body > * { opacity: 0; transition-delay: 0s; }
+@media (max-width: 809px) {
+  .orbit__panel-inner { padding-top: var(--space-4); padding-bottom: 0; }
+  .orbit__panel-grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); align-items: start; margin-top: var(--space-4); }
+  .orbit__panel-cover { border-radius: 14px; }
+  .orbit__panel-name { font-size: 36px; }
+  .orbit__panel-big { font-size: 34px; }
+  .orbit__panel-desc { font-size: 17px; }
+  /* "Read case study" stays at the bottom of the screen while the details scroll */
+  .orbit__panel-cta {
+    position: sticky;
+    bottom: 0;
+    align-self: stretch;
+    margin: var(--space-6) calc(-1 * var(--gutter)) 0;
+    padding: var(--space-4) var(--gutter) calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(transparent, var(--bg) 30%);
+  }
+  .orbit__panel-link { display: flex; justify-content: center; width: 100%; }
+}
+
 /* where the opening line was: a Contact link down to the contact section, styled like "Scroll down" */
 .orbit__contact {
   position: absolute;
@@ -2752,6 +2813,7 @@ button.walk__n { padding: 0; cursor: pointer; }
   visibility: hidden;
   opacity: 0;
 }
+.orbit__contact { white-space: nowrap; }
 .orbit__contact svg { width: 16px; height: 16px; }
 .orbit__contact:hover { box-shadow: 0 12px 30px color-mix(in srgb, var(--accent) 40%, transparent); }
 .orbit__card:focus-visible { outline: none; }
@@ -3200,6 +3262,15 @@ button.walk__n { padding: 0; cursor: pointer; }
   text-underline-offset: 4px;
 }
 .case-end__back:hover { text-decoration-thickness: 2px; }
+/* The next project, large, at the end of the page */
+.case-end { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-6); }
+.case-end__next { display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-2); color: var(--text); text-align: right; }
+.case-end__kicker { color: var(--text-secondary); }
+.case-end__title { font-weight: 300; font-size: 40px; line-height: 1.1; letter-spacing: -0.03em; transition: transform 0.45s var(--spring); }
+.case-end__next:hover .case-end__title { transform: translateX(6px); }
+@media (max-width: 809px) {
+  .case-end__title { font-size: 28px; }
+}
 
 .case-header__title {
   font-weight: 300;

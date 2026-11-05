@@ -1104,6 +1104,7 @@
         big: f.querySelector(".folder__big").textContent,
         small: f.querySelector(".folder__caption").textContent,
         desc: f.querySelector(".folder__desc").textContent,
+        problem: f.querySelector(".folder__problem").lastChild.textContent.trim(), // what the project set out to solve
         brand: f.style.getPropertyValue("--brand-dark").trim() // the project's own color, dark enough for white text
       };
     });
@@ -1124,7 +1125,7 @@
     orbScene.setAttribute("aria-hidden", "true");
     var orbCenter = document.createElement("div");
     orbCenter.className = "orbit__center";
-    orbCenter.innerHTML = '<span class="orbit__caption" aria-hidden="true"><span class="orbit__name"></span><span class="orbit__meta label"></span></span><a class="orbit__link label"></a>';
+    orbCenter.innerHTML = '<span class="orbit__caption" aria-hidden="true"><span class="orbit__name"></span><span class="orbit__line"></span><span class="orbit__meta label"></span></span><a class="orbit__link label"></a>';
     orbView.appendChild(orbCenter);
     // the overview's way on: a Contact link where the opening line was, pointing down
     var orbContact = document.createElement("a");
@@ -1136,27 +1137,28 @@
     var orbFacts = document.createElement("div");
     orbFacts.className = "orbit__facts";
     orbFacts.setAttribute("aria-hidden", "true"); // the list says the same
-    orbFacts.innerHTML = '<div class="orbit__facts-inner is-out"><span class="orbit__big"></span><span class="orbit__small"></span><span class="orbit__desc"></span></div>';
+    orbFacts.innerHTML = '<div class="orbit__facts-inner is-out"><span class="orbit__facts-label label">Problem</span><span class="orbit__problem"></span><span class="orbit__facts-label label">Result</span><span class="orbit__big"></span><span class="orbit__small"></span></div>';
+    // the problem and result: in their own column on the right on desktop, and in the one column
+    // under the name on phones (placed in orbSize)
     orbView.appendChild(orbFacts);
     var orbFactsInner = orbFacts.firstChild, orbFactsTimer = 0;
     orbView.appendChild(orbScene);
     orbDeck.appendChild(orbView);
     var orbLink = orbCenter.querySelector(".orbit__link");
-    // An open project: a dimmed, blurred layer over the overview, and one panel on top with the
-    // cover on the left and everything about the project on the right, closed with the round
-    // button on its corner
-    var orbScrim = document.createElement("div");
-    orbScrim.className = "orbit__scrim";
+    // An open project fills the screen under the site's top bar, in the page color, with no box:
+    // "← All projects" top-left, a large cover, and everything about the project beside it (under
+    // it on phones). It sits in the page itself, outside the flight, so it can span the full width.
     var orbPanel = document.createElement("div");
     orbPanel.className = "orbit__panel";
     orbPanel.setAttribute("role", "dialog");
-    orbPanel.innerHTML = '<a class="orbit__panel-cover" tabindex="-1" aria-hidden="true"></a>' +
-      '<div class="orbit__panel-body"><p class="orbit__panel-name"></p><p class="orbit__panel-meta label"></p>' +
-      '<p class="orbit__panel-big"></p><p class="orbit__panel-small"></p><p class="orbit__panel-desc"></p>' +
-      '<a class="orbit__link orbit__panel-link label"></a></div>' +
-      '<button type="button" class="orbit__close" aria-label="Close, back to all projects"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>';
-    orbView.appendChild(orbScrim);
-    orbView.appendChild(orbPanel);
+    orbPanel.setAttribute("aria-modal", "true");
+    orbPanel.innerHTML = '<div class="container orbit__panel-inner">' +
+      '<button type="button" class="orbit__close label"><span aria-hidden="true">&larr;</span> All projects</button>' +
+      '<div class="orbit__panel-grid"><a class="orbit__panel-cover" tabindex="-1" aria-hidden="true"></a>' +
+      '<div class="orbit__panel-body"><p class="orbit__panel-name"></p><p class="orbit__panel-desc"></p><p class="orbit__panel-meta label"></p>' +
+      '<p class="orbit__panel-label label">Problem</p><p class="orbit__panel-problem"></p><p class="orbit__panel-label orbit__panel-label--result label">Result</p><p class="orbit__panel-big"></p><p class="orbit__panel-small"></p>' +
+      '<div class="orbit__panel-cta"><a class="orbit__link orbit__panel-link label"></a></div></div></div></div>';
+    document.body.appendChild(orbPanel);
     var orbClose = orbPanel.querySelector(".orbit__close");
 
     var orbCards = orbProjects.map(function (pr) {
@@ -1195,8 +1197,22 @@
       { x: -0.389, y: -0.092, w: 0.124 },
       { x: -0.295, y: -0.355, w: 0.085 }
     ];
+    // On phones the overview scatters small square covers down the screen, like the desktop
+    // layout: each at its own spot and size, never overlapping, with even space around them (the
+    // logo sits in the middle of each cover, so the square crop keeps all of it). x, y and w are in
+    // units of the view's width, from the middle; the Get in touch pill sits under them (ORB_PILL),
+    // and the whole block is scaled down if the screen is short.
+    var ORB_SLOTS_PHONE = [
+      { x: -0.18, y: -0.72, w: 0.30 },
+      { x: 0.25, y: -0.50, w: 0.26 },
+      { x: -0.27, y: -0.20, w: 0.25 },
+      { x: 0.20, y: 0.02, w: 0.24 },
+      { x: -0.08, y: 0.36, w: 0.27 }
+    ];
+    var ORB_PILL = 0.72, ORB_TOP = -0.87, ORB_BOTTOM = 0.78;
+    var orbSlotPx = []; // each cover's resting spot in px, from the view's middle: x, y and width
     var ORB_OV = 1.0, ORB_HOLD = 0.8; // scrolling into the overview, then holding it, in projects
-    var orbG = 0, orbActive = -1, orbOvOn = false, orbOvState = false;
+    var orbLastOpen = -1, orbG = 0, orbActive = -1, orbOvOn = false, orbOvState = false;
     var orbSpecks = [];
     for (var q = 0; q < 140; q++) {
       var sq = document.createElement("span");
@@ -1207,19 +1223,36 @@
       orbSpecks.push({ el: sq, fx: (orbRand() - 0.5) * 1.6, fy: (orbRand() - 0.5) * 1.3, z: (orbRand() * (orbN + 1.5) - 1.5) * ORB_D });
     }
 
-    var orbCW = 300, orbNavH = 72, orbSeg = 0, orbH = 0, orbW = 0, orbRestY = 0, orbCurrent = -2; // -1 is the opening view
+    var orbPhone = false, orbCH = 194, orbCW = 300, orbNavH = 72, orbSeg = 0, orbH = 0, orbW = 0, orbRestY = 0, orbCurrent = -2; // -1 is the opening view
     var orbSize = function () {
       orbNavH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-height")) || 72;
       orbSeg = Math.round(window.innerHeight * 0.8); // scrolling per project
       var W = orbDeck.clientWidth, phone = W < 810;
       orbH = window.innerHeight - orbNavH;
-      orbOvOn = !phone; // phones end on the last project for now
-      // extra scrolling for the opening view, and on desktop for the overview at the end
+      orbOvOn = true;
+      orbView.classList.toggle("is-phone", phone);
+      if (phone && orbFacts.parentNode !== orbCenter) orbCenter.insertBefore(orbFacts, orbCenter.querySelector(".orbit__link"));
+      if (!phone && orbFacts.parentNode !== orbView) orbView.appendChild(orbFacts);
+      // extra scrolling for the opening view and for the overview at the end
       orbDeck.style.height = orbH + (orbN + 0.5 + (orbOvOn ? ORB_OV + ORB_HOLD : 0)) * orbSeg + "px";
-      var cw = phone ? Math.min(W * 0.72, 320) : Math.min(460, W * 0.4), ch = cw * 20 / 31;
+      var cw = phone ? Math.min(W * 0.6, 280) : Math.min(460, W * 0.4), ch = cw * 20 / 31; // smaller on phones, to leave room for the text under it
       orbCW = cw;
+      orbCH = ch;
+      orbCards.forEach(function (c) { c.h = ch; });
       orbW = W;
-      orbRestY = -orbH * (phone ? 0.27 : 0.25); // where a card settles: centered, above the caption
+      if (phone) {
+        var k = Math.min(1, (orbH - 32) / ((ORB_BOTTOM - ORB_TOP) * W)); // a short screen scales it down
+        var shift = -(ORB_TOP + ORB_BOTTOM) / 2 * W * k; // centered in the view
+        orbSlotPx = ORB_SLOTS_PHONE.map(function (sl) { return { x: sl.x * W * k, y: sl.y * W * k + shift, w: sl.w * W * k }; });
+        orbContact.style.top = (orbH / 2 + ORB_PILL * W * k + shift) + "px";
+      } else {
+        orbSlotPx = ORB_SLOTS.map(function (sl) { return { x: sl.x * W, y: sl.y * orbH, w: sl.w * W }; });
+        orbContact.style.top = "";
+      }
+      orbRestY = phone ? -orbH / 2 + ch / 2 + 20 : -orbH * 0.25; // where a card settles: centered, above the caption
+      orbPhone = phone;
+      // on phones the text column starts just under the resting card, so the two never overlap
+      orbView.style.setProperty("--col-top", Math.round(orbH / 2 + orbRestY + ch / 2 + 20) + "px");
       orbView.style.perspectiveOrigin = "50% " + (orbH / 2 + orbRestY) + "px"; // cards come from straight behind that spot
       orbCards.forEach(function (c) {
         c.slices.forEach(function (sl) {
@@ -1227,7 +1260,8 @@
           sl.style.height = ch + "px";
           sl.style.left = (-cw / 2) + "px";
           sl.style.top = (-ch / 2) + "px";
-          sl.firstChild.style.backgroundSize = cw + "px " + ch + "px";
+          sl.firstChild.style.backgroundSize = "cover"; // a square card shows the middle of the cover
+          sl.firstChild.style.backgroundPosition = "center";
           sl.style.borderRadius = "14px";
         });
       });
@@ -1249,12 +1283,13 @@
       orbFactsInner.classList.add("is-out");
       clearTimeout(orbFactsTimer);
       orbFactsTimer = setTimeout(function () {
+        orbFactsInner.querySelector(".orbit__problem").textContent = pr.problem;
         orbFactsInner.querySelector(".orbit__big").textContent = pr.big;
         orbFactsInner.querySelector(".orbit__small").textContent = pr.small;
-        orbFactsInner.querySelector(".orbit__desc").textContent = pr.desc;
         orbFactsInner.classList.remove("is-out");
       }, 220);
       orbCenter.querySelector(".orbit__name").textContent = pr.name;
+      orbCenter.querySelector(".orbit__line").textContent = pr.desc;
       orbCenter.querySelector(".orbit__meta").textContent = pr.meta;
       orbLink.href = pr.href;
       orbLink.style.setProperty("--cta", pr.brand);
@@ -1264,9 +1299,16 @@
     // each card on its own rhythm. The drift eases in after a stop and fades out while scrolling.
     // A card's place in the overview, blended with where the flight left it. The last project
     // glides from the front; the others come back from the distance.
+    var orbShape = function (c, h) { // a card's height; its width stays the same
+      h = Math.round(h);
+      if (c.h === h) return;
+      c.h = h;
+      c.slices.forEach(function (sl) { sl.style.height = h + "px"; sl.style.top = (-h / 2) + "px"; });
+    };
     var orbPlace = function (c, i, g, rz, flyOp, t) {
-      var sl = ORB_SLOTS[i % ORB_SLOTS.length], W = orbW, H = orbH;
-      var tx = sl.x * W, ty = sl.y * H, ts = sl.w * W / orbCW;
+      orbShape(c, orbPhone ? orbCH + (orbCW - orbCH) * g : orbCH); // square as it settles on a phone
+      var sl = orbSlotPx[i % orbSlotPx.length];
+      var tx = sl.x, ty = sl.y, ts = sl.w / orbCW;
       var bob = Math.sin(t * 1.1 + i * 1.7) * 6 * orbAmp;
       var last = i === orbN - 1;
       var sx = last ? 0 : tx, sy = last ? orbRestY : ty, sz = last ? rz : -1800, ss = last ? 1 : ts, so = last ? flyOp : 0;
@@ -1280,9 +1322,13 @@
     };
     var orbSetActive = function (i) {
       if (orbActive === i) return;
+      var wasOpen = orbActive >= 0;
       orbActive = i;
       orbView.classList.toggle("is-active", i >= 0);
-      if (i < 0) return;
+      if (i < 0) { orbHideView(); return; }
+      orbLastOpen = i;
+      // the back button (or the back gesture on a phone) closes the panel instead of leaving the page
+      if (!wasOpen) history.pushState({ orbPanel: true }, "", window.location.href);
       var pr = orbProjects[i];
       var cover = orbPanel.querySelector(".orbit__panel-cover");
       cover.href = pr.href;
@@ -1290,6 +1336,7 @@
       orbPanel.setAttribute("aria-label", pr.name);
       orbPanel.querySelector(".orbit__panel-name").textContent = pr.name;
       orbPanel.querySelector(".orbit__panel-meta").textContent = pr.meta;
+      orbPanel.querySelector(".orbit__panel-problem").textContent = pr.problem;
       orbPanel.querySelector(".orbit__panel-big").textContent = pr.big;
       orbPanel.querySelector(".orbit__panel-small").textContent = pr.small;
       orbPanel.querySelector(".orbit__panel-desc").textContent = pr.desc;
@@ -1297,15 +1344,42 @@
       link.href = pr.href;
       link.style.setProperty("--cta", pr.brand);
       link.innerHTML = 'Read case study &rarr;<span class="visually-hidden">: ' + pr.name + '</span>';
+      orbShowView(i);
     };
-    // In the overview a click on a cover opens its panel. Clicks are worked out from the covers'
-    // resting spots. The round button, Esc, or a click on the dimmed layer closes it again.
+    // The cover grows from its spot in the overview into the large cover, and shrinks back on
+    // the way out, so it's always clear where the view came from and where it goes back to
+    var orbFlip = function (i, opening) {
+      var cover = orbPanel.querySelector(".orbit__panel-cover");
+      var from = orbCards[i].slices[0].getBoundingClientRect(), to = cover.getBoundingClientRect();
+      if (!to.width || !from.width || !cover.animate) return null;
+      var k = [{ transform: "translate(" + (from.left - to.left) + "px," + (from.top - to.top) + "px) scale(" + (from.width / to.width) + "," + (from.height / to.height) + ")" }, { transform: "none" }];
+      return cover.animate(opening ? k : k.reverse(), { duration: opening ? 520 : 380, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" });
+    };
+    var orbShowView = function (i) {
+      orbPanel.scrollTop = 0;
+      orbPanel.classList.add("is-open");
+      orbFlip(i, true); // measured before the page is locked
+      orbCards[i].el.style.opacity = 0; // it's the one that grew
+      orbClose.focus({ preventScroll: true });
+    };
+    var orbHideView = function () {
+      var i = orbLastOpen;
+      var done = function () {
+        orbPanel.classList.remove("is-open", "is-closing");
+        if (i >= 0) orbCards[i].el.style.opacity = "";
+      };
+      orbPanel.classList.add("is-closing");
+      var anim = i >= 0 ? orbFlip(i, false) : null;
+      if (anim) anim.onfinish = done; else done();
+    };
+    // In the overview a click on a cover opens its view. Clicks are worked out from the covers'
+    // resting spots. "← All projects", Esc or Back closes it again.
     var orbInside = function (r, x, y) { return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom; };
     var orbHit = function (x, y) {
       var c0 = orbScene.getBoundingClientRect(), hit = -1;
       orbCards.forEach(function (c, i) {
-        var sl = ORB_SLOTS[i % ORB_SLOTS.length], w = sl.w * orbW, h = w * 20 / 31;
-        var cx = c0.left + sl.x * orbW, cy = c0.top + sl.y * orbH;
+        var sl = orbSlotPx[i % orbSlotPx.length], w = sl.w, h = orbPhone ? w : w * 20 / 31;
+        var cx = c0.left + sl.x, cy = c0.top + sl.y;
         if (orbInside({ left: cx - w / 2, right: cx + w / 2, top: cy - h / 2, bottom: cy + h / 2 }, x, y)) hit = i;
       });
       return hit;
@@ -1314,22 +1388,40 @@
       orbView.style.cursor = orbG >= 0.9 && orbActive < 0 && orbHit(e.clientX, e.clientY) >= 0 ? "pointer" : "";
     });
     orbView.addEventListener("click", function (e) {
-      if (orbG < 0.9 || e.target.closest(".orbit__panel, .orbit__contact, .orbit__link")) return;
+      if (orbG < 0.9 || orbActive >= 0 || e.target.closest(".orbit__contact, .orbit__link")) return;
       e.preventDefault();
-      if (orbActive >= 0) { orbClose.click(); return; } // the dimmed layer
       var card = e.target.closest(".orbit__card"); // a cover in focus, opened with Enter
       var i = card ? orbCards.findIndex(function (c) { return c.el === card; }) : orbHit(e.clientX, e.clientY);
       if (i < 0) return;
       orbSetActive(i);
       orbClose.focus({ preventScroll: true });
     });
-    orbClose.addEventListener("click", function () {
+    var orbShut = function () {
       var was = orbActive;
+      if (was < 0) return;
+      if (history.state && history.state.orbPanel) { history.back(); return; } // popstate below closes it
       orbSetActive(-1);
-      if (was >= 0 && orbOvState) orbCards[was].el.focus({ preventScroll: true });
+      if (orbOvState) orbCards[was].el.focus({ preventScroll: true });
+    };
+    orbClose.addEventListener("click", orbShut);
+    window.addEventListener("popstate", function () {
+      var was = orbActive;
+      if (was < 0) return;
+      orbSetActive(-1);
+      if (orbOvState) orbCards[was].el.focus({ preventScroll: true });
     });
+    // While the view is open the page under it stays put: scrolling outside the view (or past its
+    // end) is held back. Locking the page with overflow: hidden would unstick the top bar.
+    var orbHold = function (e) {
+      if (orbActive < 0) return;
+      var inView = e.target.closest && e.target.closest(".orbit__panel");
+      if (!inView || orbPanel.scrollHeight <= orbPanel.clientHeight) e.preventDefault();
+    };
+    window.addEventListener("wheel", orbHold, { passive: false });
+    window.addEventListener("touchmove", orbHold, { passive: false });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && orbActive >= 0) orbClose.click();
+      if (orbActive >= 0 && [" ", "PageDown", "PageUp", "End", "Home", "ArrowDown", "ArrowUp"].indexOf(e.key) >= 0 && !(e.target.closest && e.target.closest(".orbit__panel"))) e.preventDefault();
+      if (e.key === "Escape" && orbActive >= 0) orbShut();
     });
     orbCards.forEach(function (c, i) {
       c.el.setAttribute("aria-label", orbProjects[i].name + ", " + orbProjects[i].meta);
@@ -1367,8 +1459,10 @@
         var rz = -rel * ORB_D; // 0 = in focus; below 0 still ahead; above 0 flying past the visitor
         var op = 1;
         op *= Math.max(0, Math.min(1, (1.4 - rel) / 0.3));         // the next card shows in the distance as an outlined box
-        op *= rz > 220 ? Math.max(0, 1 - (rz - 220) / 300) : 1;    // a card fades as it bursts past
+        // a card fades as it bursts past; on phones sooner, before it grows over the name
+        op *= orbPhone ? (rz > 0 ? Math.max(0, 1 - rz / 160) : 1) : (rz > 220 ? Math.max(0, 1 - (rz - 220) / 300) : 1);
         if (g > 0) { orbPlace(c, i, g, rz, op, t); return; }
+        orbShape(c, orbCH);
         if (op <= 0.01) { c.el.style.visibility = "hidden"; return; }
         c.el.style.visibility = "";
         if (c.op !== op.toFixed(2)) { c.op = op.toFixed(2); c.slices.forEach(function (sl) { sl.style.opacity = c.op; }); }
@@ -1406,7 +1500,8 @@
       var kOp = g < 0.5 ? 0 : 2 * g - 1;
       orbContact.style.opacity = kOp.toFixed(3);
       orbContact.style.visibility = kOp <= 0.02 ? "hidden" : "visible";
-      orbCenter.style.transform = "translateY(calc(-50% + " + (Math.sin(t * 0.85 + 2) * 5 * orbAmp - out * 40).toFixed(2) + "px))";
+      var colTop = orbPhone && !orbCenter.classList.contains("is-intro"); // a phone's column hangs from its top
+      orbCenter.style.transform = "translateY(calc(" + (colTop ? "0%" : "-50%") + " + " + (Math.sin(t * 0.85 + 2) * 5 * orbAmp - out * 40).toFixed(2) + "px))";
       orbCenter.style.visibility = out >= 1 || show <= 0 || cOp <= 0.02 ? "hidden" : ""; // so a faded link can't be tabbed to or clicked
       if (g < 0.5) orbSetCaption(p < -0.5 ? -1 : Math.floor(Math.max(0, Math.min(orbN - 1, p + 0.7)))); // switches as the next card appears
     };
