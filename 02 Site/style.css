@@ -1753,28 +1753,34 @@ mark.hl {
 }
 
 
-/* ---------- Stacked deck ----------
-   With JavaScript, the list pins under the nav while the visitor scrolls through .deck.
-   Each folder holds the top for a stretch of scrolling, then the next one slides up over it.
-   Covered folders keep 12px of their top edge and their tab in view.
-   main.js sets the positions (--y), the list height and the scroll runway on .deck.
-   Without JavaScript the folders stay a plain overlapping list. */
-.folders.is-deck {
-  position: sticky;
-  top: calc(var(--nav-height) + 24px + 40px); /* 40px: room for the tabs above */
-  padding-bottom: 0;
-  overflow-anchor: none;
-}
-.folders.is-deck .folder {
+/* ---------- Projects: static cards ----------
+   main.js adds .is-deck to the list and moves .is-active on click, tap or Enter. The open card
+   shows everything; closed cards show their tab, category · year, the project name and a chevron.
+   Cards above the one being opened change at once (.is-instant), so the page can be corrected
+   in the same moment. Without JavaScript everything is shown. */
+.folders { overflow-anchor: none; } /* main.js keeps the opened card steady itself, in every browser */
+.folder.is-instant .folder__details, .folder.is-instant .folder__body { transition: none !important; }
+.folder__row-name { display: none; margin-top: 2px; font-weight: 500; font-size: 18px; line-height: 1.3; color: var(--text); }
+.is-deck .folder:not(.is-active) .folder__row-name { display: block; } /* closed cards say which project they are */
+
+/* the chevron: a drawn down arrow at the end of every closed card, saying it opens */
+.is-deck .folder:not(.is-active) .folder__body::after {
+  content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin: 0;
-  transform: translateY(var(--y, 0px));
-  transition: transform 0.5s var(--ease-out);
+  top: calc(var(--space-6) + 14px);
+  right: var(--space-9);
+  width: 10px;
+  height: 10px;
+  border-right: 1.5px solid var(--text);
+  border-bottom: 1.5px solid var(--text);
+  transform: rotate(45deg);
 }
-.folders.is-measuring, .folders.is-measuring * { transition: none !important; }
+@media (max-width: 809px) {
+  .is-deck .folder:not(.is-active) .folder__body::after { right: var(--space-6); }
+}
+/* the last card, when closed, matches the height of the others */
+.is-deck .folder:last-child:not(.is-active) .folder__body { padding-bottom: var(--space-9); }
+@media (max-width: 809px) { .is-deck .folder:last-child:not(.is-active) .folder__body { padding-bottom: var(--space-6); } }
 
 
 /* ---------- Folder content: the result is the title ----------
@@ -1796,12 +1802,19 @@ mark.hl {
    Every --brand-dark is at least 4.5:1 against white (Columna darkened a touch to #C4512A). */
 .folder.is-active .folder__tab { background: var(--brand-dark); border-color: var(--brand-dark); color: #FFFFFF; }
 .folder.is-active .folder__num { color: #FFFFFF; }
-/* folders that aren't on top rest on a darker gray, tab included */
-:root { --folder-off: #1C1C1C; }
-:root[data-theme="light"] { --folder-off: #DCDCDC; }
+/* Wireframe look: every folder is the page color with a thin outline, so the stack reads
+   as drawn lines. The folder on top gets a full-strength outline; the tab color does the rest.
+   (The page color is solid, so covered folders stay hidden under the one on top.) */
+:root { --folder-wire: rgba(255, 255, 255, 0.28); }
+:root[data-theme="light"] { --folder-wire: rgba(0, 0, 0, 0.25); }
+.folder,
+:root[data-theme="light"] .folder,
 .is-deck .folder:not(.is-active),
-:root[data-theme="light"] .is-deck .folder:not(.is-active) { --folder-bg: var(--folder-off); }
-.folder__body { transition: background-color 0.3s ease, padding 0.4s var(--ease-out); }
+:root[data-theme="light"] .is-deck .folder:not(.is-active) { --folder-bg: var(--bg); --folder-edge: var(--folder-wire); }
+.is-deck .folder.is-active { --folder-edge: var(--text); }
+.folder:last-child .folder__body { border-bottom: 1px solid var(--folder-edge); } /* close the last drawing */
+.folder__body { transition: border-color 0.3s ease, padding 0.4s var(--ease-out); }
+.folder__tab { transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
 
 /* Folders that aren't on top show only their tab and category · year.
    The rest folds away (and unfolds) smoothly; screen readers still get all of it. */
@@ -1809,7 +1822,9 @@ mark.hl {
 .folder__details-inner { min-height: 0; overflow: hidden; }
 .is-deck .folder:not(.is-active) .folder__details { grid-template-rows: 0fr; }
 .is-deck .folder:not(.is-active) .folder__body { padding-top: var(--space-6); }
-.is-deck .folder:not(.is-active) .folder__preview { display: none; }
+/* The logo is revealed with the rest of the folder's content: the folder clips it while it
+   unfolds, and it's hidden only once a folder has folded away (no animation of its own). */
+.is-deck .folder:not(.is-active) .folder__preview { visibility: hidden; transition: visibility 0s linear 0.4s; }
 /* the folder on top always shows "Read case study", on every screen size */
 .is-deck .folder.is-active .folder__more { display: inline-block; opacity: 1; }
 .folder:last-child .folder__body { padding-bottom: calc(var(--space-9) + 20px); } /* clear of the logo, like the others */ /* no tab below the last folder to make room for */
@@ -1832,11 +1847,8 @@ mark.hl {
 
 /* No hover effects. The folder on top shows its brand logo (the loading screen)
    on the right and "Read case study"; without JavaScript, every folder shows "Read case study". */
-.folder__preview { opacity: 0; transition: none; }
-/* the logo floats up a few pixels as it fades in, once the folder has settled on top */
-.is-deck .folder.is-active .folder__preview { opacity: 1; animation: logo-in 0.5s var(--ease-out) 0.25s both; }
-@keyframes logo-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { .is-deck .folder.is-active .folder__preview { animation: none; } }
+.folder__preview { opacity: 0; transition: none; outline: 1px solid var(--folder-wire); outline-offset: -1px; }
+.is-deck .folder__preview { opacity: 1; }
 .folder__more { opacity: 1; }
 
 @media (max-width: 1023px) {
@@ -1862,8 +1874,6 @@ mark.hl {
 .folders { padding-left: var(--tab-w); }
 .folders__heading { margin-bottom: var(--space-12); }
 .folder + .folder { margin-top: -24px; }
-.folders.is-deck { top: calc(var(--nav-height) + 24px); }
-.folders.is-deck .folder { left: var(--tab-w); }
 
 .folder__tab, .folder:first-child .folder__tab {
   top: 20px;
@@ -1900,6 +1910,110 @@ mark.hl {
 
 /* No divider line between the projects and the contact section on the home page */
 #work + .contact { border-top: 0; }
+
+/* ---------- Projects: an orbit ----------
+   main.js adds .is-orbit to .deck, sets its height (the scroll runway) and builds .orbit (the 3D
+   view) with the caption and its link in the middle. Each card is made of upright strips
+   (.orbit__slice) turned around a cylinder, so it looks curved. The original list stays in the
+   page for screen readers. */
+.is-orbit { position: relative; }
+.is-orbit .folders {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+.orbit {
+  position: sticky;
+  top: var(--nav-height);
+  height: calc(100vh - var(--nav-height));
+  overflow: hidden;
+  perspective: 1400px;
+}
+.orbit__scene {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+.orbit__card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-style: preserve-3d;
+  pointer-events: auto;
+  will-change: transform;
+  transition: none; /* follows the scroll exactly */
+}
+.orbit__slice {
+  position: absolute;
+  display: block;
+  background-repeat: no-repeat;
+  border-top: 1px solid var(--text);
+  border-bottom: 1px solid var(--text);
+  backface-visibility: hidden;
+  transition: none;
+}
+.orbit__slice.is-first { border-left: 1px solid var(--text); border-radius: 14px 0 0 14px; }
+.orbit__slice.is-last { border-right: 1px solid var(--text); border-radius: 0 14px 14px 0; }
+
+/* the project at the front, named in the middle of the view */
+.orbit__center {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 61%;
+  transform: translateY(-50%);
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  text-align: center;
+}
+.orbit__caption { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); }
+.orbit__name { font-weight: 500; font-size: 28px; line-height: 1.2; }
+.orbit__meta { color: var(--text-secondary); }
+.orbit__link {
+  padding: 10px 16px;
+  border: 1px solid var(--text);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--text);
+}
+.orbit__link[hidden] { display: none; }
+.orbit__center.is-intro .orbit__meta { display: none; }
+
+/* the front project's result and description, floating on the left (under the caption on phones) */
+.orbit__facts {
+  position: absolute;
+  left: 0;
+  top: 22%;
+  z-index: 2;
+  width: min(300px, 26%);
+  pointer-events: none;
+}
+.orbit__facts-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.orbit__facts-inner.is-out { opacity: 0; transform: translateY(12px); }
+.orbit__big { font-weight: 300; font-size: 64px; line-height: 0.95; letter-spacing: -0.04em; }
+.orbit__small { font-size: 16px; line-height: 1.4; color: var(--text-secondary); }
+.orbit__desc { margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--folder-wire); font-weight: 300; font-size: 17px; line-height: 1.5; }
+.orbit__center.is-intro .orbit__name { font-weight: 300; font-size: 88px; line-height: 1; letter-spacing: -0.04em; }
+@media (max-width: 809px) {
+  .orbit__center.is-intro .orbit__name { font-size: 56px; }
+  .orbit__center { top: 49%; }
+  .orbit__facts { top: auto; bottom: var(--space-6); width: 100%; }
+  .orbit__facts-inner { flex-direction: row; flex-wrap: wrap; align-items: baseline; column-gap: var(--space-4); }
+  .orbit__big { font-size: 40px; }
+  .orbit__small { font-size: 13px; flex: 1 1 140px; }
+  .orbit__desc { flex-basis: 100%; margin-top: var(--space-2); padding-top: var(--space-2); font-size: 14px; }
+  .orbit__name { font-size: 20px; }
+  .orbit__center { top: 58%; gap: var(--space-4); }
+}
 
 /* ---------- Placeholder images ---------- */
 

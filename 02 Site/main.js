@@ -558,97 +558,190 @@
     });
   }
 
-  // Featured projects as a stacked deck. The list pins under the nav while the visitor
-  // scrolls through .deck; every `step` pixels of scrolling, the next folder slides up
-  // and takes the top. Each folder holds the top for a full step, so nothing covers it early.
-  var deck = document.querySelector(".deck");
-  var folderList = deck && deck.querySelector(".folders");
-  if (folderList) {
-    var folderItems = Array.prototype.slice.call(folderList.querySelectorAll(".folder"));
-    var n = folderItems.length, PEEK = 12, step = 280, overlap = 48, hOpen = [], hClosed = [], stackH = [], current = -1;
-
-    var measure = function () {
-      folderList.classList.remove("is-deck");
-      overlap = n > 1 ? -parseFloat(getComputedStyle(folderItems[1]).marginTop) || 0 : 0;
-      folderList.classList.add("is-deck", "is-measuring");
-      folderItems.forEach(function (f, i) {
-        var was = f.classList.contains("is-active");
-        f.classList.add("is-active"); hOpen[i] = f.offsetHeight;
-        f.classList.remove("is-active"); hClosed[i] = f.offsetHeight;
-        f.classList.toggle("is-active", was);
-      });
-      step = Math.max(110, Math.round(window.innerHeight * 0.16)); // how far to scroll before the next folder takes over
-      // How tall the stack is with each folder on top. The list takes that height as it
-      // changes, so no empty space is left under the stack when the deck scrolls away.
-      stackH = [];
-      var runway = 0;
-      for (var a = 0; a < n; a++) {
-        var y = a * PEEK + hOpen[a] - overlap;
-        for (var k = a + 1; k < n; k++) y += hClosed[k] - overlap;
-        stackH[a] = y + overlap;
-        // the deck must outlast every state: folder a is on top until (a + 1) steps in;
-        // the last one gets half a step before the deck scrolls away
-        runway = Math.max(runway, stackH[a] + (a < n - 1 ? a + 1 : n - 0.5) * step);
-      }
-      deck.style.height = runway + "px";
-      void folderList.offsetHeight;
-      folderList.classList.remove("is-measuring");
-    };
-
-    var layout = function (a) {
-      var y = a * PEEK + hOpen[a] - overlap;
-      folderItems.forEach(function (f, i) {
-        var pos;
-        if (i <= a) pos = i * PEEK;
-        else { pos = y; y += hClosed[i] - overlap; }
-        f.style.setProperty("--y", pos + "px");
-        f.classList.toggle("is-active", i === a);
-        f.classList.toggle("is-under", i < a);
-      });
-      folderList.style.height = stackH[a] + "px";
-    };
-
-    var stuckTop = function () { return parseFloat(getComputedStyle(folderList).top) || 0; };
-    var fromScroll = function () {
-      var p = (stuckTop() - deck.getBoundingClientRect().top) / step;
-      var a = Math.max(0, Math.min(n - 1, Math.floor(p)));
-      if (a !== current) { current = a; layout(a); }
-    };
-
-    var rebuild = function () { hOpen = []; hClosed = []; measure(); current = -1; fromScroll(); };
-    rebuild();
-    window.addEventListener("scroll", fromScroll, { passive: true });
-    window.addEventListener("resize", rebuild);
-    window.addEventListener("load", rebuild); // fonts and images can change the heights
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(rebuild);
-
-    // Bring folder i to the top by scrolling to its stretch of the deck
-    var goTo = function (i, smooth) {
-      var deckTop = deck.getBoundingClientRect().top + window.pageYOffset;
-      window.scrollTo({ top: deckTop - stuckTop() + i * step + step * 0.3, behavior: smooth ? "smooth" : "auto" });
-      if (!smooth) fromScroll();
-    };
-    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    folderItems.forEach(function (f, i) {
-      var link = f.querySelector(".folder__link");
-      // A click on a folder that isn't on top brings it to the top first (with its
-      // "Read case study" link); a click on the folder on top opens the case study.
-      // Whether it was on top is read on press, before focus can change it.
-      var wasOnTop = null;
-      link.addEventListener("pointerdown", function () { wasOnTop = i === current; });
-      link.addEventListener("click", function (e) {
-        var onTop = wasOnTop !== null ? wasOnTop : i === current;
-        wasOnTop = null;
-        if (!onTop) { e.preventDefault(); goTo(i, !reduceMotion); }
-      });
-      // Keyboard focus on a folder that isn't on top scrolls to where it is,
-      // so the focused link is never covered or folded away
-      link.addEventListener("focus", function () {
-        if (i === current || wasOnTop !== null) return; // pointer presses are handled by the click
-        setTimeout(function () { goTo(i, false); }, 0); // after the browser's own scroll-into-view
-      });
+  // Projects: an orbit (after sybiosme.com). The section pins under the nav, a full screen tall,
+  // and each project's loading-screen image is a card curved around an invisible upright
+  // cylinder. The cards sit on a spiral: scrolling turns the cylinder and lifts it, so the next
+  // card swings in from the lower left while the current one rises and turns away. The project
+  // at the front is named in the middle of the view, with a link to its case study. Each card is
+  // drawn as thin upright strips, each turned a little more than the last, which is what makes
+  // it look curved. With reduced motion on (or no JavaScript), the projects are a plain list.
+  // Screen readers get that list either way; the 3D view is hidden from them.
+  var orbDeck = document.querySelector(".deck");
+  var orbList = orbDeck && orbDeck.querySelector(".folders");
+  if (orbList && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var orbProjects = Array.prototype.slice.call(orbList.querySelectorAll(".folder")).map(function (f) {
+      return {
+        href: f.querySelector(".folder__link").getAttribute("href"),
+        num: f.querySelector(".folder__num").textContent,
+        name: f.querySelector(".folder__name").textContent,
+        meta: f.querySelector(".folder__meta").textContent,
+        splash: f.querySelector(".folder__preview").getAttribute("src"),
+        big: f.querySelector(".folder__big").textContent,
+        small: f.querySelector(".folder__caption").textContent,
+        desc: f.querySelector(".folder__desc").textContent
+      };
     });
+    var orbN = orbProjects.length;
+    var ORB_STEP = 72 * Math.PI / 180; // how far the cylinder turns from one project to the next
+    var ORB_SLICES = 24;               // strips per card (more strips, smoother curve)
+    orbDeck.classList.add("is-orbit");
+    var orbHeading = document.getElementById("work-title");
+    if (orbHeading) orbHeading.classList.add("visually-hidden"); // the opening view shows the name instead
+    orbList.removeAttribute("data-reveal");
+    orbList.querySelectorAll("a").forEach(function (a) { a.tabIndex = -1; }); // kept for screen readers; the link in the middle is the one to tab to
+
+    var orbView = document.createElement("div");
+    orbView.className = "orbit";
+    var orbScene = document.createElement("div");
+    orbScene.className = "orbit__scene";
+    orbScene.setAttribute("aria-hidden", "true");
+    var orbCenter = document.createElement("div");
+    orbCenter.className = "orbit__center";
+    orbCenter.innerHTML = '<span class="orbit__caption" aria-hidden="true"><span class="orbit__name"></span><span class="orbit__meta label"></span></span><a class="orbit__link label"></a>';
+    orbView.appendChild(orbCenter);
+    // the front project's result and one-line description, floating on the left
+    var orbFacts = document.createElement("div");
+    orbFacts.className = "orbit__facts";
+    orbFacts.setAttribute("aria-hidden", "true"); // the list says the same
+    orbFacts.innerHTML = '<div class="orbit__facts-inner is-out"><span class="orbit__big"></span><span class="orbit__small"></span><span class="orbit__desc"></span></div>';
+    orbView.appendChild(orbFacts);
+    var orbFactsInner = orbFacts.firstChild, orbFactsTimer = 0;
+    orbView.appendChild(orbScene);
+    orbDeck.appendChild(orbView);
+    var orbLink = orbCenter.querySelector(".orbit__link");
+
+    var orbCards = orbProjects.map(function (pr) {
+      var card = document.createElement("a");
+      card.className = "orbit__card";
+      card.href = pr.href;
+      card.tabIndex = -1;
+      var slices = [];
+      for (var k = 0; k < ORB_SLICES; k++) {
+        var sl = document.createElement("span");
+        sl.className = "orbit__slice" + (k === 0 ? " is-first" : "") + (k === ORB_SLICES - 1 ? " is-last" : "");
+        sl.style.backgroundImage = "url('" + pr.splash + "')";
+        card.appendChild(sl);
+        slices.push(sl);
+      }
+      orbScene.appendChild(card);
+      return { el: card, slices: slices };
+    });
+
+    var orbNavH = 72, orbSeg = 0, orbH = 0, orbR = 0, orbRest = 0, orbHS = 0, orbRestY = 0, orbCurrent = -2; // -1 is the opening view
+    var orbSize = function () {
+      orbNavH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-height")) || 72;
+      orbSeg = Math.round(window.innerHeight * 0.8); // scrolling per project
+      var W = orbDeck.clientWidth, phone = W < 810;
+      orbH = window.innerHeight - orbNavH;
+      orbDeck.style.height = orbH + (orbN + 1.3) * orbSeg + "px"; // extra scrolling for the opening and closing views
+      var cw = phone ? Math.min(W * 0.72, 320) : Math.min(460, W * 0.4), ch = cw * 20 / 31;
+      orbR = cw * 0.875; // the cylinder's radius (smaller is a tighter spiral and more curved cards)
+      orbRest = 0; // at rest, the front card faces the visitor, centered above the caption
+      orbRestY = -orbH * (phone ? 0.27 : 0.25);
+      orbHS = orbH * (phone ? 0.42 : 0.5); // how far the spiral rises per project
+      var arc = cw / orbR, sw = cw / ORB_SLICES;
+      orbScene.style.transform = "translateZ(" + (-orbR) + "px)"; // so the front of the cylinder is at normal size
+      orbCards.forEach(function (c) {
+        c.slices.forEach(function (sl, k) {
+          sl.style.width = (sw + 1.5) + "px"; // a little wider, so no gaps show between strips
+          sl.style.height = ch + "px";
+          sl.style.left = (-sw / 2) + "px";
+          sl.style.top = (-ch / 2) + "px";
+          sl.style.backgroundSize = cw + "px " + ch + "px";
+          sl.style.backgroundPosition = (-k * sw) + "px 0";
+          sl.style.transform = "rotateY(" + ((k - (ORB_SLICES - 1) / 2) * arc / ORB_SLICES) + "rad) translateZ(" + orbR + "px)";
+        });
+      });
+    };
+    var orbSetCaption = function (i) {
+      if (i === orbCurrent) return;
+      orbCurrent = i;
+      // the opening view: the section's name in the middle, before any card has arrived
+      orbCenter.classList.toggle("is-intro", i < 0);
+      orbLink.hidden = i < 0;
+      if (i < 0) {
+        orbCenter.querySelector(".orbit__name").textContent = "Problems I've untangled.";
+        orbCenter.querySelector(".orbit__meta").textContent = "";
+        orbFactsInner.classList.add("is-out");
+        return;
+      }
+      var pr = orbProjects[i];
+      // the facts fade out, change, then fade back in
+      orbFactsInner.classList.add("is-out");
+      clearTimeout(orbFactsTimer);
+      orbFactsTimer = setTimeout(function () {
+        orbFactsInner.querySelector(".orbit__big").textContent = pr.big;
+        orbFactsInner.querySelector(".orbit__small").textContent = pr.small;
+        orbFactsInner.querySelector(".orbit__desc").textContent = pr.desc;
+        orbFactsInner.classList.remove("is-out");
+      }, 220);
+      orbCenter.querySelector(".orbit__name").textContent = pr.name;
+      orbCenter.querySelector(".orbit__meta").textContent = pr.meta;
+      orbLink.href = pr.href;
+      orbLink.innerHTML = 'Read case study &rarr;<span class="visually-hidden">: ' + pr.name + '</span>';
+    };
+    // When the scrolling stops, the cards drift gently, like feathers: a slow bob, sway and tilt,
+    // each card on its own rhythm. The drift eases in after a stop and fades out while scrolling.
+    var orbLastScroll = -1e9, orbAmp = 0, orbLastT = 0;
+    var orbDraw = function (now) {
+      now = now || performance.now();
+      // a frame's time can be a little earlier than the last scroll's, so the step never goes below 0
+      var dt = Math.max(0, Math.min(64, now - orbLastT)); orbLastT = Math.max(orbLastT, now);
+      var want = now - orbLastScroll > 180 ? 1 : 0;
+      orbAmp = Math.max(0, Math.min(1, orbAmp + (want - orbAmp) * Math.min(1, dt / (want ? 900 : 200))));
+      var t = now / 1000;
+      // in projects; it starts at -1.5 with no card in view, and the first card comes in from the
+      // lower left only once the visitor scrolls on
+      var p = (orbNavH - orbDeck.getBoundingClientRect().top) / orbSeg - 1.5;
+      // after the last project it runs on a little: the last card turns away out of view while
+      // the caption and the facts drift up and fade, then the contact section scrolls in
+      p = Math.max(-1.5, Math.min(orbN - 1 + 0.8, p));
+      var out = Math.max(0, Math.min(1, (p - (orbN - 1) - 0.4) / 0.35)); // at the same time as the last card leaves
+      out = out * out * (3 - 2 * out); // ease in and out
+      orbCards.forEach(function (c, i) {
+        var rel = i - p;
+        var ang = orbRest - rel * ORB_STEP;  // 0 = straight in front
+        var y = orbRestY + rel * orbHS;
+        var face = Math.cos(ang);            // 1 facing the visitor, below 0 turned away
+        var op = Math.max(0, Math.min(1, (face + 0.1) / 0.5)) * Math.max(0, Math.min(1, 1.6 - Math.abs(y) / orbH * 1.6));
+        op *= Math.max(0, Math.min(1, (1.3 - rel) / 0.3)); // cards further than one step away stay hidden
+        op *= Math.max(0, Math.min(1, (rel + 0.75) / 0.3));  // and a card that has passed is fully gone before the next step
+        if (op <= 0.01) { c.el.style.visibility = "hidden"; return; }
+        c.el.style.visibility = "";
+        // the fade goes on each strip: fading the card itself would flatten it in the browser
+        if (c.op !== op.toFixed(2)) { c.op = op.toFixed(2); c.slices.forEach(function (sl) { sl.style.opacity = c.op; }); }
+        var a = orbAmp;
+        var bob = Math.sin(t * 1.1 + i * 1.7) * 9 * a;          // up and down, in px
+        var sway = Math.sin(t * 0.7 + i * 2.3) * 0.025 * a;     // around the cylinder, in rad
+        var tilt = Math.sin(t * 0.9 + i * 1.1) * 1.4 * a;       // in its own plane, in deg
+        var rock = Math.sin(t * 0.8 + i * 2.9) * 1.2 * a;       // forward and back, in deg
+        // fixed decimals: a tiny number written as 1e-7 isn't valid CSS and the browser would skip it
+        c.el.style.transform = "translateY(" + (y + bob).toFixed(2) + "px) rotateY(" + (ang + sway).toFixed(4) + "rad) rotateZ(" + tilt.toFixed(3) + "deg) rotateX(" + rock.toFixed(3) + "deg)";
+      });
+      // the facts drift with the cards
+      orbFacts.style.transform = "translateY(" + (Math.sin(t * 0.95 + 0.6) * 7 * orbAmp - out * 40).toFixed(2) + "px) rotate(" + (Math.sin(t * 0.7) * 0.6 * orbAmp).toFixed(3) + "deg)";
+      orbFacts.style.opacity = (1 - out).toFixed(3);
+      // the opening line fades out while the first card comes in, then the first project's name fades in
+      var show = p < -0.6 ? 1 - Math.max(0, Math.min(1, (p + 1.3) / 0.7)) : Math.max(0, Math.min(1, (p + 0.6) / 0.4));
+      orbCenter.style.opacity = (show * (1 - out)).toFixed(3);
+      orbCenter.style.transform = "translateY(calc(-50% + " + (Math.sin(t * 0.85 + 2) * 5 * orbAmp - out * 40).toFixed(2) + "px))";
+      orbCenter.style.visibility = out >= 1 || show <= 0 ? "hidden" : ""; // so a faded link can't be tabbed to or clicked
+      orbSetCaption(p < -0.6 ? -1 : Math.round(Math.max(0, Math.min(orbN - 1, p))));
+    };
+    orbSize();
+    orbDraw();
+    window.addEventListener("scroll", function () { orbLastScroll = performance.now(); orbDraw(); }, { passive: true });
+    // the drift needs a frame loop, but only while the section is on screen
+    var orbOnScreen = false;
+    var orbLoop = function (now) { if (!orbOnScreen) return; orbDraw(now); requestAnimationFrame(orbLoop); };
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        var was = orbOnScreen;
+        orbOnScreen = entries[0].isIntersecting;
+        if (orbOnScreen && !was) requestAnimationFrame(orbLoop);
+      }).observe(orbDeck);
+    }
+    window.addEventListener("resize", function () { orbSize(); orbDraw(); });
   }
 
   var items = document.querySelectorAll("[data-reveal]");
