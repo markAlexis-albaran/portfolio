@@ -2274,6 +2274,21 @@ mark.hl {
 
 .case-header__back:hover { color: var(--text); }
 
+/* End of a case study: the way back to all projects, so nobody has to scroll up or guess at Home */
+.case-end {
+  margin-top: var(--space-12);
+  padding-bottom: var(--space-9); /* the contact section's line follows right under it */
+}
+.case-end__back {
+  display: inline-block;
+  padding: var(--space-2) 0; /* a comfortable tap target */
+  font-size: 14px;
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.case-end__back:hover { text-decoration-thickness: 2px; }
+
 .case-header__title {
   font-weight: 300;
   font-size: 64px;

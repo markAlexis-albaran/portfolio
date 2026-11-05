@@ -4,7 +4,7 @@ Baseline: the existing Framer portfolio at https://markalexis.framer.website. Ma
 
 ## Structure
 - Multi-page: a home page, an About page, and one page per case study.
-- The home page shows all five projects. Each card links to its own case study page (e.g. `projects/tvguideplus.html`). Each case study's "All projects" link goes back to the cards on the home page (`index.html#work`).
+- The home page shows all five projects. Each card links to its own case study page (e.g. `projects/tvguideplus.html`). Each case study has an "← All projects" link at the top and again at the bottom, right before the contact section, both going back to the projects on the home page (`index.html#work`), so nobody has to scroll up or use Home to get back.
 - Projects page: hidden for now. `projects.html` stays in the folder but nothing links to it, and search engines are asked to skip it. Bring it back (nav link and back links) once there are more than five projects.
 - About page: yes
 - A small "built with Claude ;-)", led by a small drawn spark (eight rays, in the text color, a nod to Claude's mark but not the official logo) (written exactly like that, owner's request) in grey mono directly under the nav name on screens 810px and wider, and as the last line of the phone menu. Plain text, not a link.
