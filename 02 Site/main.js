@@ -42,7 +42,7 @@
     });
   }
 
-  // Home: the floating "Projects" button hides once the top of the cards is three quarters up the screen
+  // Home: the floating "Scroll down" button hides once the top of the cards is three quarters up the screen
   var scrollCta = document.querySelector(".scroll-cta");
   var work = document.getElementById("work");
   if (scrollCta && work) {
@@ -53,6 +53,15 @@
     checkCta();
     window.addEventListener("scroll", checkCta, { passive: true });
     window.addEventListener("resize", checkCta);
+  }
+
+  // Every page: the floating "Contact" button hides while the contact section is on screen
+  var contactCta = document.querySelector(".contact-cta");
+  var contactSection = document.getElementById("contact");
+  if (contactCta && contactSection && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      contactCta.classList.toggle("is-hidden", entries[0].isIntersecting);
+    }, { threshold: 0.15 }).observe(contactSection);
   }
 
   // Columna: token switcher. The card stays the same component; only its tokens change.
@@ -809,28 +818,99 @@
     var tools = rotator && rotator.getAttribute("data-tools") ? rotator.getAttribute("data-tools").split("|") : [];
     var toolsLine = document.querySelector(".rotator-tools");
     var index = 0;
-    var timer = null;
     var done = !rotator;
     var paused = false;
 
-    var step = function () {
-      word.classList.add("is-leaving");
-      if (toolsLine) toolsLine.classList.add("is-changing");
-      setTimeout(function () {
+    // Typing: every letter is in the page from the start (so nothing reflows). Each frame works out
+    // how far along the word the cursor is, as a fraction of letters (2.4 = two letters and 40% of
+    // the third), so the cursor glides continuously while each letter fades in as it passes.
+    // The whole word eases in and out, so the glide starts and ends softly.
+    var TYPE_MS = 65, DELETE_MS = 32, HOLD_MS = 1800, GAP_MS = 350;
+    var chars = [], boxes = [], pos = 0, phase = "hold", clock = 0, last = null, raf = null;
+    var cursor = document.createElement("span");
+    cursor.className = "rotator__cursor";
+    var ease = function (t) { return 0.5 - Math.cos(Math.PI * t) / 2; }; // slow, faster, slow
+
+    var build = function (text, visible) {
+      word.textContent = "";
+      chars = [];
+      text.split(" ").forEach(function (part, i) {
+        if (i > 0) { var gap = document.createElement("span"); gap.textContent = " "; word.appendChild(gap); chars.push(gap); }
+        var group = document.createElement("span");
+        group.className = "rotator__group"; // keeps each word on one line when the line wraps on phones
+        part.split("").forEach(function (letter) {
+          var c = document.createElement("span");
+          c.className = "rotator__char";
+          c.textContent = letter;
+          group.appendChild(c);
+          chars.push(c);
+        });
+        word.appendChild(group);
+      });
+      word.appendChild(cursor);
+      measure();
+      render(visible ? chars.length : 0);
+    };
+
+    // Each letter's left edge, right edge and line, measured once per word (and on resize)
+    var measure = function () {
+      boxes = chars.map(function (c) { return { l: c.offsetLeft, r: c.offsetLeft + c.offsetWidth, y: c.offsetTop }; });
+    };
+    var render = function (p) {
+      pos = p;
+      chars.forEach(function (c, i) { c.style.opacity = Math.max(0, Math.min(1, p - i)); });
+      var i = Math.min(Math.floor(p), chars.length - 1), f = p - i, b = boxes[i];
+      cursor.style.transform = "translate(" + (b.l + f * (b.r - b.l)) + "px," + b.y + "px)";
+    };
+    var setPhase = function (p) {
+      phase = p;
+      clock = 0;
+      cursor.classList.toggle("is-blinking", p === "hold" || p === "gap");
+    };
+
+    var tick = function (now) {
+      clock += last === null ? 0 : Math.min(now - last, 100); // a background tab doesn't skip ahead
+      last = now;
+      var n = chars.length;
+      if (phase === "typing") {
+        var t = Math.min(1, clock / (n * TYPE_MS));
+        render(ease(t) * n);
+        if (t === 1) setPhase("hold");
+      } else if (phase === "hold" && clock >= HOLD_MS) {
+        setPhase("deleting");
+        if (toolsLine) toolsLine.classList.add("is-changing");
+      } else if (phase === "deleting") {
+        var d = Math.min(1, clock / (n * DELETE_MS));
+        render((1 - ease(d)) * n);
+        if (d === 1) setPhase("gap");
+      } else if (phase === "gap" && clock >= GAP_MS) {
         index = (index + 1) % words.length; // loop back to the first skill
-        word.textContent = words[index];
+        build(words[index], false);
         if (toolsLine && tools[index]) {
-          toolsLine.textContent = tools[index];
+          var list = toolsLine.querySelector(".rotator-tools__list");
+          list.textContent = "";
+          tools[index].split(", ").forEach(function (name) {
+            var tag = document.createElement("span");
+            tag.className = "tool-tag";
+            tag.textContent = name;
+            list.appendChild(tag);
+          });
           toolsLine.classList.remove("is-changing");
         }
-        word.classList.remove("is-leaving");
-        word.classList.add("is-entering");
-        word.getBoundingClientRect(); // let the browser place it below before sliding up
-        word.classList.remove("is-entering");
-      }, 400);
+        setPhase("typing");
+      }
+      raf = requestAnimationFrame(tick);
     };
-    var startWords = function () { if (!done && !timer) timer = setInterval(step, 2600); };
-    var stopWords = function () { clearInterval(timer); timer = null; };
+
+    if (rotator) {
+      build(words[0], true);
+      setPhase("hold");
+      var remeasure = function () { measure(); render(pos); };
+      window.addEventListener("resize", remeasure);
+      if (document.fonts) document.fonts.ready.then(remeasure);
+    }
+    var startWords = function () { if (!done && !raf) { last = null; raf = requestAnimationFrame(tick); } };
+    var stopWords = function () { cancelAnimationFrame(raf); raf = null; };
     // With no slider, nothing moves once the words finish, so the button goes away
     var finishIfStill = function () { if (!marquee && toggle) toggle.hidden = true; };
 
