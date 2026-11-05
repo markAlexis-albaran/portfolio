@@ -1911,11 +1911,11 @@ mark.hl {
 /* No divider line between the projects and the contact section on the home page */
 #work + .contact { border-top: 0; }
 
-/* ---------- Projects: an orbit ----------
+/* ---------- Projects: a flight through the work ----------
    main.js adds .is-orbit to .deck, sets its height (the scroll runway) and builds .orbit (the 3D
-   view) with the caption and its link in the middle. Each card is made of upright strips
-   (.orbit__slice) turned around a cylinder, so it looks curved. The original list stays in the
-   page for screen readers. */
+   view) with the caption and its link in the middle and the facts on the left. Each card is one
+   flat panel (.orbit__slice); small outlined squares (.orbit__speck) drift through the depth.
+   The original list stays in the page for screen readers. */
 .is-orbit { position: relative; }
 .is-orbit .folders {
   position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
@@ -1925,7 +1925,7 @@ mark.hl {
   top: var(--nav-height);
   height: calc(100vh - var(--nav-height));
   overflow: hidden;
-  perspective: 1400px;
+  perspective: 900px;
 }
 .orbit__scene {
   position: absolute;
@@ -1947,14 +1947,28 @@ mark.hl {
 .orbit__slice {
   position: absolute;
   display: block;
-  background-repeat: no-repeat;
-  border-top: 1px solid var(--text);
-  border-bottom: 1px solid var(--text);
+  border: 1px solid var(--folder-wire); /* an empty box, like the small squares, until the image fills it */
   backface-visibility: hidden;
   transition: none;
 }
-.orbit__slice.is-first { border-left: 1px solid var(--text); border-radius: 14px 0 0 14px; }
-.orbit__slice.is-last { border-right: 1px solid var(--text); border-radius: 0 14px 14px 0; }
+.orbit__img {
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--text);
+  border-radius: inherit;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: none;
+}
+.orbit__speck {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 1px solid var(--folder-wire);
+  border-radius: 2px;
+  will-change: transform, opacity;
+  transition: none;
+}
 
 /* the project at the front, named in the middle of the view */
 .orbit__center {

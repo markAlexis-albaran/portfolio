@@ -558,14 +558,13 @@
     });
   }
 
-  // Projects: an orbit (after sybiosme.com). The section pins under the nav, a full screen tall,
-  // and each project's loading-screen image is a card curved around an invisible upright
-  // cylinder. The cards sit on a spiral: scrolling turns the cylinder and lifts it, so the next
-  // card swings in from the lower left while the current one rises and turns away. The project
-  // at the front is named in the middle of the view, with a link to its case study. Each card is
-  // drawn as thin upright strips, each turned a little more than the last, which is what makes
-  // it look curved. With reduced motion on (or no JavaScript), the projects are a plain list.
-  // Screen readers get that list either way; the 3D view is hidden from them.
+  // Projects: a flight through the work (after vadimcarazan.com). The section pins under the nav,
+  // a full screen tall, and scrolling moves the camera forward: each project's loading-screen
+  // card comes toward the visitor from the distance, settles above the caption, then bursts past
+  // and fades, with small outlined squares drifting by in between. The project in focus is named
+  // in the middle of the view with a link to its case study; its result and description float on
+  // the left. With reduced motion on (or no JavaScript), the projects are a plain list. Screen
+  // readers get that list either way; the 3D view is hidden from them.
   var orbDeck = document.querySelector(".deck");
   var orbList = orbDeck && orbDeck.querySelector(".folders");
   if (orbList && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -582,8 +581,9 @@
       };
     });
     var orbN = orbProjects.length;
-    var ORB_STEP = 72 * Math.PI / 180; // how far the cylinder turns from one project to the next
-    var ORB_SLICES = 24;               // strips per card (more strips, smoother curve)
+    var ORB_D = 1500;  // depth between projects, in px
+    var ORB_P = 900;   // the perspective in style.css (.orbit)
+    var ORB_SLICES = 1; // each card is one flat panel
     orbDeck.classList.add("is-orbit");
     var orbHeading = document.getElementById("work-title");
     if (orbHeading) orbHeading.classList.add("visually-hidden"); // the opening view shows the name instead
@@ -619,37 +619,51 @@
       for (var k = 0; k < ORB_SLICES; k++) {
         var sl = document.createElement("span");
         sl.className = "orbit__slice" + (k === 0 ? " is-first" : "") + (k === ORB_SLICES - 1 ? " is-last" : "");
-        sl.style.backgroundImage = "url('" + pr.splash + "')";
+        // the card starts as an empty outlined box, like the small squares around it; the image fades in on top as it comes closer
+        sl.innerHTML = '<span class="orbit__img" style="background-image:url(\'' + pr.splash + '\')"></span>';
         card.appendChild(sl);
         slices.push(sl);
       }
       orbScene.appendChild(card);
       return { el: card, slices: slices };
     });
+    // small outlined squares scattered through the depth, the same on every visit
+    var orbSeed = 7;
+    var orbRand = function () { orbSeed = (orbSeed * 16807) % 2147483647; return (orbSeed - 1) / 2147483646; };
+    // each card appears at its own spot away from the middle, and glides to the center as it comes closer
+    orbCards.forEach(function (c, i) {
+      var ang = (i * 2.4 + orbRand() * 0.8) % (Math.PI * 2); // spread around the middle, never twice in a row on the same side
+      c.ox = Math.cos(ang) * (0.28 + orbRand() * 0.12);
+      c.oy = Math.sin(ang) * (0.22 + orbRand() * 0.1);
+    });
+    var orbSpecks = [];
+    for (var q = 0; q < 140; q++) {
+      var sq = document.createElement("span");
+      sq.className = "orbit__speck";
+      sq.style.width = sq.style.height = (4 + Math.round(orbRand() * 12)) + "px";
+      orbScene.appendChild(sq);
+      orbSpecks.push({ el: sq, fx: (orbRand() - 0.5) * 1.6, fy: (orbRand() - 0.5) * 1.3, z: (orbRand() * (orbN + 1.5) - 1.5) * ORB_D });
+    }
 
-    var orbNavH = 72, orbSeg = 0, orbH = 0, orbR = 0, orbRest = 0, orbHS = 0, orbRestY = 0, orbCurrent = -2; // -1 is the opening view
+    var orbNavH = 72, orbSeg = 0, orbH = 0, orbW = 0, orbRestY = 0, orbCurrent = -2; // -1 is the opening view
     var orbSize = function () {
       orbNavH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-height")) || 72;
       orbSeg = Math.round(window.innerHeight * 0.8); // scrolling per project
       var W = orbDeck.clientWidth, phone = W < 810;
       orbH = window.innerHeight - orbNavH;
-      orbDeck.style.height = orbH + (orbN + 1.3) * orbSeg + "px"; // extra scrolling for the opening and closing views
+      orbDeck.style.height = orbH + (orbN + 0.9) * orbSeg + "px"; // extra scrolling for the opening and closing views
       var cw = phone ? Math.min(W * 0.72, 320) : Math.min(460, W * 0.4), ch = cw * 20 / 31;
-      orbR = cw * 0.875; // the cylinder's radius (smaller is a tighter spiral and more curved cards)
-      orbRest = 0; // at rest, the front card faces the visitor, centered above the caption
-      orbRestY = -orbH * (phone ? 0.27 : 0.25);
-      orbHS = orbH * (phone ? 0.42 : 0.5); // how far the spiral rises per project
-      var arc = cw / orbR, sw = cw / ORB_SLICES;
-      orbScene.style.transform = "translateZ(" + (-orbR) + "px)"; // so the front of the cylinder is at normal size
+      orbW = W;
+      orbRestY = -orbH * (phone ? 0.27 : 0.25); // where a card settles: centered, above the caption
+      orbView.style.perspectiveOrigin = "50% " + (orbH / 2 + orbRestY) + "px"; // cards come from straight behind that spot
       orbCards.forEach(function (c) {
-        c.slices.forEach(function (sl, k) {
-          sl.style.width = (sw + 1.5) + "px"; // a little wider, so no gaps show between strips
+        c.slices.forEach(function (sl) {
+          sl.style.width = cw + "px";
           sl.style.height = ch + "px";
-          sl.style.left = (-sw / 2) + "px";
+          sl.style.left = (-cw / 2) + "px";
           sl.style.top = (-ch / 2) + "px";
-          sl.style.backgroundSize = cw + "px " + ch + "px";
-          sl.style.backgroundPosition = (-k * sw) + "px 0";
-          sl.style.transform = "rotateY(" + ((k - (ORB_SLICES - 1) / 2) * arc / ORB_SLICES) + "rad) translateZ(" + orbR + "px)";
+          sl.firstChild.style.backgroundSize = cw + "px " + ch + "px";
+          sl.style.borderRadius = "14px";
         });
       });
     };
@@ -690,43 +704,54 @@
       var want = now - orbLastScroll > 180 ? 1 : 0;
       orbAmp = Math.max(0, Math.min(1, orbAmp + (want - orbAmp) * Math.min(1, dt / (want ? 900 : 200))));
       var t = now / 1000;
-      // in projects; it starts at -1.5 with no card in view, and the first card comes in from the
-      // lower left only once the visitor scrolls on
+      // in projects; it starts at -1.5 with no card in view, and the first card appears in the
+      // distance only once the visitor scrolls on
       var p = (orbNavH - orbDeck.getBoundingClientRect().top) / orbSeg - 1.5;
-      // after the last project it runs on a little: the last card turns away out of view while
+      // after the last project it runs on a little: the last card bursts past and fades while
       // the caption and the facts drift up and fade, then the contact section scrolls in
-      p = Math.max(-1.5, Math.min(orbN - 1 + 0.8, p));
-      var out = Math.max(0, Math.min(1, (p - (orbN - 1) - 0.4) / 0.35)); // at the same time as the last card leaves
+      p = Math.max(-1.5, Math.min(orbN - 1 + 0.4, p));
+      var out = Math.max(0, Math.min(1, (p - (orbN - 1) - 0.1) / 0.28)); // at the same time as the last card leaves
       out = out * out * (3 - 2 * out); // ease in and out
       orbCards.forEach(function (c, i) {
         var rel = i - p;
-        var ang = orbRest - rel * ORB_STEP;  // 0 = straight in front
-        var y = orbRestY + rel * orbHS;
-        var face = Math.cos(ang);            // 1 facing the visitor, below 0 turned away
-        var op = Math.max(0, Math.min(1, (face + 0.1) / 0.5)) * Math.max(0, Math.min(1, 1.6 - Math.abs(y) / orbH * 1.6));
-        op *= Math.max(0, Math.min(1, (1.3 - rel) / 0.3)); // cards further than one step away stay hidden
-        op *= Math.max(0, Math.min(1, (rel + 0.75) / 0.3));  // and a card that has passed is fully gone before the next step
+        var rz = -rel * ORB_D; // 0 = in focus; below 0 still ahead; above 0 flying past the visitor
+        var op = 1;
+        op *= Math.max(0, Math.min(1, (1.4 - rel) / 0.3));         // the next card shows in the distance as an outlined box
+        op *= rz > 220 ? Math.max(0, 1 - (rz - 220) / 300) : 1;    // a card fades as it bursts past
         if (op <= 0.01) { c.el.style.visibility = "hidden"; return; }
         c.el.style.visibility = "";
-        // the fade goes on each strip: fading the card itself would flatten it in the browser
         if (c.op !== op.toFixed(2)) { c.op = op.toFixed(2); c.slices.forEach(function (sl) { sl.style.opacity = c.op; }); }
+        // the image fills the box only once the card before it has gone
+        var fill = Math.max(0, Math.min(1, (0.75 - rel) / 0.35)).toFixed(2);
+        if (c.fill !== fill) { c.fill = fill; c.slices.forEach(function (sl) { sl.firstChild.style.opacity = fill; }); }
         var a = orbAmp;
         var bob = Math.sin(t * 1.1 + i * 1.7) * 9 * a;          // up and down, in px
-        var sway = Math.sin(t * 0.7 + i * 2.3) * 0.025 * a;     // around the cylinder, in rad
+        var sway = Math.sin(t * 0.7 + i * 2.3) * 1.6 * a;       // turning left and right, in deg
         var tilt = Math.sin(t * 0.9 + i * 1.1) * 1.4 * a;       // in its own plane, in deg
-        var rock = Math.sin(t * 0.8 + i * 2.9) * 1.2 * a;       // forward and back, in deg
+        var rock = Math.sin(t * 0.8 + i * 2.9) * 1.6 * a;       // forward and back, in deg
         // fixed decimals: a tiny number written as 1e-7 isn't valid CSS and the browser would skip it
-        c.el.style.transform = "translateY(" + (y + bob).toFixed(2) + "px) rotateY(" + (ang + sway).toFixed(4) + "rad) rotateZ(" + tilt.toFixed(3) + "deg) rotateX(" + rock.toFixed(3) + "deg)";
+        var f = Math.max(0, Math.min(1, -rz / (1.4 * ORB_D))); f = f * f * (3 - 2 * f); // 1 when it appears, 0 in focus
+        var x = c.ox * orbW * f, y = orbRestY + c.oy * orbH * f;
+        c.el.style.transform = "translate3d(" + x.toFixed(1) + "px," + (y + bob).toFixed(2) + "px," + rz.toFixed(1) + "px) rotateY(" + sway.toFixed(3) + "deg) rotateZ(" + tilt.toFixed(3) + "deg) rotateX(" + rock.toFixed(3) + "deg)";
+      });
+      var cam = p * ORB_D;
+      orbSpecks.forEach(function (sp, k) {
+        var rz = cam - sp.z;
+        if (rz > 520 || rz < -3000) { sp.el.style.visibility = "hidden"; return; }
+        sp.el.style.visibility = "";
+        var op = rz > 220 ? 1 - (rz - 220) / 300 : rz < -2200 ? 1 - (-2200 - rz) / 800 : 1;
+        sp.el.style.opacity = (Math.max(0, Math.min(1, op)) * (1 - out)).toFixed(3);
+        sp.el.style.transform = "translate3d(" + (sp.fx * orbW).toFixed(1) + "px," + (orbRestY + sp.fy * orbH + Math.sin(t + k) * 4 * orbAmp).toFixed(1) + "px," + rz.toFixed(1) + "px)";
       });
       // the facts drift with the cards
       orbFacts.style.transform = "translateY(" + (Math.sin(t * 0.95 + 0.6) * 7 * orbAmp - out * 40).toFixed(2) + "px) rotate(" + (Math.sin(t * 0.7) * 0.6 * orbAmp).toFixed(3) + "deg)";
       orbFacts.style.opacity = (1 - out).toFixed(3);
       // the opening line fades out while the first card comes in, then the first project's name fades in
-      var show = p < -0.6 ? 1 - Math.max(0, Math.min(1, (p + 1.3) / 0.7)) : Math.max(0, Math.min(1, (p + 0.6) / 0.4));
+      var show = p < -0.5 ? 1 - Math.max(0, Math.min(1, (p + 0.95) / 0.45)) : Math.max(0, Math.min(1, (p + 0.5) / 0.35));
       orbCenter.style.opacity = (show * (1 - out)).toFixed(3);
       orbCenter.style.transform = "translateY(calc(-50% + " + (Math.sin(t * 0.85 + 2) * 5 * orbAmp - out * 40).toFixed(2) + "px))";
       orbCenter.style.visibility = out >= 1 || show <= 0 ? "hidden" : ""; // so a faded link can't be tabbed to or clicked
-      orbSetCaption(p < -0.6 ? -1 : Math.round(Math.max(0, Math.min(orbN - 1, p))));
+      orbSetCaption(p < -0.5 ? -1 : Math.floor(Math.max(0, Math.min(orbN - 1, p + 0.7)))); // switches as the next card appears
     };
     orbSize();
     orbDraw();
