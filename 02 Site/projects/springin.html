@@ -7,7 +7,7 @@
   <meta name="description" content="SpringIn: an AI-assisted design sprint on how nurses in German hospitals ask for time off. A UX case study by Mark Alexis Albaran.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css">
   <script>document.documentElement.classList.add("js");var t="light";try{if(localStorage.getItem("theme")==="dark")t="dark"}catch(e){}if(t==="light")document.documentElement.setAttribute("data-theme","light");</script>
 </head>
@@ -34,7 +34,7 @@
   <main id="main">
     <section class="case-header">
       <div class="container" data-reveal>
-        <a class="case-header__back label" href="../index.html#work">&larr; All projects</a>
+        <a class="case-header__back label" href="../index.html#all">&larr; All projects</a>
         <p class="label">Healthcare &middot; 2026</p>
         <h1 class="case-header__title">SpringIn</h1>
         <p class="case-header__subtitle">An AI-assisted design sprint on how nurses ask for time off</p>
@@ -234,7 +234,8 @@
         <h2 data-reveal>Walkthrough</h2>
         <div data-reveal data-delay="120">
           <p>The whole wish round from start to finish, clicked through in the prototype: writing a wish with alternatives, checking the list before handing it in, the deadline passing, and the plan coming out.</p>
-          <div class="walk" data-walk="springin">
+          <p class="walk__intro label">Plays on its own, using the same rebuilt prototype as above. Pause it any time.</p>
+          <div class="walk walk--hifi" data-walk="springin">
             <div class="walk__head">
               <p class="walk__title">One wish round, start to finish</p>
               <button class="walk__toggle label" type="button" aria-pressed="false">Pause walkthrough</button>
@@ -248,6 +249,8 @@
                 <li><span class="walk__n" aria-hidden="true">5</span><div class="walk__d"><p class="walk__name">The plan is out</p><p>Each wish shows whether it was granted, with a next step for the one that wasn't.</p></div></li>
               </ol>
               <div class="walk__stage" aria-hidden="true" inert>
+                <p class="walk__label walk__label--l">SpringIn</p>
+                <p class="walk__label walk__label--r">Open the app</p>
                 <div class="wish-demo walk__scene walk__home" data-scene="home">
                   <div class="wish-demo__phone sp-phone">
                     <div class="hm-top">
@@ -273,17 +276,22 @@
                       <div class="hm-row"><span class="hm-dot"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="hm-row__txt"><strong>12.Feb (Fri)</strong>Alternative · 13.Feb (Sat), early shift</span><span class="rs-badge rs-badge--yes">✓ Granted</span></div>
                       <div class="hm-row"><span class="hm-dot hm-dot--no">!</span><span class="hm-row__txt"><strong>19.Feb (Fri)</strong>Wished: day off · Planned: late shift</span><span class="rs-badge rs-badge--no">Not granted</span></div>
                     </div>
+                    <nav class="hm-tabs">
+                      <span class="is-on"><svg viewBox="0 0 24 24"><path d="M4 10.5L12 4l8 6.5V20h-5.5v-5.5h-5V20H4z" fill="currentColor"/></svg>Home</span>
+                      <span><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Wünsche</span>
+                      <span><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zM5 10h14M10 10v9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Dienstplan</span>
+                      <span><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.8" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 20c.9-3.6 3.8-5.8 7.2-5.8s6.3 2.2 7.2 5.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Profil</span>
+                    </nav>
                   </div>
                 </div>
                 <span class="walk__pointer"></span>
               </div>
             </div>
           </div>
-          <p class="try__caption label">Plays on its own, using the same rebuilt prototype as above. Pause it any time.</p>
         </div>
       </section>
       <nav class="case-end" aria-label="More projects">
-        <a class="case-end__back label" href="../index.html#work">&larr; All projects</a>
+        <a class="case-end__back label" href="../index.html#all">&larr; All projects</a>
       </nav>
     </div>
 
@@ -299,7 +307,6 @@
         </div>
       </div>
     </section>
-    <a class="contact-cta" href="#contact">Contact</a>
   </main>
 
   <footer class="footer">

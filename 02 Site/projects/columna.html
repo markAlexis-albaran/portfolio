@@ -34,7 +34,7 @@
   <main id="main">
     <section class="case-header">
       <div class="container" data-reveal>
-        <a class="case-header__back label" href="../index.html#work">&larr; All projects</a>
+        <a class="case-header__back label" href="../index.html#all">&larr; All projects</a>
         <p class="label">Media / Publishing &middot; 2024</p>
         <h1 class="case-header__title">Columna</h1>
         <p class="case-header__subtitle">Two design systems behind a block-based CMS for magazine editors</p>
@@ -141,7 +141,11 @@
             <div class="tk-stage">
               <article class="tk-card" data-brand="kochzeit" aria-live="polite">
                 <header class="tk-card__bar"><span class="tk-card__logo">Kochzeit</span></header>
-                <div class="tk-card__img" aria-hidden="true"><span></span></div>
+                <div class="tk-card__img" aria-hidden="true">
+                  <svg class="tk-ill tk-ill--kochzeit" viewBox="0 0 280 120" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="280" height="120" fill="#f0d9bf"/><path d="M118 30q-6-8 0-16M140 28q-6-8 0-16M162 30q-6-8 0-16" stroke="#e4b98f" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="140" cy="62" rx="64" ry="12" fill="#e98a3c"/><path d="M76 62a64 44 0 0 0 128 0z" fill="#ffffff"/><path d="M76 62a64 44 0 0 0 128 0" fill="none" stroke="#e4b98f" stroke-width="3"/><circle cx="124" cy="60" r="4" fill="#ffffff" opacity=".8"/><circle cx="152" cy="62" r="3" fill="#8a9a3c"/><circle cx="160" cy="59" r="3" fill="#8a9a3c"/><rect x="186" y="34" width="8" height="40" rx="4" transform="rotate(30 190 54)" fill="#b4441c"/></svg>
+                  <svg class="tk-ill tk-ill--sternblick" viewBox="0 0 280 120" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="280" height="120" fill="#2a2a2e"/><path d="M100 0h80l40 120H60z" fill="#ff2d6f" opacity=".18"/><ellipse cx="140" cy="108" rx="70" ry="10" fill="#ff2d6f" opacity=".35"/><circle cx="140" cy="54" r="10" fill="#f5f5f5"/><path d="M124 106l4-38a12 10 0 0 1 24 0l4 38z" fill="#f5f5f5"/><path d="M150 72l20-22" stroke="#f5f5f5" stroke-width="6" stroke-linecap="round"/><path d="M174 40l3 6 6 1-5 4 1 6-5-3-5 3 1-6-5-4 6-1z" fill="#ff2d6f"/><path d="M60 24l2 4 4 1-4 2-2 4-2-4-4-2 4-1zM220 30l2 4 4 1-4 2-2 4-2-4-4-2 4-1z" fill="#4a4a52"/></svg>
+                  <svg class="tk-ill tk-ill--fernweg" viewBox="0 0 280 120" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="280" height="120" fill="#bcd9d5"/><circle cx="210" cy="34" r="16" fill="#f7e3a8"/><path d="M0 70h280v50H0z" fill="#7fb3ad"/><path d="M0 78q35-6 70 0t70 0 70 0 70 0" stroke="#eef4f3" stroke-width="3" fill="none"/><path d="M0 120V96q60-22 130-10t150 4v30z" fill="#e8d6b0"/><path d="M58 92v-24M58 70l-12 8M58 76l12 6" stroke="#1f6f6a" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M182 74l12-22 12 22z" fill="#ffffff"/><path d="M178 74h32l-4 6h-24z" fill="#1f6f6a"/></svg>
+                </div>
                 <span class="tk-card__tag">Rezept</span>
                 <h4 class="tk-card__title">Herbstsuppe in 20 Minuten</h4>
                 <span class="tk-card__btn">Zum Rezept</span>
@@ -169,7 +173,8 @@
         <h2 data-reveal>Walkthrough</h2>
         <div data-reveal data-delay="120">
           <p>The prototypes from this case study, joined into one flow: writing an article straight into the CMS, scheduling it in the same window, and previewing its card in each brand.</p>
-          <div class="walk" data-walk="columna">
+          <p class="walk__intro label">Plays on its own, using the same rebuilt prototypes as above. Pause it any time.</p>
+          <div class="walk walk--hifi walk--desktop" data-walk="columna">
             <div class="walk__head">
               <p class="walk__title">From draft to scheduled, then a new brand</p>
               <button class="walk__toggle label" type="button" aria-pressed="false">Pause walkthrough</button>
@@ -181,15 +186,16 @@
                 <li><span class="walk__n" aria-hidden="true">3</span><div class="walk__d"><p class="walk__name">Preview and swap the brand</p><p>Open the preview: the article's card in Kochzeit. Switch to Sternblick, then Fernweg. Only the tokens change.</p></div></li>
               </ol>
               <div class="walk__stage" aria-hidden="true" inert>
+                <p class="walk__label walk__label--l">Columna</p>
+                <p class="walk__label walk__label--r">Write in the CMS</p>
                 <span class="walk__pointer"></span>
               </div>
             </div>
           </div>
-          <p class="try__caption label">Plays on its own, using the same rebuilt prototypes as above. Pause it any time.</p>
         </div>
       </section>
       <nav class="case-end" aria-label="More projects">
-        <a class="case-end__back label" href="../index.html#work">&larr; All projects</a>
+        <a class="case-end__back label" href="../index.html#all">&larr; All projects</a>
       </nav>
     </div>
 
@@ -205,7 +211,6 @@
         </div>
       </div>
     </section>
-    <a class="contact-cta" href="#contact">Contact</a>
   </main>
 
   <footer class="footer">

@@ -12,6 +12,41 @@
   <script>document.documentElement.classList.add("js");var t="light";try{if(localStorage.getItem("theme")==="dark")t="dark"}catch(e){}if(t==="light")document.documentElement.setAttribute("data-theme","light");</script>
 </head>
 <body>
+  <svg class="tg-ills" width="0" height="0" aria-hidden="true" focusable="false">
+    <!-- Flat illustrations for the tvguideplus walkthrough, in the site's navy and orange -->
+    <symbol id="ill-thriller" viewBox="0 0 280 150">
+      <rect width="280" height="150" fill="#1b2560"/>
+      <circle cx="214" cy="38" r="20" fill="#f7c873"/>
+      <path d="M0 150V92h22V70h26v22h18V58h30v44h14V80h24v70z" fill="#2b3780"/>
+      <path d="M150 150V74h20V54h28v20h16V88h22V66h26v84z" fill="#2b3780"/>
+      <g fill="#f7c873" opacity=".85"><rect x="28" y="78" width="5" height="6"/><rect x="38" y="78" width="5" height="6"/><rect x="74" y="66" width="5" height="6"/><rect x="84" y="78" width="5" height="6"/><rect x="176" y="62" width="5" height="6"/><rect x="186" y="74" width="5" height="6"/><rect x="242" y="74" width="5" height="6"/></g>
+      <rect y="132" width="280" height="18" fill="#141c4c"/>
+      <circle cx="128" cy="70" r="10" fill="#0e1438"/>
+      <path d="M112 66h32l-6-6h-20z" fill="#0e1438"/>
+      <path d="M114 134l4-50a10 8 0 0 1 20 0l4 50z" fill="#0e1438"/>
+      <path d="M128 84l-4 20h8z" fill="#ff6a3d"/>
+    </symbol>
+    <symbol id="ill-coast" viewBox="0 0 280 150">
+      <rect width="280" height="150" fill="#cfe1f2"/>
+      <circle cx="60" cy="40" r="18" fill="#ffd27a"/>
+      <path d="M0 100l60-44 50 34 50-48 70 58 50-20v70H0z" fill="#8fb0d6"/>
+      <path d="M0 116h280v34H0z" fill="#4a74c9"/>
+    </symbol>
+    <symbol id="ill-bar" viewBox="0 0 280 150">
+      <rect width="280" height="150" fill="#f3e6d3"/>
+      <rect x="20" y="20" width="240" height="6" rx="3" fill="#c9a77d"/>
+      <rect x="20" y="46" width="240" height="6" rx="3" fill="#c9a77d"/>
+      <g><rect x="34" y="4" width="8" height="16" rx="2" fill="#4a74c9"/><rect x="48" y="8" width="8" height="12" rx="2" fill="#d8401f"/><rect x="62" y="2" width="8" height="18" rx="2" fill="#3f8f6d"/><rect x="200" y="6" width="8" height="14" rx="2" fill="#d8401f"/><rect x="214" y="2" width="8" height="18" rx="2" fill="#0b1550"/><rect x="34" y="32" width="8" height="14" rx="2" fill="#f2a541"/><rect x="48" y="30" width="8" height="16" rx="2" fill="#0b1550"/><rect x="220" y="30" width="8" height="16" rx="2" fill="#3f8f6d"/><rect x="234" y="34" width="8" height="12" rx="2" fill="#f2a541"/></g>
+      <path d="M110 0v36M170 0v36" stroke="#5a3d33" stroke-width="2"/>
+      <path d="M98 44a12 10 0 0 1 24 0zM158 44a12 10 0 0 1 24 0z" fill="#0b1550"/>
+      <ellipse cx="110" cy="48" rx="16" ry="8" fill="#ffd27a" opacity=".5"/><ellipse cx="170" cy="48" rx="16" ry="8" fill="#ffd27a" opacity=".5"/>
+      <rect x="10" y="84" width="260" height="12" rx="4" fill="#8a5a3c"/>
+      <rect x="20" y="96" width="240" height="30" fill="#a8734e"/>
+      <path d="M120 70h12l-2 14h-8zM150 76h10v8h-10z" fill="#ffffff" opacity=".85"/>
+      <path d="M60 126v24M90 126v24M190 126v24M220 126v24" stroke="#0b1550" stroke-width="5"/>
+      <rect x="48" y="122" width="54" height="8" rx="4" fill="#d8401f"/><rect x="178" y="122" width="54" height="8" rx="4" fill="#d8401f"/>
+    </symbol>
+  </svg>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="bg-stripes" data-reveal="large" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
   <header class="nav">
@@ -34,7 +69,7 @@
   <main id="main">
     <section class="case-header">
       <div class="container" data-reveal>
-        <a class="case-header__back label" href="../index.html#work">&larr; All projects</a>
+        <a class="case-header__back label" href="../index.html#all">&larr; All projects</a>
         <p class="label">Media / Publishing &middot; 2025 &middot; UX Design Intern</p>
         <h1 class="case-header__title">tvguideplus</h1>
         <p class="case-header__subtitle">Identifying usability opportunities on a mobile content platform</p>
@@ -170,7 +205,8 @@
         <h2 data-reveal>Walkthrough</h2>
         <div data-reveal data-delay="120">
           <p>The prototypes from this case study, joined into one flow: starting on Home, searching for a show, opening the TV guide and filtering it. Home and its menu are rebuilt from my Home design; the menu's other items are placeholders.</p>
-          <div class="walk" data-walk="tvguideplus">
+          <p class="walk__intro label">Plays on its own. Home and its menu are rebuilt from my Home design; the rest uses the prototypes above. Pause it any time.</p>
+          <div class="walk walk--hifi" data-walk="tvguideplus">
             <div class="walk__head">
               <p class="walk__title">From Home to tonight's films</p>
               <button class="walk__toggle label" type="button" aria-pressed="false">Pause walkthrough</button>
@@ -183,23 +219,25 @@
                 <li><span class="walk__n" aria-hidden="true">4</span><div class="walk__d"><p class="walk__name">Filter the guide</p><p>Pick Heute um 20:15 and Spielfilme, close the filter, and the guide shows only the two films.</p></div></li>
               </ol>
               <div class="walk__stage" aria-hidden="true" inert>
+                <p class="walk__label walk__label--l">tvguideplus</p>
+                <p class="walk__label walk__label--r">Start on Home</p>
                 <div class="walk__scene tg-home" data-scene="home">
                   <div class="tg-phone tgh">
                     <div class="tg-bar tgh-bar"><span class="tg-logo">TVGuide+</span><span class="tgh-icons"><span class="tgh-user"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 20c.8-3.6 3.6-5.6 7-5.6s6.2 2 7 5.6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><button type="button" class="tgh-search"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 15l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="tgh-menu"><svg viewBox="0 0 24 24"><path d="M4 6.5h16M4 12h16M4 17.5h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></span></div>
                     <div class="tgh-chips"><span>Dschungelcamp</span><span>Sommerhaus der Stars</span></div>
                     <p class="tgh-h">Unsere TV-Tagestipps</p>
                     <div class="tgh-carousel">
-                      <span class="tgh-tip tgh-tip--peek"></span>
-                      <span class="tgh-tip"><span class="tgh-img"><span class="tgh-ch">ZDF</span></span><span class="tgh-cap"><strong>Luther – The Fallen Sun</strong><span>Thriller</span></span></span>
-                      <span class="tgh-tip tgh-tip--peek"></span>
+                      <span class="tgh-tip tgh-tip--peek"><svg viewBox="0 0 280 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#ill-coast"/></svg></span>
+                      <span class="tgh-tip"><span class="tgh-img"><svg viewBox="0 0 280 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#ill-thriller"/></svg><span class="tgh-ch">ZDF</span></span><span class="tgh-cap"><strong>Luther – The Fallen Sun</strong><span>Thriller</span></span></span>
+                      <span class="tgh-tip tgh-tip--peek"><svg viewBox="0 0 280 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#ill-coast"/></svg></span>
                     </div>
                     <div class="tgh-dots"><i></i><i class="is-on"></i><i></i><i></i><i></i></div>
                     <p class="tgh-news"><span>NEWS</span></p>
-                    <div class="tgh-newsimg"></div>
-                    <div class="tgh-newstxt"><span></span><span></span><span></span></div>
+                    <div class="tgh-newsimg"><svg viewBox="0 0 280 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#ill-bar"/></svg></div>
+                    <div class="tgh-newstxt"><span class="tgh-kicker">Kassel</span><strong>Neue Bar in Kassel eröffnet</strong><span>&bdquo;Halbvoll&ldquo; bietet familiären Charme</span></div>
                     <div class="tgh-menu-panel" hidden>
                       <button type="button" class="tgh-menu-item">TV-Programm</button>
-                      <span class="tgh-ph"></span><span class="tgh-ph"></span><span class="tgh-ph"></span><span class="tgh-ph"></span>
+                      <span class="tgh-ph">Mediathek</span><span class="tgh-ph">Streaming</span><span class="tgh-ph">News</span><span class="tgh-ph">Stars</span>
                     </div>
                   </div>
                 </div>
@@ -207,11 +245,10 @@
               </div>
             </div>
           </div>
-          <p class="try__caption label">Plays on its own. Home and its menu are rebuilt from my Home design; the rest uses the prototypes above. Pause it any time.</p>
         </div>
       </section>
       <nav class="case-end" aria-label="More projects">
-        <a class="case-end__back label" href="../index.html#work">&larr; All projects</a>
+        <a class="case-end__back label" href="../index.html#all">&larr; All projects</a>
       </nav>
     </div>
 
@@ -227,7 +264,6 @@
         </div>
       </div>
     </section>
-    <a class="contact-cta" href="#contact">Contact</a>
   </main>
 
   <footer class="footer">

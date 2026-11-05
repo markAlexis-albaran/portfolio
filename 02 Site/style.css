@@ -44,7 +44,7 @@
 }
 
 @media (max-width: 809px) {
-  :root { --gutter: 20px; --section: 80px; --nav-height: 64px; }
+  :root { --gutter: 20px; --section: 56px; --nav-height: 62px; } /* the bar's real height: 10px above it + 52px, so the section menu sits flush under it */
 }
 
 /* ---------- Base ---------- */
@@ -306,7 +306,7 @@ a { color: inherit; text-decoration: none; }
    open in a small floating panel under it. */
 @media (max-width: 809px) {
   .nav {
-    background: transparent;
+    background: var(--bg); /* solid, so nothing shows through above the bar while scrolling */
     border-bottom: 0;
     padding-top: 10px;
   }
@@ -532,42 +532,6 @@ a { color: inherit; text-decoration: none; }
   visibility: hidden;
   transform: translate(-50%, 12px);
   transition: opacity 0.3s ease, transform 0.3s var(--ease-out), visibility 0s linear 0.3s;
-}
-
-/* ---------- Floating "Contact" button (every page) ----------
-   Bottom right, scrolls to the contact section, and steps aside once that section is on screen. */
-.contact-cta {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
-  z-index: 9;
-  padding: 10px 20px;
-  font-family: var(--font-mono);
-  font-size: 14px;
-  line-height: 1.4;
-  color: var(--on-accent);
-  background: var(--accent);
-  border-radius: 999px;
-  transition: opacity 0.3s ease, transform 0.3s var(--ease-out), visibility 0s linear 0s;
-}
-
-.contact-cta:hover { transform: translateY(-4px); }
-
-.contact-cta.is-hidden {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(12px);
-  transition: opacity 0.3s ease, transform 0.3s var(--ease-out), visibility 0s linear 0.3s;
-}
-
-@media (max-width: 809px) {
-  .contact-cta { right: 16px; bottom: 16px; }
-  /* Home on phones: the centered "Scroll down" button goes first, so the two never overlap */
-  .scroll-cta:not(.is-hidden) ~ .contact-cta {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(12px);
-  }
 }
 
 /* ---------- Page header (Projects, About) ---------- */
@@ -1030,6 +994,8 @@ mark.hl {
 .try__title { font-weight: 500; font-size: 18px; }
 
 .case-section .try__caption { margin-top: var(--space-4); }
+.case-section .walk__intro { margin: var(--space-9) 0 0; }
+.walk__intro + .walk { margin-top: var(--space-4); }
 
 .try .wish-demo__phone { margin: var(--space-6) 0 0; }
 
@@ -1194,7 +1160,11 @@ mark.hl {
   height: 120px; border-radius: calc(var(--r-card) * 0.7); background: var(--img);
   transition: border-radius 0.35s ease, background-color 0.35s ease;
 }
-.tk-card__img span { width: 56px; height: 56px; border-radius: 50%; background: var(--img-dot); }
+.tk-card__img { overflow: hidden; }
+.tk-ill { display: none; width: 100%; height: 100%; }
+.tk-card[data-brand="kochzeit"] .tk-ill--kochzeit,
+.tk-card[data-brand="sternblick"] .tk-ill--sternblick,
+.tk-card[data-brand="fernweg"] .tk-ill--fernweg { display: block; }
 .tk-card__tag {
   padding: 3px 10px; border-radius: var(--r-btn); font-family: var(--font-sans); font-weight: 700; font-size: 12px;
   letter-spacing: 0.06em; text-transform: uppercase; color: var(--b-tag);
@@ -1217,7 +1187,10 @@ mark.hl {
 
 @media (max-width: 809px) {
   .tk-stage { grid-template-columns: 1fr; gap: var(--space-6); }
-  .tk-switch span { padding: 8px 12px; }
+  /* The switch becomes one row of equal parts across the full width; long labels wrap in place */
+  .tk-switch { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); width: 100%; border-radius: 14px; }
+  .tk-switch label { display: flex; }
+  .tk-switch span { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 44px; padding: 6px 8px; border-radius: 10px; font-size: 12px; line-height: 1.25; text-align: center; }
 }
 @media (prefers-reduced-motion: reduce) {
   .tk-card, .tk-card__bar, .tk-card__img, .tk-card__btn { transition: none; }
@@ -1791,6 +1764,295 @@ button.walk__n { padding: 0; cursor: pointer; }
   .walk { padding: var(--space-6) var(--space-4); }
 }
 
+:root { /* the HiFi phone's island and status icons, shared by the walkthroughs and the prototypes */
+  --hifi-island: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='28'%3E%3Crect width='96' height='28' rx='14' fill='%230b0b0b'/%3E%3C/svg%3E");
+  --hifi-icons: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='66' height='13' viewBox='0 0 66 13'%3E%3Cg fill='%2316302b'%3E%3Crect y='9' width='3.2' height='4' rx='1'/%3E%3Crect x='5' y='6' width='3.2' height='7' rx='1'/%3E%3Crect x='10' y='3' width='3.2' height='10' rx='1'/%3E%3Crect x='15' width='3.2' height='13' rx='1'/%3E%3Cpath d='M31 12.5l2.4-2.9a3.6 3.6 0 0 0-4.8 0zM25.6 6.6a7.6 7.6 0 0 1 10.8 0l-1.6 1.9a5.2 5.2 0 0 0-7.6 0zM22.4 3.4a12 12 0 0 1 17.2 0l-1.6 1.9a9.6 9.6 0 0 0-14 0z'/%3E%3Crect x='44.5' y='.5' width='19' height='12' rx='3.5' fill='none' stroke='%2316302b' opacity='.4'/%3E%3Crect x='46.5' y='2.5' width='15' height='8' rx='2'/%3E%3Crect x='64.5' y='4.5' width='1.4' height='4' rx='.7' opacity='.4'/%3E%3C/g%3E%3C/svg%3E");
+  --hifi-icons-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='66' height='13' viewBox='0 0 66 13'%3E%3Cg fill='%23ffffff'%3E%3Crect y='9' width='3.2' height='4' rx='1'/%3E%3Crect x='5' y='6' width='3.2' height='7' rx='1'/%3E%3Crect x='10' y='3' width='3.2' height='10' rx='1'/%3E%3Crect x='15' width='3.2' height='13' rx='1'/%3E%3Cpath d='M31 12.5l2.4-2.9a3.6 3.6 0 0 0-4.8 0zM25.6 6.6a7.6 7.6 0 0 1 10.8 0l-1.6 1.9a5.2 5.2 0 0 0-7.6 0zM22.4 3.4a12 12 0 0 1 17.2 0l-1.6 1.9a9.6 9.6 0 0 0-14 0z'/%3E%3Crect x='44.5' y='.5' width='19' height='12' rx='3.5' fill='none' stroke='%23ffffff' opacity='.4'/%3E%3Crect x='46.5' y='2.5' width='15' height='8' rx='2'/%3E%3Crect x='64.5' y='4.5' width='1.4' height='4' rx='.7' opacity='.4'/%3E%3C/g%3E%3C/svg%3E");
+}
+/* ---------- HiFi walkthrough (walk--hifi) ----------
+   The same look as the HiFi boards (01 Projects/boards): a light grey board with small labels in
+   its top corners, and a white phone with a status bar, an island and a home indicator. The
+   prototype still plays inside it. The left label names the project, the right one the step. */
+.walk--hifi .walk__body { max-width: none; }
+.walk--hifi .walk__steps { max-width: 460px; margin: 0 auto; }
+.walk--hifi .walk__stage {
+  padding: 76px 16px 60px;
+  border-radius: 18px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 45% at 20% 15%, rgba(255, 255, 255, 0.95), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 85% 92%, rgba(255, 255, 255, 0.8), transparent 70%),
+    linear-gradient(160deg, #f1f1f1 0%, #e6e6e6 55%, #ececec 100%);
+}
+.case-section .walk__label {
+  position: absolute;
+  top: 24px;
+  margin: 0;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: #1a1a1a;
+}
+.walk__label--l { left: 28px; }
+.walk__label--r { right: 28px; }
+.walk--hifi .walk__scene {
+  position: relative;
+  width: 100%;
+  max-width: 356px;
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 56px;
+  background: #ffffff;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 30px 70px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+.walk--hifi .walk__scene::before { /* the status bar, with the island and the icons drawn in */
+  content: "12:48";
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  height: 50px;
+  padding-left: 32px;
+  border-radius: 46px 46px 0 0;
+  background:
+    var(--hifi-island) no-repeat center 10px,
+    var(--hifi-icons) no-repeat right 26px center,
+    var(--hifi-screen, #f4f6f5);
+  font: 700 14px/50px var(--font-sans);
+  color: #16302b;
+}
+.walk--hifi .walk__scene::after { /* the home indicator */
+  content: "";
+  position: absolute;
+  z-index: 2;
+  bottom: 18px;
+  left: 50%;
+  width: 120px;
+  height: 5px;
+  margin-left: -60px;
+  border-radius: 3px;
+  background: #16302b;
+}
+.walk--hifi .walk__pointer { z-index: 3; }
+.walk--hifi .wish-demo__phone {
+  max-width: none;
+  height: 700px;
+  margin: 0;
+  padding: 62px 18px 44px;
+  border: 0;
+  border-radius: 46px;
+  background: #f4f6f5;
+}
+/* pflegePro: a white app. Its screens were drawn for a 270px phone, so they are zoomed to fill
+   the HiFi phone instead of reflowing */
+/* The interactive pflegePro prototypes get the same white phone: a white body with a soft
+   shadow, a status bar with the island, and a home indicator under the tab bar */
+.try .pf-phone {
+  position: relative;
+  padding-top: 34px;
+  border: 8px solid #ffffff;
+  border-radius: 42px;
+  background:
+    var(--hifi-island) no-repeat center 6px / 78px 23px,
+    var(--hifi-icons) no-repeat right 16px top 12px / 54px 11px,
+    #ffffff;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 24px 60px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+.try .pf-phone::before { content: "12:48"; position: absolute; top: 7px; left: 22px; font: 700 12px/20px var(--font-sans); color: #16302b; }
+.try .pf-phone::after { content: ""; position: absolute; bottom: 7px; left: 50%; width: 96px; height: 4px; margin-left: -48px; border-radius: 2px; background: #16302b; }
+.try .pf-phone .pf-tabbar { padding-bottom: 20px; background: #ffffff; }
+.walk--hifi .walk__app { --hifi-screen: #ffffff; display: block; }
+.walk--hifi .pf-phone {
+  width: 100%;
+  height: 700px;
+  padding-top: 50px;
+  border: 0;
+  border-radius: 46px;
+}
+.walk--hifi .pf-phone .wk-screen { zoom: 1.2; }
+.walk--hifi .pf-tabbar { padding-bottom: 24px; background: #ffffff; }
+.walk--hifi .hm2-card__img svg,
+.walk--hifi .hm2-prog svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.walk--hifi .hm2-prog { height: 104px; }
+.walk--hifi .hm2-prog svg { position: static; height: 104px; }
+.walk--hifi .hm2-card__img { background: #fde1d3; }
+.walk--hifi .hm2-card--peek .hm2-card__img { opacity: 1; }
+.case-section .walk--hifi .pf-sub { margin: 16px 14px 6px; font-weight: 700; font-size: 13px; color: #1f1f1f; }
+.pf-points { list-style: none; margin: 0 14px; }
+.pf-points li { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid #f0f0f0; font-size: 12px; color: #3a3a3a; }
+.pf-points li::before { content: ""; flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; background: var(--pf-red); }
+/* tvguideplus and yumm: their screens fill the HiFi phone under the status bar */
+.walk--hifi .tg-phone,
+.walk--hifi .cd-phone {
+  max-width: none;
+  height: 700px;
+  margin: 0;
+  border: 0;
+  border-radius: 46px;
+}
+.walk--hifi .tg-phone { padding-top: 50px; }
+.walk--hifi .cd-phone { padding-top: 50px; }
+.walk--hifi .st-phone { padding-top: 50px; }
+/* tvguideplus has a navy bar at the top, so the status bar is navy with white text */
+.walk--hifi[data-walk="tvguideplus"] .walk__scene::before {
+  background:
+    var(--hifi-island) no-repeat center 10px,
+    var(--hifi-icons-light) no-repeat right 26px center,
+    #0b1550;
+  color: #ffffff;
+}
+.walk--hifi .tgh-menu-panel { top: 100px; }
+.walk--hifi .tg-bar { padding-top: 4px; }
+.tgh-img svg, .tgh-tip--peek svg, .tgh-newsimg svg { display: block; width: 100%; height: 100%; }
+.walk--hifi .tgh-img { height: 132px; }
+.walk--hifi .tgh-newsimg { height: 150px; border-radius: 6px; overflow: hidden; background: none; }
+.walk--hifi .tgh-newstxt { gap: 2px; }
+.walk--hifi .tgh-newstxt span, .walk--hifi .tgh-newstxt strong { height: auto; width: auto; border-radius: 0; background: none; }
+.walk--hifi .tgh-newstxt .tgh-kicker { font-weight: 700; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tg-red); }
+.walk--hifi .tgh-newstxt strong { font-size: 16px; line-height: 1.25; color: #1a1a1a; }
+.walk--hifi .tgh-newstxt span:last-child { font-size: 13px; color: #6b7180; }
+.walk--hifi .tgh-ph { width: auto; height: auto; border-radius: 0; background: none; font-weight: 700; font-size: 16px; color: #1a1a1a; }
+.walk--hifi .tgh-ph:nth-child(odd) { width: auto; }
+.walk--hifi .tgh-menu-panel { gap: 0; padding: 8px 18px; }
+.walk--hifi .tgh-menu-panel > * { padding: 14px 0; border-bottom: 1px solid #eceef3; }
+.walk--hifi .tgh-menu-item { align-self: stretch; text-align: left; }
+
+.walk--hifi[data-walk="yumm"] .walk__scene { --hifi-screen: #ffffff; }
+.walk--hifi .st-jump { bottom: 30px; } /* clear of the home indicator */
+/* The phones keep their design size and are scaled by the script to fit the screen (fitPhones in
+   main.js), so the stage doesn't need a minimum height of its own */
+.walk--hifi:not(.walk--desktop) .walk__stage { min-height: 0 !important; }
+.walk--hifi:not(.walk--desktop) .walk__scene { width: 356px; max-width: none; }
+.walk--hifi:not(.walk--desktop) .walk__scene[hidden] { display: none; }
+/* Prototype phones that grow with their content never get taller than the screen; they scroll inside */
+.try .wish-demo__phone,
+.try .tg-phone,
+.try .cd-phone:not(.st-phone) { max-height: var(--fit-h, none); overflow-y: auto; }
+/* Screens that scroll show a thin scrollbar, so it's clear there's more below */
+/* Chrome and Safari draw an always-visible bar from the ::-webkit-scrollbar rules below (setting
+   scrollbar-width there would switch them back to the Mac's hidden overlay bars); Firefox, which has
+   no such rules, gets the standard properties */
+@supports not selector(::-webkit-scrollbar) {
+  .wish-demo__phone,
+  .tg-phone,
+  .cd-phone,
+  .st-scroll,
+  .ex-list { scrollbar-width: thin; scrollbar-color: rgba(22, 32, 40, 0.32) transparent; }
+}
+.wish-demo__phone::-webkit-scrollbar,
+.tg-phone::-webkit-scrollbar,
+.cd-phone::-webkit-scrollbar,
+.st-scroll::-webkit-scrollbar,
+.ex-list::-webkit-scrollbar { width: 6px; }
+.wish-demo__phone::-webkit-scrollbar-thumb,
+.tg-phone::-webkit-scrollbar-thumb,
+.cd-phone::-webkit-scrollbar-thumb,
+.st-scroll::-webkit-scrollbar-thumb,
+.ex-list::-webkit-scrollbar-thumb { border-radius: 3px; background: rgba(22, 32, 40, 0.32); }
+.wish-demo__phone::-webkit-scrollbar-track,
+.tg-phone::-webkit-scrollbar-track,
+.cd-phone::-webkit-scrollbar-track,
+.st-scroll::-webkit-scrollbar-track,
+.ex-list::-webkit-scrollbar-track { margin: 28px 0; background: transparent; } /* clear of the rounded corners */
+.walk--hifi .wish-demo__phone::-webkit-scrollbar-track { margin: 54px 0 34px; } /* under the status bar, above the home indicator */
+/* Columna is a desktop tool: the board holds a browser window instead of a phone */
+.walk--desktop[data-walk] .walk__body { max-width: none; }
+.walk--desktop .walk__scene {
+  max-width: none;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.walk--desktop .walk__scene::before,
+.walk--desktop .walk__scene::after { content: none; }
+.walk--desktop .walk__stage { padding: 76px 28px 56px; }
+.walk--desktop .ed-window {
+  border: 0;
+  border-radius: 14px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 30px 70px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+.walk--desktop .ed-bar { background: #fafafa; border-bottom: 1px solid #ececef; }
+.walk--desktop .ed-dots i:nth-child(1) { background: #ff5f57; }
+.walk--desktop .ed-dots i:nth-child(2) { background: #febc2e; }
+.walk--desktop .ed-dots i:nth-child(3) { background: #28c840; }
+
+/* A proper app UI inside: one card style, one button style, bigger titles, a back link on
+   pushed screens and a tab bar on Home */
+.walk--hifi .wd-card,
+.walk--hifi .sp-rv li,
+.walk--hifi .fp-handed li,
+.walk--hifi .rs-list li,
+.walk--hifi .hm-past,
+.walk--hifi .sp-phone .fw-note {
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(22, 48, 43, 0.06), 0 6px 16px rgba(22, 48, 43, 0.05);
+}
+.walk--hifi .rs-list li.is-no { box-shadow: inset 0 0 0 1.5px #c0392b, 0 6px 16px rgba(22, 48, 43, 0.05); border-color: transparent; }
+.walk--hifi .sp-phone .sp-h { font-size: 25px; letter-spacing: -0.02em; line-height: 1.15; }
+.walk--hifi .sp-phone .sp-sub { margin: 4px 0 16px; }
+.walk--hifi .sp-deadline { margin-bottom: 12px; padding: 12px 16px; border-radius: 16px; }
+.walk--hifi .sp-cal { padding: 14px; }
+.walk--hifi .sp-days button { height: 44px; border-radius: 10px; background: #f4f6f5; font-weight: 600; }
+.walk--hifi .sp-sum { margin-top: 12px; padding: 14px 16px; }
+.walk--hifi .sp-pick__opts { gap: 8px; }
+.walk--hifi .sp-pick__opts button { padding: 12px 14px; border: 0; border-radius: 14px; font-size: 14px; box-shadow: 0 1px 2px rgba(22, 48, 43, 0.06), 0 4px 12px rgba(22, 48, 43, 0.04); }
+.walk--hifi .sp-pick__opts button[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--wd-spruce); }
+.walk--hifi .fw-save,
+.walk--hifi .sp-handin,
+.walk--hifi .hm-open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  margin-top: 16px;
+  padding: 0 16px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 15px;
+}
+.walk--hifi .hm-open { margin-top: 14px; }
+.walk--hifi .sp-toast { border-radius: 14px; padding: 14px 16px; }
+.walk--hifi .fw-cal::before,
+.walk--hifi .fp-before::before {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--wd-spruce);
+}
+.walk--hifi .fw-cal::before { content: "\2039\00a0 Home"; }
+.walk--hifi .fp-before::before { content: "\2039\00a0 Wunschplaner"; }
+/* Home: the tab bar sits at the bottom of the screen */
+.walk--hifi .walk__home .wish-demo__phone { display: flex; flex-direction: column; padding-top: 62px; }
+.walk--hifi .walk__home .wish-demo__phone > * { flex-shrink: 0; }
+.hm-tabs {
+  position: sticky;
+  bottom: -44px; /* Chrome keeps sticky items inside the padding, so it goes past it */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: auto -18px -44px;
+  padding: 10px 8px 34px;
+  border-top: 1px solid #e3e8e6;
+  background: #ffffff;
+}
+.hm-tabs span { display: flex; flex-direction: column; align-items: center; gap: 3px; font-weight: 600; font-size: 11px; color: #8a9692; }
+.hm-tabs svg { width: 22px; height: 22px; }
+.hm-tabs .is-on { color: var(--wd-spruce); }
+.walk--hifi .hm-past { margin-bottom: 20px; }
+.walk--hifi .hm-filters span { white-space: nowrap; }
+@media (max-width: 809px) {
+  .walk--hifi .walk__stage { padding: 60px 8px 40px; }
+  .walk--desktop .walk__stage { padding: 60px 8px 40px; }
+  .walk .wk-win .tk-stage { grid-template-columns: minmax(0, 1fr); } /* the card on top, its tokens under it */
+  .wk-win__body { padding: 16px; }
+  .case-section .walk__label { top: 20px; font-size: 13px; }
+  .walk__label--l { left: 18px; }
+  .walk__label--r { right: 18px; }
+}
+
 /* SpringIn, decision 1: calendar, then the wish screen */
 .fw-cal[hidden], .fw-wish[hidden], .fw-alts[hidden] { display: none; }
 .fw-wish { animation: wd-in 0.25s ease-out; }
@@ -1988,11 +2250,11 @@ button.walk__n { padding: 0; cursor: pointer; }
 .pg-meta { display: block; font-size: 11.5px; color: #6b6b6b; }
 .pg-bar { display: block; width: 130px; height: 4px; margin-top: 6px; border-radius: 2px; background: #ececec; }
 .pg-bar span { display: block; height: 100%; width: 0; border-radius: 2px; background: var(--pf-red); transition: width 0.4s var(--ease-out); }
-.pg-tip { height: 90px; border-radius: 10px; background: linear-gradient(135deg, #f6c9a5, #e9a06e); }
+.pg-tip { height: 90px; border-radius: 10px; overflow: hidden; background: #fde1d3; }
+.pg-tip svg { display: block; width: 100%; height: 100%; }
 /* More Wissenswertes placeholders under the first card, so the home screen isn't half empty */
 .pg-tips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex-shrink: 0; }
 .pg-tips .pg-tip { display: block; height: 72px; }
-.pg-tips .pg-tip:nth-child(2), .pg-tips .pg-tip:nth-child(3) { opacity: 0.7; }
 
 /* ---------- pflegePro: exercise filter ---------- */
 .ex-phone { margin-top: var(--space-6); --pf-red: #d93a30; }
@@ -2385,7 +2647,103 @@ button.walk__n { padding: 0; cursor: pointer; }
   .orbit__desc { flex-basis: 100%; margin-top: var(--space-2); padding-top: var(--space-2); font-size: 14px; }
   .orbit__name { font-size: 20px; }
   .orbit__center { top: 58%; gap: var(--space-4); }
+  .orbit__center.is-intro { top: 46%; } /* the opening line sits higher, closer to what comes before it */
 }
+
+/* The overview at the end of the flight (desktop): a hovered project's details sit under the
+   card that comes forward, its result and description on the left */
+/* An open project: a dimmed, blurred layer over the overview (a click on it closes), and one
+   framed panel on top: the cover on the left, everything about the project on the right, and a
+   round close button on its corner */
+.orbit__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+}
+.orbit__panel {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: var(--space-9);
+  align-items: center;
+  width: min(920px, calc(100% - 2 * var(--gutter)));
+  padding: var(--space-6);
+  border: 1px solid var(--outline-soft);
+  border-radius: 20px;
+  background: var(--bg);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.14);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, calc(-50% + 12px)) scale(0.98);
+  transition: opacity 0.25s ease, transform 0.3s var(--ease-out), visibility 0s linear 0.3s;
+}
+.orbit.is-active .orbit__scrim,
+.orbit.is-active .orbit__panel { opacity: 1; visibility: visible; transition-delay: 0s; }
+.orbit.is-active .orbit__panel { transform: translate(-50%, -50%); }
+.orbit__panel-cover { display: block; aspect-ratio: 31 / 20; border-radius: 14px; background: center / cover no-repeat; }
+.orbit__panel-body { display: flex; flex-direction: column; align-items: flex-start; padding-right: var(--space-6); }
+.orbit__panel-body p { margin: 0; }
+.orbit__panel-name { font-weight: 500; font-size: 28px; line-height: 1.2; color: var(--text); }
+.orbit__panel-meta { margin-top: var(--space-2) !important; color: var(--text-secondary); }
+.orbit__panel-big { margin-top: var(--space-6) !important; font-weight: 300; font-size: 56px; line-height: 0.95; letter-spacing: -0.04em; color: var(--text); }
+.orbit__panel-small { margin-top: var(--space-2) !important; font-size: 15px; line-height: 1.4; color: var(--text-secondary); }
+.orbit__panel-desc { margin-top: var(--space-4) !important; padding-top: var(--space-4); border-top: 1px solid var(--folder-wire); font-weight: 300; font-size: 16px; line-height: 1.5; color: var(--text); }
+.orbit__panel-link { margin-top: var(--space-6); }
+/* the close button: solid, high contrast, on the panel's top-right corner */
+.orbit__close {
+  position: absolute;
+  top: -18px;
+  right: -18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--bg);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-out);
+}
+.orbit__close svg { width: 18px; height: 18px; }
+.orbit__close:hover { transform: scale(1.08); }
+.orbit__close:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.orbit.is-active { cursor: pointer; } /* a click on the dimmed layer closes */
+.orbit.is-active .orbit__panel { cursor: auto; }
+/* where the opening line was: a Contact link down to the contact section, styled like "Scroll down" */
+.orbit__contact {
+  position: absolute;
+  left: 50%;
+  top: 61%;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 10px 16px 10px 20px;
+  border: 1px solid var(--outline-soft);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--text);
+  transform: translate(-50%, -50%);
+  visibility: hidden;
+  opacity: 0;
+}
+.orbit__contact svg { width: 16px; height: 16px; }
+.orbit__contact:hover { border-color: var(--text); }
+.orbit__card:focus-visible { outline: none; }
+.orbit__card:focus-visible .orbit__slice { outline: 2px solid var(--accent); outline-offset: 4px; }
 
 /* ---------- Placeholder images ---------- */
 
@@ -2889,6 +3247,7 @@ button.walk__n { padding: 0; cursor: pointer; }
 }
 
 .case-section:last-of-type { border-bottom: 0; }
+.case-section > * { min-width: 0; } /* wide content (a phone at design size) never stretches the column */
 
 .case-section h2 {
   font-weight: 500;
@@ -3005,7 +3364,7 @@ button.walk__n { padding: 0; cursor: pointer; }
 }
 
 @media (max-width: 809px) {
-  .case-section { grid-template-columns: 1fr; }
+  .case-section { grid-template-columns: 1fr; padding: var(--space-12) 0; gap: var(--space-6); } /* tighter on phones: no screen-sized gaps between sections */
   .case-section h2 { font-size: 24px; }
 }
 

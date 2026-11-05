@@ -55,14 +55,6 @@
     window.addEventListener("resize", checkCta);
   }
 
-  // Every page: the floating "Contact" button hides while the contact section is on screen
-  var contactCta = document.querySelector(".contact-cta");
-  var contactSection = document.getElementById("contact");
-  if (contactCta && contactSection && "IntersectionObserver" in window) {
-    new IntersectionObserver(function (entries) {
-      contactCta.classList.toggle("is-hidden", entries[0].isIntersecting);
-    }, { threshold: 0.15 }).observe(contactSection);
-  }
 
   // Prototypes. Each one is set up by a function, so a walkthrough at the end of a case study
   // can run its own copy. The copies are taken here, before any prototype starts, so every
@@ -771,6 +763,8 @@
         var lesson = function (title, meta) {
           $(".wk-les-title").textContent = title;
           $(".wk-les-meta").textContent = meta;
+          var art = $('[data-screen="lesson"] .pf-img use'); // each lesson has its own illustration
+          if (art) art.setAttribute("href", title === "Ausführung" ? "#ill-lift" : "#ill-basics");
           $('[data-screen="lesson"] .pf-heart').setAttribute("aria-pressed", "false");
         };
         var bar = function (pct, ms) {
@@ -933,6 +927,7 @@
         DEMOS[key](scenes[key]);
       });
       fit();
+      if (typeof fitPhones === "function") fitPhones(); // new copies of the screens get the same size
     };
     // The stage is as tall as its tallest screen, so the page doesn't jump between screens
     var fit = function () {
@@ -965,6 +960,9 @@
           var b = li.querySelector(".walk__n");
           if (i === n) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current");
         });
+        // On a HiFi board, the top-right label names the step on screen
+        var label = walkEl.querySelector(".walk__label--r");
+        if (label) label.textContent = stepEls[n].querySelector(".walk__name").textContent;
         progress();
       },
       // The pointer appears on the element (a checkbox or radio: on its label), presses in while two
@@ -1127,6 +1125,12 @@
     orbCenter.className = "orbit__center";
     orbCenter.innerHTML = '<span class="orbit__caption" aria-hidden="true"><span class="orbit__name"></span><span class="orbit__meta label"></span></span><a class="orbit__link label"></a>';
     orbView.appendChild(orbCenter);
+    // the overview's way on: a Contact link where the opening line was, pointing down
+    var orbContact = document.createElement("a");
+    orbContact.className = "orbit__contact label";
+    orbContact.href = "#contact";
+    orbContact.innerHTML = 'Get in touch with me <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    orbView.appendChild(orbContact);
     // the front project's result and one-line description, floating on the left
     var orbFacts = document.createElement("div");
     orbFacts.className = "orbit__facts";
@@ -1137,6 +1141,22 @@
     orbView.appendChild(orbScene);
     orbDeck.appendChild(orbView);
     var orbLink = orbCenter.querySelector(".orbit__link");
+    // An open project: a dimmed, blurred layer over the overview, and one panel on top with the
+    // cover on the left and everything about the project on the right, closed with the round
+    // button on its corner
+    var orbScrim = document.createElement("div");
+    orbScrim.className = "orbit__scrim";
+    var orbPanel = document.createElement("div");
+    orbPanel.className = "orbit__panel";
+    orbPanel.setAttribute("role", "dialog");
+    orbPanel.innerHTML = '<a class="orbit__panel-cover" tabindex="-1" aria-hidden="true"></a>' +
+      '<div class="orbit__panel-body"><p class="orbit__panel-name"></p><p class="orbit__panel-meta label"></p>' +
+      '<p class="orbit__panel-big"></p><p class="orbit__panel-small"></p><p class="orbit__panel-desc"></p>' +
+      '<a class="orbit__link orbit__panel-link label"></a></div>' +
+      '<button type="button" class="orbit__close" aria-label="Close, back to all projects"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>';
+    orbView.appendChild(orbScrim);
+    orbView.appendChild(orbPanel);
+    var orbClose = orbPanel.querySelector(".orbit__close");
 
     var orbCards = orbProjects.map(function (pr) {
       var card = document.createElement("a");
@@ -1164,23 +1184,39 @@
       c.ox = Math.cos(ang) * (0.28 + orbRand() * 0.12);
       c.oy = Math.sin(ang) * (0.22 + orbRand() * 0.1);
     });
+    // The overview at the end (desktop): every project at once, scattered around the opening line,
+    // after the owner's reference. x and y are fractions of the view from its center, w the card
+    // width as a fraction of the view width. The first project gets the largest spot.
+    var ORB_SLOTS = [
+      { x: -0.110, y: -0.120, w: 0.219 },
+      { x: 0.319, y: -0.170, w: 0.171 },
+      { x: 0.116, y: -0.354, w: 0.128 },
+      { x: -0.389, y: -0.092, w: 0.124 },
+      { x: -0.295, y: -0.355, w: 0.085 }
+    ];
+    var ORB_OV = 1.0, ORB_HOLD = 0.8; // scrolling into the overview, then holding it, in projects
+    var orbG = 0, orbActive = -1, orbOvOn = false, orbOvState = false;
     var orbSpecks = [];
     for (var q = 0; q < 140; q++) {
       var sq = document.createElement("span");
       sq.className = "orbit__speck";
+      sq.setAttribute("aria-hidden", "true");
       sq.style.width = sq.style.height = (4 + Math.round(orbRand() * 12)) + "px";
       orbScene.appendChild(sq);
       orbSpecks.push({ el: sq, fx: (orbRand() - 0.5) * 1.6, fy: (orbRand() - 0.5) * 1.3, z: (orbRand() * (orbN + 1.5) - 1.5) * ORB_D });
     }
 
-    var orbNavH = 72, orbSeg = 0, orbH = 0, orbW = 0, orbRestY = 0, orbCurrent = -2; // -1 is the opening view
+    var orbCW = 300, orbNavH = 72, orbSeg = 0, orbH = 0, orbW = 0, orbRestY = 0, orbCurrent = -2; // -1 is the opening view
     var orbSize = function () {
       orbNavH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-height")) || 72;
       orbSeg = Math.round(window.innerHeight * 0.8); // scrolling per project
       var W = orbDeck.clientWidth, phone = W < 810;
       orbH = window.innerHeight - orbNavH;
-      orbDeck.style.height = orbH + (orbN + 0.9) * orbSeg + "px"; // extra scrolling for the opening and closing views
+      orbOvOn = !phone; // phones end on the last project for now
+      // extra scrolling for the opening view, and on desktop for the overview at the end
+      orbDeck.style.height = orbH + (orbN + 0.5 + (orbOvOn ? ORB_OV + ORB_HOLD : 0)) * orbSeg + "px";
       var cw = phone ? Math.min(W * 0.72, 320) : Math.min(460, W * 0.4), ch = cw * 20 / 31;
+      orbCW = cw;
       orbW = W;
       orbRestY = -orbH * (phone ? 0.27 : 0.25); // where a card settles: centered, above the caption
       orbView.style.perspectiveOrigin = "50% " + (orbH / 2 + orbRestY) + "px"; // cards come from straight behind that spot
@@ -1224,6 +1260,77 @@
     };
     // When the scrolling stops, the cards drift gently, like feathers: a slow bob, sway and tilt,
     // each card on its own rhythm. The drift eases in after a stop and fades out while scrolling.
+    // A card's place in the overview, blended with where the flight left it. The last project
+    // glides from the front; the others come back from the distance.
+    var orbPlace = function (c, i, g, rz, flyOp, t) {
+      var sl = ORB_SLOTS[i % ORB_SLOTS.length], W = orbW, H = orbH;
+      var tx = sl.x * W, ty = sl.y * H, ts = sl.w * W / orbCW;
+      var bob = Math.sin(t * 1.1 + i * 1.7) * 6 * orbAmp;
+      var last = i === orbN - 1;
+      var sx = last ? 0 : tx, sy = last ? orbRestY : ty, sz = last ? rz : -1800, ss = last ? 1 : ts, so = last ? flyOp : 0;
+      var x = sx + (tx - sx) * g, y = sy + (ty - sy) * g + bob, z = sz * (1 - g), sc = ss + (ts - ss) * g;
+      var op = so + (1 - so) * g;
+      c.el.style.visibility = op <= 0.01 ? "hidden" : "";
+      var o = op.toFixed(2);
+      if (c.op !== o) { c.op = o; c.slices.forEach(function (s2) { s2.style.opacity = o; }); }
+      if (c.fill !== "1.00") { c.fill = "1.00"; c.slices.forEach(function (s2) { s2.firstChild.style.opacity = 1; }); }
+      c.el.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px," + z.toFixed(1) + "px) scale(" + sc.toFixed(4) + ")";
+    };
+    var orbSetActive = function (i) {
+      if (orbActive === i) return;
+      orbActive = i;
+      orbView.classList.toggle("is-active", i >= 0);
+      if (i < 0) return;
+      var pr = orbProjects[i];
+      var cover = orbPanel.querySelector(".orbit__panel-cover");
+      cover.href = pr.href;
+      cover.style.backgroundImage = "url('" + pr.splash + "')";
+      orbPanel.setAttribute("aria-label", pr.name);
+      orbPanel.querySelector(".orbit__panel-name").textContent = pr.name;
+      orbPanel.querySelector(".orbit__panel-meta").textContent = pr.meta;
+      orbPanel.querySelector(".orbit__panel-big").textContent = pr.big;
+      orbPanel.querySelector(".orbit__panel-small").textContent = pr.small;
+      orbPanel.querySelector(".orbit__panel-desc").textContent = pr.desc;
+      var link = orbPanel.querySelector(".orbit__panel-link");
+      link.href = pr.href;
+      link.innerHTML = 'Read case study &rarr;<span class="visually-hidden">: ' + pr.name + '</span>';
+    };
+    // In the overview a click on a cover opens its panel. Clicks are worked out from the covers'
+    // resting spots. The round button, Esc, or a click on the dimmed layer closes it again.
+    var orbInside = function (r, x, y) { return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom; };
+    var orbHit = function (x, y) {
+      var c0 = orbScene.getBoundingClientRect(), hit = -1;
+      orbCards.forEach(function (c, i) {
+        var sl = ORB_SLOTS[i % ORB_SLOTS.length], w = sl.w * orbW, h = w * 20 / 31;
+        var cx = c0.left + sl.x * orbW, cy = c0.top + sl.y * orbH;
+        if (orbInside({ left: cx - w / 2, right: cx + w / 2, top: cy - h / 2, bottom: cy + h / 2 }, x, y)) hit = i;
+      });
+      return hit;
+    };
+    orbView.addEventListener("mousemove", function (e) {
+      orbView.style.cursor = orbG >= 0.9 && orbActive < 0 && orbHit(e.clientX, e.clientY) >= 0 ? "pointer" : "";
+    });
+    orbView.addEventListener("click", function (e) {
+      if (orbG < 0.9 || e.target.closest(".orbit__panel, .orbit__contact, .orbit__link")) return;
+      e.preventDefault();
+      if (orbActive >= 0) { orbClose.click(); return; } // the dimmed layer
+      var card = e.target.closest(".orbit__card"); // a cover in focus, opened with Enter
+      var i = card ? orbCards.findIndex(function (c) { return c.el === card; }) : orbHit(e.clientX, e.clientY);
+      if (i < 0) return;
+      orbSetActive(i);
+      orbClose.focus({ preventScroll: true });
+    });
+    orbClose.addEventListener("click", function () {
+      var was = orbActive;
+      orbSetActive(-1);
+      if (was >= 0 && orbOvState) orbCards[was].el.focus({ preventScroll: true });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && orbActive >= 0) orbClose.click();
+    });
+    orbCards.forEach(function (c, i) {
+      c.el.setAttribute("aria-label", orbProjects[i].name + ", " + orbProjects[i].meta);
+    });
     var orbLastScroll = -1e9, orbAmp = 0, orbLastT = 0;
     var orbDraw = function (now) {
       now = now || performance.now();
@@ -1234,10 +1341,22 @@
       var t = now / 1000;
       // in projects; it starts at -1.5 with no card in view, and the first card appears in the
       // distance only once the visitor scrolls on
-      var p = (orbNavH - orbDeck.getBoundingClientRect().top) / orbSeg - 1.5;
-      // after the last project it runs on a little: the last card bursts past and fades while
-      // the caption and the facts drift up and fade, then the contact section scrolls in
-      p = Math.max(-1.5, Math.min(orbN - 1 + 0.4, p));
+      var raw = (orbNavH - orbDeck.getBoundingClientRect().top) / orbSeg - 1.5;
+      // the flight stops on the last project. On desktop the cards then settle into the overview
+      // (g goes 0 to 1) and hold it; on phones the last project scrolls away with the page.
+      var p = Math.max(-1.5, Math.min(orbN - 1, raw));
+      var g = orbOvOn ? Math.max(0, Math.min(1, (raw - (orbN - 1)) / ORB_OV)) : 0;
+      g = g * g * (3 - 2 * g);
+      orbG = g;
+      if (g < 0.9 && orbActive >= 0) orbSetActive(-1);
+      orbView.classList.toggle("is-overview", g > 0.5);
+      // in the overview the cards can be tabbed to; Enter opens one like a click
+      var ov = g >= 0.9;
+      if (ov !== orbOvState) {
+        orbOvState = ov;
+        orbScene.setAttribute("aria-hidden", ov ? "false" : "true");
+        orbCards.forEach(function (c) { c.el.tabIndex = ov ? 0 : -1; });
+      }
       var out = Math.max(0, Math.min(1, (p - (orbN - 1) - 0.1) / 0.28)); // at the same time as the last card leaves
       out = out * out * (3 - 2 * out); // ease in and out
       orbCards.forEach(function (c, i) {
@@ -1246,6 +1365,7 @@
         var op = 1;
         op *= Math.max(0, Math.min(1, (1.4 - rel) / 0.3));         // the next card shows in the distance as an outlined box
         op *= rz > 220 ? Math.max(0, 1 - (rz - 220) / 300) : 1;    // a card fades as it bursts past
+        if (g > 0) { orbPlace(c, i, g, rz, op, t); return; }
         if (op <= 0.01) { c.el.style.visibility = "hidden"; return; }
         c.el.style.visibility = "";
         if (c.op !== op.toFixed(2)) { c.op = op.toFixed(2); c.slices.forEach(function (sl) { sl.style.opacity = c.op; }); }
@@ -1273,16 +1393,31 @@
       });
       // the facts drift with the cards
       orbFacts.style.transform = "translateY(" + (Math.sin(t * 0.95 + 0.6) * 7 * orbAmp - out * 40).toFixed(2) + "px) rotate(" + (Math.sin(t * 0.7) * 0.6 * orbAmp).toFixed(3) + "deg)";
-      orbFacts.style.opacity = (1 - out).toFixed(3);
+      orbFacts.style.opacity = ((1 - out) * (1 - g)).toFixed(3);
       // the opening line fades out while the first card comes in, then the first project's name fades in
       var show = p < -0.5 ? 1 - Math.max(0, Math.min(1, (p + 0.95) / 0.45)) : Math.max(0, Math.min(1, (p + 0.5) / 0.35));
-      orbCenter.style.opacity = (show * (1 - out)).toFixed(3);
+      // into the overview, the last project's name fades out and the opening line fades back in
+      // into the overview the last project's name fades out and the Contact link fades in
+      var cOp = g <= 0 ? show * (1 - out) : g < 0.5 ? show * (1 - 2 * g) : 0;
+      orbCenter.style.opacity = cOp.toFixed(3);
+      var kOp = g < 0.5 ? 0 : 2 * g - 1;
+      orbContact.style.opacity = kOp.toFixed(3);
+      orbContact.style.visibility = kOp <= 0.02 ? "hidden" : "visible";
       orbCenter.style.transform = "translateY(calc(-50% + " + (Math.sin(t * 0.85 + 2) * 5 * orbAmp - out * 40).toFixed(2) + "px))";
-      orbCenter.style.visibility = out >= 1 || show <= 0 ? "hidden" : ""; // so a faded link can't be tabbed to or clicked
-      orbSetCaption(p < -0.5 ? -1 : Math.floor(Math.max(0, Math.min(orbN - 1, p + 0.7)))); // switches as the next card appears
+      orbCenter.style.visibility = out >= 1 || show <= 0 || cOp <= 0.02 ? "hidden" : ""; // so a faded link can't be tabbed to or clicked
+      if (g < 0.5) orbSetCaption(p < -0.5 ? -1 : Math.floor(Math.max(0, Math.min(orbN - 1, p + 0.7)))); // switches as the next card appears
     };
     orbSize();
     orbDraw();
+    // "All projects" on a case study links to #all: open on the overview, every project at once
+    var orbToOverview = function () {
+      if (window.location.hash !== "#all") return;
+      var at = orbOvOn ? orbN - 1 + ORB_OV + ORB_HOLD * 0.3 : orbN - 1;
+      var top = orbDeck.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: Math.round(top - orbNavH + (at + 1.5) * orbSeg), behavior: "instant" }); // no smooth scroll through the whole flight
+    };
+    orbToOverview();
+    window.addEventListener("load", orbToOverview);
     window.addEventListener("scroll", function () { orbLastScroll = performance.now(); orbDraw(); }, { passive: true });
     // the drift needs a frame loop, but only while the section is on screen
     var orbOnScreen = false;
@@ -1493,18 +1628,67 @@
 
   // Highlight the anchor for the section on screen
   var anchorLinks = document.querySelectorAll(".anchors__list a");
-  if (anchorLinks.length && "IntersectionObserver" in window) {
-    var sectionObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        anchorLinks.forEach(function (link) {
-          var on = link.getAttribute("href") === "#" + entry.target.id;
-          link.classList.toggle("is-active", on);
-          if (on) { link.setAttribute("aria-current", "location"); } else { link.removeAttribute("aria-current"); }
-        });
+  if (anchorLinks.length) {
+    // The active section is the last one whose top has passed 40% of the screen. Checked on every
+    // scroll (once per frame), so a jump from a menu link or a fast flick never skips it.
+    var anchorSections = [].slice.call(document.querySelectorAll(".case-section[id]"));
+    var anchorList = document.querySelector(".anchors__list");
+    var activeId = null, anchorTick = false;
+    var markActive = function () {
+      anchorTick = false;
+      var line = window.innerHeight * 0.4, id = null;
+      anchorSections.forEach(function (sec) { if (sec.getBoundingClientRect().top <= line) id = sec.id; });
+      if (id === activeId) return;
+      activeId = id;
+      anchorLinks.forEach(function (link) {
+        var on = id !== null && link.getAttribute("href") === "#" + id;
+        link.classList.toggle("is-active", on);
+        if (on) { link.setAttribute("aria-current", "location"); } else { link.removeAttribute("aria-current"); }
+        // The menu scrolls sideways on small screens: bring the active section into view, centered
+        if (on && anchorList.scrollWidth > anchorList.clientWidth) {
+          var lr = link.getBoundingClientRect(), mr = anchorList.getBoundingClientRect();
+          anchorList.scrollTo({ left: anchorList.scrollLeft + lr.left - mr.left - (mr.width - lr.width) / 2, behavior: "smooth" });
+        }
       });
-    }, { rootMargin: "-40% 0px -55% 0px" });
-
-    document.querySelectorAll(".case-section[id]").forEach(function (s) { sectionObserver.observe(s); });
+    };
+    window.addEventListener("scroll", function () {
+      if (!anchorTick) { anchorTick = true; requestAnimationFrame(markActive); }
+    }, { passive: true });
+    window.addEventListener("resize", markActive);
+    markActive();
   }
+  // Phones that fit the screen. A walkthrough phone or a fixed-size prototype phone is scaled down
+  // (CSS zoom, so taps and the pointer still line up) until it fits the width and the height left
+  // under the sticky bars. Prototype phones that grow with their content get that height as a
+  // maximum and scroll inside instead.
+  var fitPhones = function () {
+    var bars = 0;
+    document.querySelectorAll(".nav, .anchors").forEach(function (b) {
+      var pos = getComputedStyle(b).position;
+      if (pos === "sticky" || pos === "fixed") bars += b.offsetHeight;
+    });
+    var avail = Math.max(360, window.innerHeight - bars - 24);
+    document.documentElement.style.setProperty("--fit-h", avail + "px");
+    var size = function (el, box, w, h) {
+      el.style.zoom = "";
+      var z = Math.min(1, avail / h, box.clientWidth / w);
+      if (z < 1) el.style.zoom = Math.max(0.55, z).toFixed(3);
+    };
+    // Walkthrough phones are 356 x 720
+    document.querySelectorAll(".walk--hifi:not(.walk--desktop) .walk__stage").forEach(function (stage) {
+      var cs = getComputedStyle(stage);
+      var box = { clientWidth: stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) };
+      stage.querySelectorAll(".walk__scene").forEach(function (sc) { size(sc, box, 356, 720); });
+    });
+    // Fixed-size prototype phones: measured once at full size
+    document.querySelectorAll(".try .pf-phone, .try .st-phone").forEach(function (ph) {
+      ph.style.zoom = "";
+      if (!ph.dataset.w) { ph.dataset.w = ph.offsetWidth; ph.dataset.h = ph.offsetHeight; }
+      size(ph, ph.parentNode, +ph.dataset.w, +ph.dataset.h);
+    });
+  };
+  var fitTimer;
+  fitPhones();
+  window.addEventListener("load", fitPhones);
+  window.addEventListener("resize", function () { clearTimeout(fitTimer); fitTimer = setTimeout(fitPhones, 150); });
 })();
