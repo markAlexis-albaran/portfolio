@@ -1411,6 +1411,62 @@ mark.hl {
 .sp-toast :focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .sp-handin { display: block; margin-top: 10px; padding: 12px 14px; border-radius: 12px; background: var(--wd-spruce); color: #fff; font-weight: 600; }
 
+/* ---------- One prototype per decision, with numbered notes beside it ----------
+   The phone sits on the left and the notes on the right; on narrower screens the notes
+   go under the phone. Small numbered pins in the phone match the notes. */
+.try__body {
+  display: grid;
+  grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+  gap: var(--space-9);
+  align-items: start;
+}
+.try__body > .wish-demo__phone { margin: var(--space-6) 0 0; width: 100%; }
+.callouts { list-style: none; display: grid; gap: var(--space-6); margin-top: var(--space-6); }
+.callouts li { display: grid; grid-template-columns: 28px 1fr; gap: var(--space-4); align-items: start; }
+.callouts__n, .co-pin {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--accent); color: var(--on-accent);
+  font-family: var(--font-mono); font-size: 12px; font-weight: 400; line-height: 1;
+}
+.case-section .callouts p { margin: 0; font-size: 16px; color: var(--text-secondary); }
+.case-section .callouts .callouts__name { margin-bottom: 2px; font-weight: 500; color: var(--text); }
+.co-pin { width: 20px; height: 20px; font-size: 11px; margin-right: 6px; vertical-align: middle; }
+@media (max-width: 899px) {
+  .try__body { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .try__body > .wish-demo__phone { max-width: 380px; }
+}
+
+/* SpringIn, decision 1: calendar, then the wish screen */
+.fw-cal[hidden], .fw-wish[hidden], .fw-alts[hidden] { display: none; }
+.fw-wish { animation: wd-in 0.25s ease-out; }
+.fw-back { margin: 0 0 8px; padding: 4px 0; border: 0; background: none; font: inherit; font-size: 14px; font-weight: 600; color: var(--wd-spruce); cursor: pointer; }
+.sp-phone .fw-title { outline: none; }
+.sp-phone .fw-note { display: flex; align-items: flex-start; margin: 8px 0 14px; padding: 10px 12px; border-radius: 12px; background: #fff; font-size: 13px; color: var(--wd-ink); }
+.sp-phone .fw-note .co-pin { margin-top: 1px; }
+.sp-phone .fw-q { display: flex; align-items: center; justify-content: space-between; margin: 0 2px 8px; font-weight: 700; font-size: 14px; color: var(--wd-ink); }
+.sp-phone .fw-q .co-pin { margin-right: 0; }
+.wish-demo .fw-alts .wd-h { display: flex; align-items: center; justify-content: space-between; }
+.wish-demo .fw-alts .wd-h .co-pin { margin-right: 0; }
+.wish-demo .wd-limit .co-pin { margin-right: 6px; }
+.fw-save {
+  display: block; width: 100%; margin-top: 14px; padding: 12px 14px; border: 0; border-radius: 12px;
+  background: var(--wd-spruce); color: #fff; font: inherit; font-weight: 600; cursor: pointer;
+}
+.fw-save:disabled { background: #c9d3d0; color: #4c5a56; cursor: not-allowed; }
+
+/* SpringIn, decision 2: before the deadline, after it, and once the plan is out */
+.fp-switch { margin-top: var(--space-6); flex-wrap: wrap; }
+.fp-before[hidden], .fp-closed[hidden], .fp-out[hidden] { display: none; }
+.fp-closed, .fp-out { animation: wd-in 0.25s ease-out; }
+.fp-alert { display: flex; flex-wrap: wrap; align-items: center; margin-bottom: 10px; padding: 12px 14px; border-radius: 14px; background: #fbe3e1; color: #3b1512; font-size: 13px; }
+.fp-alert strong { color: #a12a1f; }
+.fp-alert span:last-child { flex-basis: 100%; margin-top: 2px; }
+.fp-handed { list-style: none; display: grid; gap: 8px; }
+.fp-handed li { padding: 12px 14px; background: #fff; border-radius: 14px; }
+.fp-handed .sp-rv__alt { margin-bottom: 0; }
+.rs-pointer .co-pin { float: right; margin: 0 0 0 6px; }
+
 /* ---------- SpringIn: result ---------- */
 .rs-switch { margin-top: var(--space-6); }
 .rs-banner { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; padding: 12px 14px; border-radius: 14px; background: #dcefe6; color: var(--wd-spruce); font-size: 13px; }

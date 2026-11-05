@@ -55,61 +55,6 @@
     window.addEventListener("resize", checkCta);
   }
 
-  // SpringIn: live mini-prototype of "Would anything else also work?"
-  var demo = document.querySelector(".wish-demo");
-  if (demo) {
-    var options = [
-      { date: "13.Mar (Sat)", label: "Day off", cls: "off" },
-      { date: "11.Mar (Thu)", label: "Early shift", cls: "early" },
-      { date: "14.Mar (Sun)", label: "Day off", cls: "off" },
-      { date: "12.Mar (Fri)", label: "Late shift", cls: "late" }
-    ];
-    var chosen = [];
-    var list = demo.querySelector(".wd-list");
-    var addBtn = demo.querySelector(".wd-add");
-    var count = demo.querySelector(".wd-count");
-    var limit = demo.querySelector(".wd-limit");
-    var status = demo.querySelector("[role=status]");
-    var say = function (msg) { status.textContent = msg; };
-    var render = function () {
-      list.innerHTML = "";
-      chosen.forEach(function (o, i) {
-        var li = document.createElement("li");
-        li.innerHTML = '<span class="wd-num">' + (i + 1) + '</span><span>' + o.date + '</span>' +
-          '<span class="wd-tag wd-tag--' + o.cls + '">' + o.label + '</span>' +
-          '<button class="wd-remove" type="button" aria-label="Remove ' + o.date + ', ' + o.label + '">&times;</button>';
-        li.querySelector(".wd-remove").addEventListener("click", function () {
-          chosen.splice(i, 1);
-          render();
-          say(o.date + " removed. " + chosen.length + " of 2 added.");
-          (chosen.length ? list.querySelector(".wd-remove") : addBtn).focus();
-        });
-        list.appendChild(li);
-      });
-      var full = chosen.length >= 2;
-      addBtn.hidden = full;
-      limit.hidden = !full;
-      count.textContent = chosen.length + " of 2";
-    };
-    addBtn.addEventListener("click", function () {
-      var next = options.filter(function (o) { return chosen.indexOf(o) < 0; })[0];
-      if (!next || chosen.length >= 2) return;
-      chosen.push(next);
-      render();
-      say(next.date + ", " + next.label + " added. " + chosen.length + " of 2." + (chosen.length >= 2 ? " Limit reached." : ""));
-      if (chosen.length >= 2) list.querySelectorAll(".wd-remove")[1].focus();
-    });
-    demo.querySelectorAll('input[name="wd-alt"]').forEach(function (r) {
-      r.addEventListener("change", function () {
-        demo.querySelectorAll(".wd-option").forEach(function (o) {
-          o.classList.toggle("is-on", o.getAttribute("data-option") === r.value);
-        });
-        say(r.value === "no" ? "No alternative. This stays a fixed wish." : "Yes, something else works.");
-      });
-    });
-    render();
-  }
-
   // Columna: token switcher. The card stays the same component; only its tokens change.
   var tkDemo = document.querySelector(".tokens-demo");
   if (tkDemo) {
@@ -239,89 +184,155 @@
     });
   }
 
-  // SpringIn: write a wish on the calendar
-  var calDemo = document.querySelector(".cal-demo");
-  if (calDemo) {
+  // SpringIn, decision 1: write a wish on the calendar, then add alternatives. One prototype.
+  var fw = document.querySelector(".flow-write");
+  if (fw) {
     var types = { off: ["Off", "Day off"], early: ["Early", "Early shift"], late: ["Late", "Late shift"], night: ["Night", "Night shift"] };
-    var wishes = { 6: "off", 15: "night", 25: "off" };
-    var dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    var dayGrid = calDemo.querySelector(".sp-days");
-    var pick = calDemo.querySelector(".sp-pick");
-    var removeBtn = calDemo.querySelector(".sp-pick__remove");
-    var calSay = function (m) { calDemo.querySelector("[role=status]").textContent = m; };
-    var openDay = null;
+    var wishes = { 6: { t: "off", alts: [] }, 15: { t: "night", alts: [{ d: 16, t: "night" }] }, 25: { t: "off", alts: [{ d: 27, t: "off" }] } };
+    var dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]; // 1 March 2027 is a Monday
     var label = function (d) { return (d < 10 ? "0" : "") + d + ".Mar (" + dayNames[(d - 1) % 7] + ")"; };
+    var fwCal = fw.querySelector(".fw-cal"), fwWish = fw.querySelector(".fw-wish");
+    var dayGrid = fw.querySelector(".sp-days"), altsBox = fw.querySelector(".fw-alts");
+    var list = fw.querySelector(".wd-list"), addBtn = fw.querySelector(".wd-add");
+    var saveBtn = fw.querySelector(".fw-save"), removeBtn = fw.querySelector(".sp-pick__remove");
+    var fwSay = function (m) { fw.querySelector("[role=status]").textContent = m; };
+    var day = null, draft = null; // the wish being written: { t, alts, fixed }
+
     var drawCal = function () {
       dayGrid.innerHTML = "";
       for (var d = 1; d <= 31; d++) {
         var b = document.createElement("button");
+        var w = wishes[d];
         b.type = "button";
         b.dataset.day = d;
-        var w = wishes[d];
-        b.innerHTML = d + (w ? '<span class="wd-tag wd-tag--' + w + '">' + (w === "night" ? "N" : types[w][0]) + "</span>" : "");
-        b.setAttribute("aria-label", d + " March" + (w ? ", wish: " + types[w][1] : ", no wish"));
-        if (openDay === d) b.classList.add("is-open");
-        b.addEventListener("click", function () { openPick(+this.dataset.day); });
+        b.innerHTML = d + (w ? '<span class="wd-tag wd-tag--' + w.t + '">' + (w.t === "night" ? "N" : types[w.t][0]) + "</span>" : "");
+        b.setAttribute("aria-label", d + " March" + (w ? ", wish: " + types[w.t][1] : ", no wish"));
+        b.addEventListener("click", function () { openWish(+this.dataset.day); });
         dayGrid.appendChild(b);
       }
       var keys = Object.keys(wishes).map(Number).sort(function (a, b) { return a - b; });
-      calDemo.querySelector(".sp-sum__n").textContent = keys.length + (keys.length === 1 ? " Wunsch" : " Wünsche") + " written";
-      calDemo.querySelector(".sp-sum__list").textContent = keys.length ? keys.map(label).join(" · ") : "Nothing yet";
+      fw.querySelector(".sp-sum__n").textContent = keys.length + (keys.length === 1 ? " Wunsch" : " Wünsche") + " written";
+      fw.querySelector(".sp-sum__list").textContent = keys.length ? keys.map(function (k) {
+        var n = wishes[k].alts.length;
+        return label(k) + (n ? " (+" + n + (n === 1 ? " alternative)" : " alternatives)") : "");
+      }).join(" · ") : "Nothing yet";
     };
-    var openPick = function (d) {
-      openDay = d;
-      pick.hidden = false;
-      pick.querySelector(".sp-pick__h").textContent = "Wish for " + label(d);
-      pick.querySelectorAll("[data-t]").forEach(function (o) { o.setAttribute("aria-pressed", wishes[d] === o.dataset.t ? "true" : "false"); });
-      removeBtn.hidden = !wishes[d];
-      drawCal();
-      pick.querySelector("[data-t]").focus();
+
+    // Alternatives on offer: nearby days, so they make sense for whichever day was tapped
+    var candidates = function () {
+      return [{ d: day + 1, t: draft.t }, { d: day - 1, t: "early" }, { d: day + 2, t: "off" }, { d: day, t: "late" }]
+        .filter(function (o) { return o.d >= 1 && o.d <= 31 && !(o.d === day && o.t === draft.t); });
     };
-    var closePick = function () {
-      var d = openDay;
-      openDay = null;
-      pick.hidden = true;
+    var drawAlts = function () {
+      altsBox.hidden = !draft.t;
+      saveBtn.disabled = !draft.t;
+      if (!draft.t) return;
+      list.innerHTML = "";
+      draft.alts.forEach(function (o, i) {
+        var li = document.createElement("li");
+        li.innerHTML = '<span class="wd-num">' + (i + 1) + '</span><span>' + label(o.d) + '</span>' +
+          '<span class="wd-tag wd-tag--' + o.t + '">' + types[o.t][1] + '</span>' +
+          '<button class="wd-remove" type="button" aria-label="Remove ' + label(o.d) + ', ' + types[o.t][1] + '">&times;</button>';
+        li.querySelector(".wd-remove").addEventListener("click", function () {
+          draft.alts.splice(i, 1);
+          drawAlts();
+          fwSay(label(o.d) + " removed. " + draft.alts.length + " of 2 added.");
+          (draft.alts.length ? list.querySelector(".wd-remove") : addBtn).focus();
+        });
+        list.appendChild(li);
+      });
+      var full = draft.alts.length >= 2;
+      addBtn.hidden = full;
+      fw.querySelector(".wd-limit").hidden = !full;
+      fw.querySelector(".wd-count").textContent = draft.alts.length + " of 2";
+      fw.querySelectorAll(".wd-option").forEach(function (o) {
+        o.classList.toggle("is-on", o.getAttribute("data-option") === (draft.fixed ? "no" : "yes"));
+      });
+      fw.querySelector('input[name="wd-alt"][value="' + (draft.fixed ? "no" : "yes") + '"]').checked = true;
+    };
+
+    var openWish = function (d) {
+      day = d;
+      var w = wishes[d];
+      draft = w ? { t: w.t, alts: w.alts.slice(), fixed: w.fixed } : { t: null, alts: [], fixed: false };
+      fw.querySelector(".fw-title").textContent = "Wish for " + label(d);
+      fw.querySelectorAll("[data-t]").forEach(function (o) { o.setAttribute("aria-pressed", draft.t === o.dataset.t ? "true" : "false"); });
+      removeBtn.hidden = !w;
+      drawAlts();
+      fwCal.hidden = true;
+      fwWish.hidden = false;
+      fw.querySelector(".fw-title").focus();
+    };
+    var backToCal = function () {
+      var d = day;
+      fwWish.hidden = true;
+      fwCal.hidden = false;
       drawCal();
       var b = dayGrid.querySelector('[data-day="' + d + '"]');
       if (b) b.focus();
     };
-    pick.querySelectorAll("[data-t]").forEach(function (o) {
+
+    fw.querySelectorAll("[data-t]").forEach(function (o) {
       o.addEventListener("click", function () {
-        wishes[openDay] = o.dataset.t;
-        calSay("Wish for " + label(openDay) + ": " + types[o.dataset.t][1] + ".");
-        closePick();
+        draft.t = o.dataset.t;
+        draft.alts = draft.alts.filter(function (a) { return !(a.d === day && a.t === draft.t); });
+        fw.querySelectorAll("[data-t]").forEach(function (x) { x.setAttribute("aria-pressed", x === o ? "true" : "false"); });
+        drawAlts();
+        fwSay(types[draft.t][1] + " chosen. Would anything else also work?");
       });
     });
-    removeBtn.addEventListener("click", function () {
-      delete wishes[openDay];
-      calSay("Wish for " + label(openDay) + " removed.");
-      closePick();
+    addBtn.addEventListener("click", function () {
+      var taken = function (o) { return draft.alts.some(function (a) { return a.d === o.d && a.t === o.t; }); };
+      var next = candidates().filter(function (o) { return !taken(o); })[0];
+      if (!next || draft.alts.length >= 2) return;
+      draft.alts.push(next);
+      drawAlts();
+      fwSay(label(next.d) + ", " + types[next.t][1] + " added. " + draft.alts.length + " of 2." + (draft.alts.length >= 2 ? " Limit reached." : ""));
+      if (draft.alts.length >= 2) list.querySelectorAll(".wd-remove")[1].focus();
     });
+    fw.querySelectorAll('input[name="wd-alt"]').forEach(function (r) {
+      r.addEventListener("change", function () {
+        draft.fixed = r.value === "no";
+        drawAlts();
+        fwSay(draft.fixed ? "No alternative. This stays a fixed wish." : "Yes, something else works.");
+      });
+    });
+    saveBtn.addEventListener("click", function () {
+      wishes[day] = { t: draft.t, alts: draft.fixed ? [] : draft.alts, fixed: draft.fixed };
+      fwSay("Wish for " + label(day) + " saved: " + types[draft.t][1] + (wishes[day].alts.length ? ", with " + wishes[day].alts.length + " alternative" + (wishes[day].alts.length > 1 ? "s" : "") : "") + ".");
+      backToCal();
+    });
+    removeBtn.addEventListener("click", function () {
+      delete wishes[day];
+      fwSay("Wish for " + label(day) + " removed.");
+      backToCal();
+    });
+    fw.querySelector(".fw-back").addEventListener("click", backToCal);
     drawCal();
   }
 
-  // SpringIn: review, withdraw and undo
-  var rv = document.querySelector(".review-demo");
-  if (rv) {
-    var rvTypes = { off: ["off", "Day off"], night: ["night", "Night shift"] };
-    var rvAll = [
+  // SpringIn, decision 2: the same wishes before the deadline, after it, and once the plan is out
+  var fp = document.querySelector(".flow-plan");
+  if (fp) {
+    var fpTypes = { off: ["off", "Day off"], night: ["night", "Night shift"] };
+    var fpAll = [
       { d: "06.Mar (Sat)", t: "off", alt: "No alternative · fixed wish" },
       { d: "12.Mar (Fri)", t: "off", alt: "or 13.Mar (Sat) · Day off" },
       { d: "15.Mar (Mon)", t: "night", alt: "or 16.Mar (Tue) · Night shift" },
       { d: "25.Mar (Thu)", t: "off", alt: "or 27.Mar (Sat) · Day off" }
     ];
-    var rvList = rv.querySelector(".sp-rv");
-    var toast = rv.querySelector(".sp-toast");
+    var rvList = fp.querySelector(".sp-rv"), toast = fp.querySelector(".sp-toast");
     var lastRemoved = null;
-    var rvSay = function (m) { rv.querySelector("[role=status]").textContent = m; };
+    var fpSay = function (m) { fp.querySelector("[role=status]").textContent = m; };
+    var tagHtml = function (w) { return '<span class="wd-tag wd-tag--' + fpTypes[w.t][0] + '">' + fpTypes[w.t][1] + '</span>'; };
     var drawRv = function () {
-      var shown = rvAll.filter(function (w) { return !w.gone; });
-      rv.querySelector(".sp-rv__h").textContent = shown.length + " wishes for March";
-      rv.querySelector(".sp-handin").textContent = "Hand in " + shown.length + " wishes →";
+      var shown = fpAll.filter(function (w) { return !w.gone; });
+      fp.querySelector(".sp-rv__h").textContent = shown.length + " wishes for March";
+      fp.querySelector(".sp-handin").textContent = "Hand in " + shown.length + " wishes →";
       rvList.innerHTML = "";
       shown.forEach(function (w) {
         var li = document.createElement("li");
-        li.innerHTML = '<div class="sp-rv__top"><span>' + w.d + '</span><span class="wd-tag wd-tag--' + rvTypes[w.t][0] + '">' + rvTypes[w.t][1] + '</span></div>' +
+        li.innerHTML = '<div class="sp-rv__top"><span>' + w.d + '</span>' + tagHtml(w) + '</div>' +
           '<p class="sp-rv__alt">' + w.alt + '</p><div class="sp-rv__actions"><span class="sp-rv__change" aria-hidden="true">Change</span>' +
           '<button type="button" class="sp-rv__withdraw">Withdraw<span class="visually-hidden"> wish for ' + w.d + '</span></button></div>';
         li.querySelector(".sp-rv__withdraw").addEventListener("click", function () {
@@ -330,53 +341,43 @@
           toast.querySelector(".sp-toast__msg").textContent = "Wish for " + w.d + " withdrawn.";
           toast.hidden = false;
           drawRv();
-          rvSay("Wish for " + w.d + " withdrawn. Undo is available.");
+          fpSay("Wish for " + w.d + " withdrawn. Undo is available.");
           toast.querySelector(".sp-toast__undo").focus();
         });
         rvList.appendChild(li);
       });
+      // after the deadline, the handed-in wishes are read-only
+      fp.querySelector(".fp-handed").innerHTML = shown.map(function (w) {
+        return '<li><div class="sp-rv__top"><span>' + w.d + '</span>' + tagHtml(w) + '</div><p class="sp-rv__alt">' + w.alt + '</p></li>';
+      }).join("");
     };
     toast.querySelector(".sp-toast__undo").addEventListener("click", function () {
       if (!lastRemoved) return;
       lastRemoved.gone = false;
-      rvSay("Wish for " + lastRemoved.d + " is back.");
+      fpSay("Wish for " + lastRemoved.d + " is back.");
       lastRemoved = null;
       toast.hidden = true;
       drawRv();
       rvList.querySelector(".sp-rv__withdraw").focus();
     });
+    fp.querySelector(".fp-out .rs-list").innerHTML = [
+      ["25.Mar (Thu)", "You're on the late shift. Your wish (day off) and both alternatives couldn't be fitted.", false],
+      ["06.Mar (Sat)", "Your wish · Day off", true],
+      ["12.Mar (Fri)", "Alternative · 13.Mar (Sat), day off", true],
+      ["15.Mar (Mon)", "Your wish · Night shift", true]
+    ].map(function (r) {
+      return '<li class="' + (r[2] ? "" : "is-no") + '"><div class="rs-top"><span>' + r[0] + '</span><span class="rs-badge rs-badge--' + (r[2] ? 'yes">✓ Granted' : 'no">Not granted') + '</span></div>' +
+        '<span class="rs-detail">' + r[1] + '</span>' +
+        (r[2] ? '' : '<div class="rs-pointer"><span class="co-pin" aria-hidden="true">3</span><strong>Can\'t live with this?</strong>Talk to your Stationsleitung, or arrange it with a colleague.</div>') + '</li>';
+    }).join("");
+    var fpNames = { before: "Before the deadline", closed: "Deadline passed", out: "Plan is out" };
+    fp.querySelectorAll('input[name="fp"]').forEach(function (r) {
+      r.addEventListener("change", function () {
+        ["before", "closed", "out"].forEach(function (k) { fp.querySelector(".fp-" + k).hidden = k !== r.value; });
+        fpSay(fpNames[r.value] + " shown.");
+      });
+    });
     drawRv();
-  }
-
-  // SpringIn: the result once the plan is out, two scenarios
-  var rs = document.querySelector(".result-demo");
-  if (rs) {
-    var rsData = {
-      all: [
-        ["06.Mar (Sat)", "Your wish · Day off", true],
-        ["12.Mar (Fri)", "Alternative · 13.Mar (Sat), day off", true],
-        ["15.Mar (Mon)", "Your wish · Night shift", true],
-        ["25.Mar (Thu)", "Alternative · 27.Mar (Sat), day off", true]
-      ],
-      one: [
-        ["25.Mar (Thu)", "You're on the late shift. Your wish (day off) and both alternatives couldn't be fitted.", false],
-        ["06.Mar (Sat)", "Your wish · Day off", true],
-        ["12.Mar (Fri)", "Alternative · 13.Mar (Sat), day off", true],
-        ["15.Mar (Mon)", "Your wish · Night shift", true]
-      ]
-    };
-    var rsDraw = function (key) {
-      var rows = rsData[key];
-      rs.querySelector(".rs-sub").textContent = "The March plan is out." + (key === "one" ? " 3 of 4 wishes granted." : "");
-      rs.querySelector(".rs-banner").hidden = key !== "all";
-      rs.querySelector(".rs-list").innerHTML = rows.map(function (r) {
-        return '<li class="' + (r[2] ? "" : "is-no") + '"><div class="rs-top"><span>' + r[0] + '</span><span class="rs-badge rs-badge--' + (r[2] ? 'yes">✓ Granted' : 'no">Not granted') + '</span></div>' +
-          '<span class="rs-detail">' + r[1] + '</span>' +
-          (r[2] ? '' : '<div class="rs-pointer"><strong>Can\'t live with this?</strong>Talk to your Stationsleitung, or arrange it with a colleague.</div>') + '</li>';
-      }).join("");
-    };
-    rs.querySelectorAll('input[name="rs"]').forEach(function (r) { r.addEventListener("change", function () { rsDraw(r.value); }); });
-    rsDraw("all");
   }
 
   // tvguideplus: live search with labeled results

@@ -36,9 +36,9 @@ Stats inside the case studies use the same type as the numbers on the home page 
 
 Where AI shaped a decision, a short note sits at the end of that section: a soft panel with a blue left edge, labeled "How AI shaped this" in mono with the same spark as the nav. Skill names in mono. Only write what the project files show; never invent how AI was used.
 
-## Design system tiles (case studies)
+## One prototype per decision, with numbered notes (case studies)
 
-Under a design decision, a "The components behind it" label and a two-column grid of tiles (one column on phones). Each tile: the component cut from the real screens on the prototype's own background, a plain name (with its state in words, like "with both added"), and one or two plain sentences on what it does for the user and whether it was added to or changed in the design system. No tags, pills or jargon: if the owner has to ask what a label means, a recruiter will too. Only use components and states the project files show.
+Each design decision is shown once: a short claim, then one interactive prototype. No screenshot strip and no separate component tiles repeating the same screens. The components behind the decision become numbered notes beside the prototype (under it on screens narrower than 900px): a blue numbered circle, a plain name, and one or two plain sentences on what it does for the user and whether it was added to or changed in the design system. Small blue pins with the same numbers sit next to those parts inside the prototype. No tags, pills or jargon. Only use components and states the project files show.
 
 ## Interactive examples ("Try it" panels)
 

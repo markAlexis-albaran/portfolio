@@ -115,131 +115,103 @@
 
           <h3>A wish with room to move</h3>
           <p>Each wish can carry up to two alternatives, or be marked as fixed, instead of adding more wishes or fairness rules, which are agreed with the works council and sit outside the design. The nurse held wishes back so her head nurse would have less to weigh. <mark class="hl">A wish with alternatives gives the head nurse options instead of one more constraint.</mark></p>
-          <div class="try cal-demo">
-            <p class="try__head"><span class="try__badge"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 2v7.5M6 9.5l-1.6-1.6a1.2 1.2 0 0 0-1.7 1.7L6 13c.9.9 2 1.4 3.2 1.4h.3A3.5 3.5 0 0 0 13 10.9V7.5a1 1 0 0 0-2 0M11 7.5V6.5a1 1 0 0 0-2 0v1M9 7.5V6a1 1 0 0 0-2 0v1.5M7 7.5V2a1 1 0 0 0-2 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Interactive</span><span class="try__title">Write a wish</span></p>
-            <div class="wish-demo__phone sp-phone">
-              <p class="sp-h">Wunschplaner</p>
-              <p class="sp-sub">For March 2027 · Station 13C</p>
-              <div class="sp-deadline"><strong>Hand in by 10.Feb (Wed)</strong><span>You can change your wishes until then.</span></div>
-              <div class="wd-card sp-cal">
-                <p class="sp-cal__top"><span>March</span><span>Tap a day to write a Wunsch</span></p>
-                <div class="sp-week" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
-                <div class="sp-days"></div>
-              </div>
-              <div class="wd-card sp-pick" hidden>
-                <p class="sp-pick__h"></p>
-                <div class="sp-pick__opts" role="group" aria-label="What would you like?">
-                  <button type="button" data-t="off"><span class="wd-tag wd-tag--off">Off</span> Day off</button>
-                  <button type="button" data-t="early"><span class="wd-tag wd-tag--early">Early</span> Early shift</button>
-                  <button type="button" data-t="late"><span class="wd-tag wd-tag--late">Late</span> Late shift</button>
-                  <button type="button" data-t="night"><span class="wd-tag wd-tag--night">Night</span> Night shift</button>
+          <div class="try wish-demo flow-write">
+            <p class="try__head"><span class="try__badge"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 2v7.5M6 9.5l-1.6-1.6a1.2 1.2 0 0 0-1.7 1.7L6 13c.9.9 2 1.4 3.2 1.4h.3A3.5 3.5 0 0 0 13 10.9V7.5a1 1 0 0 0-2 0M11 7.5V6.5a1 1 0 0 0-2 0v1M9 7.5V6a1 1 0 0 0-2 0v1.5M7 7.5V2a1 1 0 0 0-2 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Interactive</span><span class="try__title">Write a wish, then add what else would work</span></p>
+            <div class="try__body">
+              <div class="wish-demo__phone sp-phone">
+                <div class="fw-cal">
+                  <p class="sp-h">Wunschplaner</p>
+                  <p class="sp-sub">For March 2027 · Station 13C</p>
+                  <div class="sp-deadline"><strong>Hand in by 10.Feb (Wed)</strong><span>You can change your wishes until then.</span></div>
+                  <div class="wd-card sp-cal">
+                    <p class="sp-cal__top"><span>March</span><span>Tap a day to write a Wunsch</span></p>
+                    <div class="sp-week" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+                    <div class="sp-days"></div>
+                  </div>
+                  <div class="wd-card sp-sum"><strong class="sp-sum__n"></strong><span class="sp-sum__list"></span></div>
                 </div>
-                <button type="button" class="sp-pick__remove" hidden>Remove this wish</button>
+                <div class="fw-wish" hidden>
+                  <button type="button" class="fw-back"><span aria-hidden="true">&lsaquo;</span> March</button>
+                  <p class="sp-h fw-title" tabindex="-1"></p>
+                  <p class="fw-note"><span class="co-pin" aria-hidden="true">2</span>A wish is not a promise. Your Stationsleitung plans the whole ward and tries to fit as many wishes as possible.</p>
+                  <p class="fw-q">What would you like? <span class="co-pin" aria-hidden="true">1</span></p>
+                  <div class="sp-pick__opts" role="group" aria-label="What would you like?">
+                    <button type="button" data-t="off"><span class="wd-tag wd-tag--off">Off</span> Day off</button>
+                    <button type="button" data-t="early"><span class="wd-tag wd-tag--early">Early</span> Early shift</button>
+                    <button type="button" data-t="late"><span class="wd-tag wd-tag--late">Late</span> Late shift</button>
+                    <button type="button" data-t="night"><span class="wd-tag wd-tag--night">Night</span> Night shift</button>
+                  </div>
+                  <div class="fw-alts" hidden>
+                    <p class="wd-h">Would anything else also work? <span class="co-pin" aria-hidden="true">3</span></p>
+                    <p class="wd-p">An alternative gives your Stationsleitung more room to say yes. You can add up to 2.</p>
+                    <fieldset class="wd-group">
+                      <legend class="visually-hidden">Would anything else also work?</legend>
+                      <div class="wd-card wd-option is-on" data-option="yes">
+                        <label class="wd-radio"><input type="radio" name="wd-alt" value="yes" checked> <span>Yes, something else works</span></label>
+                        <ol class="wd-list"></ol>
+                        <button class="wd-add" type="button"><span aria-hidden="true">+</span> Add another date or shift <span class="wd-count">0 of 2</span></button>
+                        <p class="wd-limit" hidden><span class="co-pin" aria-hidden="true">4</span><span aria-hidden="true">&#9432;</span> 2 of 2 added. Remove one to add a different option.</p>
+                      </div>
+                      <div class="wd-card wd-option" data-option="no">
+                        <label class="wd-radio"><input type="radio" name="wd-alt" value="no"> <span>No alternative<small>Only this date works. It stays a fixed wish.</small></span></label>
+                      </div>
+                    </fieldset>
+                  </div>
+                  <button type="button" class="fw-save" disabled>Save wish</button>
+                  <button type="button" class="sp-pick__remove" hidden>Remove this wish</button>
+                </div>
+                <p class="visually-hidden" role="status" aria-live="polite"></p>
               </div>
-              <div class="wd-card sp-sum"><strong class="sp-sum__n"></strong><span class="sp-sum__list"></span></div>
-              <p class="visually-hidden" role="status" aria-live="polite"></p>
+              <ol class="callouts" aria-label="The components behind it">
+                <li><span class="callouts__n" aria-hidden="true">1</span><div><p class="callouts__name">Shift tags</p><p>The design system only marked shifts with single letters, like E and L. I added a colored tag with the full name for each shift, so the color is never the only clue.</p></div></li>
+                <li><span class="callouts__n" aria-hidden="true">2</span><div><p class="callouts__name">A note on every new wish</p><p>Shown each time someone starts a wish, so it's clear from the start that a wish is a request, not a booking.</p></div></li>
+                <li><span class="callouts__n" aria-hidden="true">3</span><div><p class="callouts__name">Alternatives</p><p>I added this to the design system. A nurse can list up to two other dates that would also work, or choose &ldquo;No alternative&rdquo; if only one date works.</p></div></li>
+                <li><span class="callouts__n" aria-hidden="true">4</span><div><p class="callouts__name">The limit, explained</p><p>When both spots are used, a short note explains the limit, so nobody wonders why they can't add another.</p></div></li>
+              </ol>
             </div>
-            <p class="try__caption label">Rebuilt from my Claude Design prototype. Tap a day, then pick a shift.</p>
+            <p class="try__caption label">Rebuilt from my Claude Design prototype. Tap a day, pick a shift, then add up to two alternatives. The numbers match the notes.</p>
           </div>
-          <div class="try wish-demo">
-            <p class="try__head"><span class="try__badge"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 2v7.5M6 9.5l-1.6-1.6a1.2 1.2 0 0 0-1.7 1.7L6 13c.9.9 2 1.4 3.2 1.4h.3A3.5 3.5 0 0 0 13 10.9V7.5a1 1 0 0 0-2 0M11 7.5V6.5a1 1 0 0 0-2 0v1M9 7.5V6a1 1 0 0 0-2 0v1.5M7 7.5V2a1 1 0 0 0-2 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Interactive</span><span class="try__title">Add or remove alternatives</span></p>
-            <div class="wish-demo__phone">
-              <div class="wd-card wd-wish">
-                <div><span class="wd-small">Your wish</span><span class="wd-date">12.Mar (Fri)</span></div>
-                <span class="wd-tag wd-tag--off">Day off</span>
-              </div>
-              <p class="wd-h">Would anything else also work?</p>
-              <p class="wd-p">An alternative gives your Stationsleitung more room to say yes. You can add up to 2.</p>
-              <fieldset class="wd-group">
-                <legend class="visually-hidden">Would anything else also work?</legend>
-                <div class="wd-card wd-option is-on" data-option="yes">
-                  <label class="wd-radio"><input type="radio" name="wd-alt" value="yes" checked> <span>Yes, something else works</span></label>
-                  <ol class="wd-list"></ol>
-                  <button class="wd-add" type="button"><span aria-hidden="true">+</span> Add another date or shift <span class="wd-count">0 of 2</span></button>
-                  <p class="wd-limit" hidden><span aria-hidden="true">&#9432;</span> 2 of 2 added. Remove one to add a different option.</p>
-                </div>
-                <div class="wd-card wd-option" data-option="no">
-                  <label class="wd-radio"><input type="radio" name="wd-alt" value="no"> <span>No alternative<small>Only this date works. It stays a fixed wish.</small></span></label>
-                </div>
-              </fieldset>
-              <p class="visually-hidden" role="status" aria-live="polite"></p>
-            </div>
-            <p class="try__caption label">Rebuilt from my Claude Design prototype. Tap the buttons as a nurse would.</p>
-          </div>
-          <figure class="case-figure">
-            <img src="../images/springin/write-a-wish.jpg" alt="The wish round calendar, choosing a day off or a shift, and adding an alternative date" loading="lazy">
-            <figcaption class="label">Pick a day, choose what you'd like, then say what else would work</figcaption>
-          </figure>
-          <p class="ds__intro label">The components behind it</p>
-          <ul class="ds">
-            <li class="ds__tile">
-              <div class="ds__shot"><img src="../images/springin/ds/alt-one.png" alt="Other options with one alternative added, a counter showing 1 of 2, and a No alternative option" loading="lazy"></div>
-              <p class="ds__name">Alternatives, with one added</p>
-              <p class="ds__why">I added this to the design system. A nurse can list up to two other dates that would also work, or choose &ldquo;No alternative&rdquo; if only one date works.</p>
-            </li>
-            <li class="ds__tile">
-              <div class="ds__shot"><img src="../images/springin/ds/alt-max.png" alt="Two alternatives added, and a note saying 2 of 2 added, remove one to add a different option" loading="lazy"></div>
-              <p class="ds__name">Alternatives, with both added</p>
-              <p class="ds__why">When both spots are used, a short note explains the limit, so nobody wonders why they can't add another.</p>
-            </li>
-            <li class="ds__tile">
-              <div class="ds__shot"><img src="../images/springin/ds/shift-tags.png" alt="A list of four shift choices, each with a colored tag: Off, Early, Late and Night" loading="lazy"></div>
-              <p class="ds__name">Shift tags</p>
-              <p class="ds__why">The design system only marked shifts with single letters, like E and L. I added a colored tag with the full name for each shift, so the color is never the only clue.</p>
-            </li>
-          </ul>
 
           <h3>Honest about what a wish is</h3>
           <p>The app says plainly that <mark class="hl">a wish is not a promise</mark>, shows no approval status before the plan is out, and keeps colleagues' wishes private, since they're personal data. When a round has closed or a wish isn't granted, it points to talking to the head nurse or a colleague, which is what wards already do, instead of inventing a feature for it.</p>
-          <div class="try review-demo">
-            <p class="try__head"><span class="try__badge"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 2v7.5M6 9.5l-1.6-1.6a1.2 1.2 0 0 0-1.7 1.7L6 13c.9.9 2 1.4 3.2 1.4h.3A3.5 3.5 0 0 0 13 10.9V7.5a1 1 0 0 0-2 0M11 7.5V6.5a1 1 0 0 0-2 0v1M9 7.5V6a1 1 0 0 0-2 0v1.5M7 7.5V2a1 1 0 0 0-2 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Interactive</span><span class="try__title">Withdraw a wish, then undo</span></p>
-            <div class="wish-demo__phone sp-phone">
-              <p class="sp-h sp-rv__h"></p>
-              <p class="sp-sub">Check them before you hand in. You can still change them until 10.Feb (Wed).</p>
-              <ul class="sp-rv"></ul>
-              <div class="sp-toast" hidden><span class="sp-toast__msg"></span><button type="button" class="sp-toast__undo">Undo</button></div>
-              <span class="sp-handin" aria-hidden="true"></span>
-              <p class="visually-hidden" role="status" aria-live="polite"></p>
+          <div class="try wish-demo flow-plan">
+            <p class="try__head"><span class="try__badge"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 2v7.5M6 9.5l-1.6-1.6a1.2 1.2 0 0 0-1.7 1.7L6 13c.9.9 2 1.4 3.2 1.4h.3A3.5 3.5 0 0 0 13 10.9V7.5a1 1 0 0 0-2 0M11 7.5V6.5a1 1 0 0 0-2 0v1M9 7.5V6a1 1 0 0 0-2 0v1.5M7 7.5V2a1 1 0 0 0-2 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Interactive</span><span class="try__title">Before the deadline, after it, and once the plan is out</span></p>
+            <div class="tk-switch fp-switch" role="radiogroup" aria-label="Moment in the wish round">
+              <label><input type="radio" name="fp" value="before" checked> <span>Before the deadline</span></label>
+              <label><input type="radio" name="fp" value="closed"> <span>Deadline passed</span></label>
+              <label><input type="radio" name="fp" value="out"> <span>Plan is out</span></label>
             </div>
-            <p class="try__caption label">Rebuilt from my Claude Design prototype. Withdraw any wish; the message stays until you act, so nobody misses the Undo.</p>
+            <div class="try__body">
+              <div class="wish-demo__phone sp-phone">
+                <div class="fp-before">
+                  <p class="sp-h sp-rv__h"></p>
+                  <p class="sp-sub">Check them before you hand in. You can still change them until 10.Feb (Wed).</p>
+                  <ul class="sp-rv"></ul>
+                  <div class="sp-toast" hidden><span class="co-pin" aria-hidden="true">1</span><span class="sp-toast__msg"></span><button type="button" class="sp-toast__undo">Undo</button></div>
+                  <span class="sp-handin" aria-hidden="true"></span>
+                </div>
+                <div class="fp-closed" hidden>
+                  <p class="sp-h">Wunschplaner</p>
+                  <p class="sp-sub">For March 2027 · Station 13C</p>
+                  <div class="fp-alert"><span class="co-pin" aria-hidden="true">2</span><strong>Wish collection closed on 10.Feb</strong><span>For a late wish, talk to your Stationsleitung.</span></div>
+                  <ul class="fp-handed"></ul>
+                </div>
+                <div class="fp-out" hidden>
+                  <p class="sp-h">Your Wünsche</p>
+                  <p class="sp-sub">The March plan is out. 3 of 4 wishes granted.</p>
+                  <ul class="rs-list"></ul>
+                  <p class="rs-foot">Has something changed and a date no longer works? Talk to your Stationsleitung, or arrange it with a colleague.</p>
+                </div>
+                <p class="visually-hidden" role="status" aria-live="polite"></p>
+              </div>
+              <ol class="callouts" aria-label="The components behind it">
+                <li><span class="callouts__n" aria-hidden="true">1</span><div><p class="callouts__name">Withdraw, with Undo</p><p>Withdrawing a wish shows a message with Undo that stays until you act, so nobody misses it.</p></div></li>
+                <li><span class="callouts__n" aria-hidden="true">2</span><div><p class="callouts__name">Wish round closed</p><p>After the deadline, the screen says so and tells nurses who to ask about a late wish, instead of just blocking them.</p></div></li>
+                <li><span class="callouts__n" aria-hidden="true">3</span><div><p class="callouts__name">Results, granted and not granted</p><p>Once the plan is out, each wish shows whether it was granted. I reused the design system's status labels and changed their wording. If a wish isn't granted, the card says who to talk to.</p></div></li>
+              </ol>
+            </div>
+            <p class="try__caption label">Rebuilt from my Claude Design prototype. Switch the moment, withdraw a wish and undo it. The numbers match the notes.</p>
           </div>
-          <div class="try result-demo">
-            <p class="try__head"><span class="try__badge"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 2v7.5M6 9.5l-1.6-1.6a1.2 1.2 0 0 0-1.7 1.7L6 13c.9.9 2 1.4 3.2 1.4h.3A3.5 3.5 0 0 0 13 10.9V7.5a1 1 0 0 0-2 0M11 7.5V6.5a1 1 0 0 0-2 0v1M9 7.5V6a1 1 0 0 0-2 0v1.5M7 7.5V2a1 1 0 0 0-2 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Interactive</span><span class="try__title">See the result once the plan is out</span></p>
-            <div class="tk-switch rs-switch" role="radiogroup" aria-label="Scenario">
-              <label><input type="radio" name="rs" value="all" checked> <span>All granted</span></label>
-              <label><input type="radio" name="rs" value="one"> <span>One not granted</span></label>
-            </div>
-            <div class="wish-demo__phone sp-phone">
-              <p class="sp-h">Your Wünsche</p>
-              <p class="sp-sub rs-sub"></p>
-              <div class="rs-banner" hidden><span aria-hidden="true">✓</span><div><strong>All 4 wishes granted</strong><span>2 as you wished, 2 with an alternative.</span></div></div>
-              <ul class="rs-list" aria-live="polite"></ul>
-              <p class="rs-foot">Has something changed and a date no longer works? Talk to your Stationsleitung, or arrange it with a colleague.</p>
-            </div>
-            <p class="try__caption label">Rebuilt from my Claude Design prototype. Switch the scenario to see a wish that didn't fit.</p>
-          </div>
-          <figure class="case-figure">
-            <img src="../images/springin/review-and-result.jpg" alt="Reviewing wishes before handing them in, the handed-in confirmation, and the results once the plan is out" loading="lazy">
-            <figcaption class="label">Review, hand in, and see which wish or alternative was granted</figcaption>
-          </figure>
-          <p class="ds__intro label">The components behind it</p>
-          <ul class="ds">
-            <li class="ds__tile">
-              <div class="ds__shot"><img src="../images/springin/ds/wish-note.png" alt="Helper text: a wish is not a promise, your Stationsleitung plans the whole ward and tries to fit as many wishes as possible" loading="lazy"></div>
-              <p class="ds__name">A note on every new wish</p>
-              <p class="ds__why">Shown each time someone starts a wish, so it's clear from the start that a wish is a request, not a booking.</p>
-            </li>
-            <li class="ds__tile">
-              <div class="ds__shot"><img src="../images/springin/ds/result-states.png" alt="A not granted wish card with a pointer box suggesting to talk to the Stationsleitung, above a granted wish row" loading="lazy"></div>
-              <p class="ds__name">Results, granted and not granted</p>
-              <p class="ds__why">Once the plan is out, each wish shows whether it was granted. I reused the design system's status labels and changed their wording. If a wish isn't granted, the card says who to talk to.</p>
-            </li>
-            <li class="ds__tile">
-              <div class="ds__shot"><img src="../images/springin/ds/closed-alert.png" alt="A red alert: wish collection closed on 10 February, for a late wish, talk to your Stationsleitung" loading="lazy"></div>
-              <p class="ds__name">Wish round closed</p>
-              <p class="ds__why">After the deadline, the screen says so and tells nurses who to ask about a late wish, instead of just blocking them.</p>
-            </li>
-          </ul>
           <div class="ai-note" role="note">
             <p class="ai-note__label"><svg class="ai-note__spark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12.2" y1="10.4" x2="13.5" y2="1.0"/><line x1="13.3" y1="11.0" x2="18.9" y2="6.8"/><line x1="13.6" y1="12.2" x2="22.5" y2="13.5"/><line x1="13.0" y1="13.3" x2="17.5" y2="19.3"/><line x1="11.8" y1="13.6" x2="10.5" y2="23.0"/><line x1="10.7" y1="13.0" x2="5.1" y2="17.2"/><line x1="10.4" y1="11.8" x2="1.5" y2="10.5"/><line x1="11.0" y1="10.7" x2="6.5" y2="4.7"/></g></svg>How AI shaped this</p>
             <p><code>draft-concept-directions</code> generated eight directions, then ran a provocation pass for three more that drop the most obvious assumption, which pushed me past the first ideas. <code>draft-garrett</code> took the chosen one from strategy down to wireframe level, and I built the clickable prototype in Claude Design.</p>
