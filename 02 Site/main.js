@@ -1103,7 +1103,8 @@
         splash: f.querySelector(".folder__preview").getAttribute("src"),
         big: f.querySelector(".folder__big").textContent,
         small: f.querySelector(".folder__caption").textContent,
-        desc: f.querySelector(".folder__desc").textContent
+        desc: f.querySelector(".folder__desc").textContent,
+        brand: f.style.getPropertyValue("--brand-dark").trim() // the project's own color, dark enough for white text
       };
     });
     var orbN = orbProjects.length;
@@ -1256,6 +1257,7 @@
       orbCenter.querySelector(".orbit__name").textContent = pr.name;
       orbCenter.querySelector(".orbit__meta").textContent = pr.meta;
       orbLink.href = pr.href;
+      orbLink.style.setProperty("--cta", pr.brand);
       orbLink.innerHTML = 'Read case study &rarr;<span class="visually-hidden">: ' + pr.name + '</span>';
     };
     // When the scrolling stops, the cards drift gently, like feathers: a slow bob, sway and tilt,
@@ -1293,6 +1295,7 @@
       orbPanel.querySelector(".orbit__panel-desc").textContent = pr.desc;
       var link = orbPanel.querySelector(".orbit__panel-link");
       link.href = pr.href;
+      link.style.setProperty("--cta", pr.brand);
       link.innerHTML = 'Read case study &rarr;<span class="visually-hidden">: ' + pr.name + '</span>';
     };
     // In the overview a click on a cover opens its panel. Clicks are worked out from the covers'
