@@ -1109,7 +1109,9 @@
         href: f.querySelector(".folder__link").getAttribute("href"),
         num: f.querySelector(".folder__num").textContent,
         name: f.querySelector(".folder__name").textContent,
-        meta: f.querySelector(".folder__meta").textContent,
+        meta: f.querySelector(".folder__meta").innerHTML,
+        read: (f.querySelector(".read-time") || {}).outerHTML || "",
+        metaText: f.querySelector(".folder__meta").textContent,
         splash: f.querySelector(".folder__preview").getAttribute("src"),
         big: f.querySelector(".folder__big").textContent,
         small: f.querySelector(".folder__caption").textContent,
@@ -1167,7 +1169,7 @@
       '<div class="orbit__panel-grid"><a class="orbit__panel-cover" tabindex="-1" aria-hidden="true"></a>' +
       '<div class="orbit__panel-body"><p class="orbit__panel-name"></p><p class="orbit__panel-desc"></p><p class="orbit__panel-meta label"></p>' +
       '<p class="orbit__panel-label label">Problem</p><p class="orbit__panel-problem"></p><p class="orbit__panel-label orbit__panel-label--result label">Result</p><p class="orbit__panel-big"></p><p class="orbit__panel-small"></p>' +
-      '<div class="orbit__panel-cta"><a class="orbit__link orbit__panel-link label"></a></div></div></div></div>';
+      '<div class="orbit__panel-cta"><a class="orbit__link orbit__panel-link label"></a><span class="orbit__panel-read"></span></div></div></div></div>';
     document.body.appendChild(orbPanel);
     var orbClose = orbPanel.querySelector(".orbit__close");
 
@@ -1300,7 +1302,7 @@
       }, 220);
       orbCenter.querySelector(".orbit__name").textContent = pr.name;
       orbCenter.querySelector(".orbit__line").textContent = pr.desc;
-      orbCenter.querySelector(".orbit__meta").textContent = pr.meta;
+      orbCenter.querySelector(".orbit__meta").innerHTML = pr.meta;
       orbLink.href = pr.href;
       orbLink.style.setProperty("--cta", pr.brand);
       orbLink.innerHTML = 'Read case study &rarr;<span class="visually-hidden">: ' + pr.name + '</span>';
@@ -1345,7 +1347,8 @@
       cover.style.backgroundImage = "url('" + pr.splash + "')";
       orbPanel.setAttribute("aria-label", pr.name);
       orbPanel.querySelector(".orbit__panel-name").textContent = pr.name;
-      orbPanel.querySelector(".orbit__panel-meta").textContent = pr.meta;
+      orbPanel.querySelector(".orbit__panel-meta").innerHTML = pr.meta.replace(/\s*<span class="read-time">[\s\S]*?<\/span>$/, "");
+      orbPanel.querySelector(".orbit__panel-read").innerHTML = pr.read;
       orbPanel.querySelector(".orbit__panel-problem").textContent = pr.problem;
       orbPanel.querySelector(".orbit__panel-big").textContent = pr.big;
       orbPanel.querySelector(".orbit__panel-small").textContent = pr.small;
@@ -1434,7 +1437,7 @@
       if (e.key === "Escape" && orbActive >= 0) orbShut();
     });
     orbCards.forEach(function (c, i) {
-      c.el.setAttribute("aria-label", orbProjects[i].name + ", " + orbProjects[i].meta);
+      c.el.setAttribute("aria-label", orbProjects[i].name + ", " + orbProjects[i].metaText);
     });
     var orbLastScroll = -1e9, orbAmp = 0, orbLastT = 0;
     var orbDraw = function (now) {

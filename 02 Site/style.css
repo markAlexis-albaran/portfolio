@@ -993,6 +993,24 @@ mark.hl {
 
 .try__badge svg { width: 15px; height: 15px; }
 
+/* Reading time: a small outlined badge with a clock, so it reads as its own fact */
+.read-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+  padding: 3px 10px 3px 8px;
+  border: 1px solid var(--text);
+  border-radius: 999px;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.read-time svg { width: 14px; height: 14px; flex-shrink: 0; }
+
 .try__title { font-weight: 500; font-size: 18px; }
 
 .case-section .try__caption { margin-top: var(--space-4); }
@@ -2815,7 +2833,8 @@ button.walk__n { padding: 0; cursor: pointer; }
 .orbit__panel-big { margin-top: var(--space-2) !important; font-weight: 300; font-size: 44px; line-height: 1; letter-spacing: -0.03em; color: var(--text); }
 .orbit__panel-small { margin-top: var(--space-1, 4px) !important; font-size: 17px; line-height: 1.4; color: var(--text); }
 .orbit__panel-desc { margin-top: var(--space-4) !important; max-width: 34ch; font-weight: 300; font-size: 20px; line-height: 1.45; color: var(--text); }
-.orbit__panel-cta { margin-top: var(--space-9); }
+.orbit__panel-cta { margin-top: var(--space-9); display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-4); }
+.orbit__panel-read .read-time { margin-left: 0; }
 /* the details arrive just after the cover */
 .orbit__panel-body > * { opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.4s var(--ease-out); }
 .orbit__panel.is-open .orbit__panel-body > * { opacity: 1; transform: none; transition-delay: 0.18s; }
@@ -2837,6 +2856,8 @@ button.walk__n { padding: 0; cursor: pointer; }
     background: linear-gradient(transparent, var(--bg) 30%);
   }
   .orbit__panel-link { display: flex; justify-content: center; width: 100%; }
+  /* on phones the reading time sits centered above the pinned button */
+  .orbit__panel-cta { flex-direction: column-reverse; gap: var(--space-2); }
 }
 
 /* where the opening line was: a Contact link down to the contact section, styled like "Scroll down" */
@@ -3438,6 +3459,10 @@ button.walk__n { padding: 0; cursor: pointer; }
   color: var(--text-secondary);
   max-width: 32ch;
 }
+
+/* the reading time gets its own line under the subtitle, right before the case study starts */
+.case-header__read { margin-top: var(--space-6, 24px); }
+.case-header__read .read-time { margin-left: 0; font-size: 13px; padding: 5px 12px 5px 10px; }
 
 .case-insight {
   font-size: 32px;
