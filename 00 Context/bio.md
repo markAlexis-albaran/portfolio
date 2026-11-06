@@ -2,7 +2,7 @@
 
 I'm a product designer who researches with people, prototypes with AI, and gets from a question to a tested idea faster.
 
-At Bauer Media Group, I'm part of the team rebuilding a legacy content management system and a new design system, working with product managers and engineers on editorial workflows and content commerce. Before that, I led UX on a healthcare learning app at LifeBonus.
+At Bauer Media Group (Jun 2024 to Oct 2026), I was part of the team rebuilding a legacy content management system and a new design system, working with product managers and engineers on editorial workflows and content commerce. Before that, I led UX on a healthcare learning app at LifeBonus.
 
 Background line (About page, under Experience): My journey into UX has taken a few unexpected turns. It began in healthcare, where I studied nursing science and human medicine in the Philippines and worked with drug safety data. From there, I moved into operations in Dubai and taught medical English in the EU, before eventually finding my way into tech. I started out as a developer, then transitioned into UX, bringing together my healthcare background, analytical mindset, and growing interest in how people interact with technology. Owner's own words: "My background is Healthcare. I studied Nursing Science and Human Medicine in the Philippines." Say "studied", never "graduated"; no school or degree names (no Education section).
 

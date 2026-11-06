@@ -17,9 +17,9 @@ Currently: I am currently looking for Midlevel UI / UX Designer Roles
 
 Attract product design roles and/or showcase UX work to potential clients.
 
-What kind of work I want to attract: [Be specific — industry, company size, type of problem, team structure]
+What kind of work I want to attract: Full-time, mid-level UI / UX / product design roles on in-house product teams. Any company size, from startup to enterprise. Remote-first, or remote-friendly with flexible hours. Flat hierarchy, where designers work directly with product managers and engineers and have a say in what gets built. Problems where research and prototyping shape the product: complex workflows, internal tools, design systems, and products that bring AI into the process. My background points to media, publishing and healthcare, but I'm open to any industry.
 
-What I do not want to attract: [Optional but useful — e.g. "agency work" or "pure visual/brand projects"]
+What I do not want to attract: Agencies looking for a graphic designer, and roles focused on pure visual, brand or marketing design without user research or product work.
 
 ## Platform
 
