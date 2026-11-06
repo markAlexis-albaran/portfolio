@@ -1137,7 +1137,7 @@
     orbScene.setAttribute("aria-hidden", "true");
     var orbCenter = document.createElement("div");
     orbCenter.className = "orbit__center";
-    orbCenter.innerHTML = '<span class="orbit__caption" aria-hidden="true"><span class="orbit__name"></span><span class="orbit__line"></span><span class="orbit__meta label"></span></span><a class="orbit__link label"></a>';
+    orbCenter.innerHTML = '<span class="orbit__caption" aria-hidden="true"><span class="orbit__name"></span><span class="orbit__line"></span><span class="orbit__meta label"></span><span class="orbit__read"></span></span><a class="orbit__link label"></a>';
     orbView.appendChild(orbCenter);
     // the overview's way on: a Contact link where the opening line was, pointing down
     var orbContact = document.createElement("a");
@@ -1287,6 +1287,7 @@
       if (i < 0) {
         orbCenter.querySelector(".orbit__name").textContent = "Problems I've untangled.";
         orbCenter.querySelector(".orbit__meta").textContent = "";
+        orbCenter.querySelector(".orbit__read").innerHTML = "";
         orbFactsInner.classList.add("is-out");
         return;
       }
@@ -1302,7 +1303,8 @@
       }, 220);
       orbCenter.querySelector(".orbit__name").textContent = pr.name;
       orbCenter.querySelector(".orbit__line").textContent = pr.desc;
-      orbCenter.querySelector(".orbit__meta").innerHTML = pr.meta;
+      orbCenter.querySelector(".orbit__meta").innerHTML = pr.meta.replace(/\s*<span class="read-time">[\s\S]*?<\/span>$/, "");
+      orbCenter.querySelector(".orbit__read").innerHTML = pr.read;
       orbLink.href = pr.href;
       orbLink.style.setProperty("--cta", pr.brand);
       orbLink.innerHTML = 'Read case study &rarr;<span class="visually-hidden">: ' + pr.name + '</span>';

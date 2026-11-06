@@ -2690,6 +2690,10 @@ button.walk__n { padding: 0; cursor: pointer; }
 .orbit__link:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
 .orbit__link[hidden] { display: none; }
 .orbit__center.is-intro .orbit__meta { display: none; }
+/* the reading time gets its own line under the field and year, lined up with the text above */
+.orbit__read { display: block; }
+.orbit__read .read-time { margin-left: 0; }
+.orbit__read:empty, .orbit__center.is-intro .orbit__read { display: none; }
 
 /* the front project's result and description, floating on the left (under the caption on phones) */
 .orbit__facts {
