@@ -2225,9 +2225,12 @@ button.walk__n { padding: 0; cursor: pointer; }
 .st-phone { position: relative; padding: 0; }
 .st-scroll { height: 460px; overflow-y: auto; padding: 16px; scroll-behavior: smooth; }
 .st-scroll:focus-visible { outline: 2px solid var(--ym-ink); outline-offset: -2px; }
-.st-podium { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: end; gap: 6px; height: 90px; margin-bottom: 14px; padding: 0 10px; border-radius: 20px; background: linear-gradient(160deg, #DCEFC6, #F3F5F1); }
-.st-podium span { display: flex; align-items: flex-start; justify-content: center; padding-top: 6px; border-radius: 10px 10px 0 0; background: #CFE8B4; color: var(--ym-ink); font-weight: 800; font-size: 20px; }
-.st-podium span:nth-child(1) { height: 55%; } .st-podium span:nth-child(2) { height: 90%; background: var(--ym-green); } .st-podium span:nth-child(3) { height: 42%; }
+.st-glance { margin-bottom: 14px; padding: 12px 14px; border-radius: 18px; background: #ffffff; box-shadow: var(--ym-shadow); }
+.sticky-demo .st-glance__h { margin: 0 0 4px; font-weight: 800; font-size: 14px; color: var(--ym-ink); }
+.st-glance ul { list-style: none; margin: 0; padding: 0; }
+.st-glance li { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--ym-line); font-size: 12.5px; color: var(--ym-text); }
+.st-glance li:last-child { border-bottom: 0; }
+.st-glance b { color: var(--ym-green-ink); }
 .sticky-demo .st-p { margin: 0 0 10px; font-size: 13px; line-height: 1.55; color: var(--ym-text); }
 .sticky-demo .st-h { margin: 16px 0 6px; font-weight: 800; font-size: 17px; letter-spacing: -0.02em; color: var(--ym-ink); }
 .st-product { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; padding: 12px 12px 14px; border-radius: 20px; background: #ffffff; box-shadow: var(--ym-shadow); }
@@ -3618,3 +3621,20 @@ button.walk__n { padding: 0; cursor: pointer; }
   .nav__built-menu { display: none; }
   .nav__brand { gap: 1px; }
 }
+
+/* ---------- Case studies take their project's color (owner's choice, 2026-11-06) ----------
+   On each case study the site blue is replaced by the project's accent: the "Try it" panels, the
+   INTERACTIVE badge, walkthrough steps and progress, numbered pins and AI notes. Text on the accent
+   passes WCAG AA in both themes: tvguideplus dark text on orange 7.1:1; the others white text,
+   yumm 5.4:1, Columna 5.4:1, SpringIn 7.5:1, pflegePro 5.6:1. The nav and footer keep the site blue. */
+main[data-case="tvguideplus"] { --accent: #FF7A2F; --on-accent: #141414; --try-bg: #26140A; --try-line: rgba(255, 122, 47, 0.35); }
+main[data-case="yumm"]        { --accent: #2F7A1F; --on-accent: #FFFFFF; --try-bg: #0F1C0B; --try-line: rgba(125, 194, 67, 0.3); }
+main[data-case="columna"]     { --accent: #B5461F; --on-accent: #FFFFFF; --try-bg: #24130C; --try-line: rgba(242, 184, 128, 0.3); }
+main[data-case="springin"]    { --accent: #1F5E55; --on-accent: #FFFFFF; --try-bg: #0A1F1B; --try-line: rgba(168, 220, 200, 0.3); }
+main[data-case="pflegepro"]   { --accent: #C42F25; --on-accent: #FFFFFF; --try-bg: #260C0A; --try-line: rgba(249, 80, 70, 0.3); }
+:root[data-theme="light"] main[data-case="tvguideplus"] { --try-bg: #FCE9DD; --try-line: rgba(255, 122, 47, 0.4); }
+:root[data-theme="light"] main[data-case="yumm"]        { --try-bg: #E5F1DB; --try-line: rgba(47, 122, 31, 0.25); }
+:root[data-theme="light"] main[data-case="columna"]     { --try-bg: #F6E5DB; --try-line: rgba(181, 70, 31, 0.22); }
+:root[data-theme="light"] main[data-case="springin"]    { --try-bg: #DDEEE8; --try-line: rgba(31, 94, 85, 0.22); }
+:root[data-theme="light"] main[data-case="pflegepro"]   { --try-bg: #FBE3E1; --try-line: rgba(196, 47, 37, 0.2); }
+main[data-case] { --accent-overlay: color-mix(in srgb, var(--accent) 80%, transparent); }

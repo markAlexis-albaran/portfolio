@@ -75,9 +75,9 @@
   // Columna: token switcher. The card stays the same component; only its tokens change.
   demo("tokens-demo", function (tkDemo) {
     var brands = {
-      kochzeit:   { color: "#B4441C", font: "Serif", rcard: "14", rbtn: "26", tag: "Rezept",   title: "Herbstsuppe in 20 Minuten",     btn: "Zum Rezept",  logo: "Kochzeit" },
-      sternblick: { color: "#E0004F", font: "Sans, bold", rcard: "2", rbtn: "2", tag: "Exklusiv", title: "Das große Comeback des Jahres", btn: "Weiterlesen", logo: "Sternblick" },
-      fernweg:    { color: "#1F6F6A", font: "Sans, regular", rcard: "24", rbtn: "26", tag: "Reisen", title: "Drei Tage an der Ostsee",    btn: "Zur Reise",   logo: "Fernweg" }
+      kochzeit:   { color: "#B4441C", font: "Serif", rcard: "14", rbtn: "26", tag: "Recipe",   title: "Autumn soup in 20 minutes",     btn: "Get the recipe",  logo: "Cookhouse" },
+      sternblick: { color: "#E0004F", font: "Sans, bold", rcard: "2", rbtn: "2", tag: "Exclusive", title: "The comeback of the year", btn: "Read more", logo: "Starlight" },
+      fernweg:    { color: "#1F6F6A", font: "Sans, regular", rcard: "24", rbtn: "26", tag: "Travel", title: "Three days on the coast",    btn: "See the trip",   logo: "Wayfarer" }
     };
     var card = tkDemo.querySelector(".tk-card");
     tkDemo.querySelectorAll('input[name^="tk-brand"]').forEach(function (r) {
@@ -515,9 +515,9 @@
     menu.querySelectorAll("button").forEach(function (b, i, all) {
       b.addEventListener("click", function () {
         var k = b.getAttribute("data-b");
-        if (k === "heading") add("Zutaten für 4 Personen", "ed-block--h");
+        if (k === "heading") add("Ingredients for 4", "ed-block--h");
         if (k === "image") add("Image block", "ed-block--img");
-        if (k === "recipe") add("<strong>Recipe card</strong>800 g Hokkaido · 1 Stück Ingwer · 400 ml Kokosmilch · 20 Min.", "ed-block--recipe");
+        if (k === "recipe") add("<strong>Recipe card</strong>800 g pumpkin · 1 piece of ginger · 400 ml coconut milk · 20 min", "ed-block--recipe");
         edIn.value = ""; closeMenu(); edIn.focus();
       });
       b.addEventListener("keydown", function (e) {
@@ -684,7 +684,7 @@
         return w.seq([
           function () { w.show("editor-demo"); w.step(0); return w.hold(1400); },
           function () { return w.tap("editor-demo", "input"); },
-          function () { return w.type("editor-demo", "input", "Fertig in 20 Minuten."); },
+          function () { return w.type("editor-demo", "input", "Ready in 20 minutes."); },
           function () { return w.key("editor-demo", "input", "Enter"); },
           function () { return w.hold(1300); }, // Saving…, then Draft saved
           function () { return w.type("editor-demo", "input", "/"); },
