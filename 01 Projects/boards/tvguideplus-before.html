@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>tvguideplus before (wireframe)</title>
+<!-- Grayscale redraw of the original mobile screens, so the real site's branding, photos and show names don't appear.
+     Render: Chrome headless at 1200x700, scale 2 -> 02 Site/images/tvguideplus/old-screens.jpg -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 700px; background: #1b1b1b; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; gap: 48px; font-family: Manrope, sans-serif; color: #3a3a3a; }
+
+  .phone { width: 262px; height: 552px; border-radius: 46px; background: #0b0b0d; border: 3px solid #48484e; padding: 14px; }
+  .screen { width: 100%; height: 100%; border-radius: 32px; background: #fff; overflow: hidden; position: relative; }
+
+  /* shared wireframe parts */
+  .auth { display: flex; justify-content: flex-end; gap: 6px; padding: 8px 12px 6px; font-size: 9px; font-weight: 500; color: #555; }
+  .bar { height: 30px; background: #8a8a8a; display: flex; align-items: center; justify-content: flex-end; gap: 6px; padding: 0 10px; }
+  .chip { height: 18px; padding: 0 8px; border-radius: 3px; background: #4a4a4a; color: #fff; font-size: 8px; font-weight: 500; display: flex; align-items: center; }
+  .icon { width: 14px; height: 14px; border: 2px solid #fff; border-radius: 50%; }
+  .burger { width: 16px; height: 12px; border-top: 2px solid #fff; border-bottom: 2px solid #fff; position: relative; }
+  .burger::after { content: ""; position: absolute; left: 0; right: 0; top: 3px; border-top: 2px solid #fff; }
+
+  .ad { height: 150px; background: #e4e4e4; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: #777; }
+  .teaser { margin: 8px; height: 90px; background: #bdbdbd; position: relative; overflow: hidden; }
+  .teaser::before { content: ""; position: absolute; inset: 0; background:
+      linear-gradient(to top right, transparent calc(50% - 1px), #a8a8a8 50%, transparent calc(50% + 1px)),
+      linear-gradient(to top left, transparent calc(50% - 1px), #a8a8a8 50%, transparent calc(50% + 1px)); }
+  .teaser .cap { position: absolute; left: 0; right: 0; bottom: 0; height: 30px; background: #6d6d6d; display: flex; align-items: center; gap: 8px; padding: 0 8px; }
+  .teaser .time { background: #3f3f3f; color: #fff; font-size: 8px; font-weight: 500; padding: 2px 4px; }
+  .line { height: 6px; border-radius: 3px; background: #c9c9c9; }
+  .line.dark { background: #8a8a8a; }
+  .line.light { background: #dedede; }
+  .teaser .cap .line { background: #e6e6e6; }
+
+  .card { margin: 8px; border: 1px solid #e2e2e2; padding: 10px; }
+  .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .card-head b { font-size: 11px; font-weight: 500; color: #333; }
+  .card-head span { font-size: 9px; font-weight: 500; color: #666; }
+  .row { display: flex; gap: 10px; margin-bottom: 12px; }
+  .row .t { width: 30px; font-size: 8px; color: #555; line-height: 1.3; }
+  .row .c { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+  .progress { height: 2px; background: #e5e5e5; position: relative; margin-bottom: 6px; }
+  .progress::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 45%; background: #7a7a7a; }
+  .channel { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+  .logo { width: 16px; height: 10px; background: #bcbcbc; }
+
+  /* menu screen */
+  .menu { position: absolute; left: 0; right: 0; top: 54px; height: 148px; background: #f4f4f4; border-bottom: 1px solid #ddd; padding: 4px 10px; }
+  .menu div { height: 34px; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 500; color: #444; }
+  .menu div::before { content: "›"; color: #999; }
+  .under { margin-top: 148px; }
+  .fab { position: absolute; left: 10px; bottom: 10px; width: 26px; height: 26px; border-radius: 50%; background: #6d6d6d; }
+
+  /* schedule + news screen */
+  .more { margin: 4px 8px 0; height: 24px; background: #6d6d6d; color: #fff; font-size: 9px; font-weight: 500; display: flex; align-items: center; justify-content: center; }
+  .news-head { display: flex; justify-content: space-between; align-items: center; margin: 14px 8px 6px; }
+  .news-head b { font-size: 11px; font-weight: 500; color: #333; }
+  .news-head span { font-size: 9px; font-weight: 500; color: #666; padding: 2px 3px; }
+  .news-img { margin: 0 8px; height: 100px; background: #bdbdbd; position: relative; }
+  .news-img::before { content: ""; position: absolute; inset: 0; background:
+      linear-gradient(to top right, transparent calc(50% - 1px), #a8a8a8 50%, transparent calc(50% + 1px)),
+      linear-gradient(to top left, transparent calc(50% - 1px), #a8a8a8 50%, transparent calc(50% + 1px)); }
+  .tag { position: absolute; left: 4px; top: 4px; background: #6d6d6d; color: #fff; font-size: 6px; font-weight: 500; padding: 2px 4px; letter-spacing: .3px; }
+  .arrow { position: absolute; right: 4px; bottom: 4px; width: 12px; height: 12px; background: #4a4a4a; }
+  .news-text { margin: 8px; display: flex; flex-direction: column; gap: 5px; }
+  .readmore { font-size: 8px; font-weight: 500; color: #555; align-self: flex-start; padding: 1px 3px; }
+
+  /* my annotations: the friction points, as in the original image */
+  .hit { outline: 2px solid #ff2bd6; outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+  <!-- 1. Home: ad first, schedule pushed down -->
+  <div class="phone"><div class="screen">
+    <div class="auth"><span>Sign up</span><span>|</span><span>Log in</span></div>
+    <div class="bar"><div class="chip">Now</div><div class="chip">20:15</div><div class="icon"></div><div class="burger"></div></div>
+    <div class="ad">Ad</div>
+    <div class="teaser"><div class="cap"><span class="time">20:15</span><div style="flex:1;display:flex;flex-direction:column;gap:4px"><div class="line" style="width:80%"></div><div class="line" style="width:40%"></div></div></div></div>
+    <div class="card">
+      <div class="card-head"><b>Now on TV</b><span>20:15 on TV »</span></div>
+      <div class="channel"><div class="logo"></div><div class="line light" style="width:24px"></div></div>
+      <div class="progress"></div>
+      <div class="row"><div class="t">Since<br>08:35</div><div class="c"><div class="line dark" style="width:55%"></div><div class="line light" style="width:90%"></div><div class="line light" style="width:70%"></div></div></div>
+      <div class="row"><div class="t">17:00</div><div class="c"><div class="line dark" style="width:45%"></div><div class="line light" style="width:80%"></div></div></div>
+<div class="channel"><div class="logo"></div><div class="line light" style="width:24px"></div></div>
+<div class="progress"></div>
+<div class="row"><div class="t">Since<br>09:00</div><div class="c"><div class="line dark" style="width:50%"></div><div class="line light" style="width:85%"></div></div></div>
+<div class="row"><div class="t">10:30</div><div class="c"><div class="line dark" style="width:40%"></div><div class="line light" style="width:70%"></div></div></div>
+    </div>
+  </div></div>
+
+  <!-- 2. Menu open: four broad entries over the page -->
+  <div class="phone"><div class="screen">
+    <div class="auth"><span>Sign up</span><span>|</span><span>Log in</span></div>
+    <div class="bar"><div class="chip">Now</div><div class="chip">20:15</div><div class="icon"></div><div class="burger"></div></div>
+    <div class="menu"><div>TV</div><div>Streaming</div><div>News</div><div>Buying guides</div></div>
+    <div class="under">
+      <div class="teaser"><div class="cap"><span class="time">20:15</span><div style="flex:1;display:flex;flex-direction:column;gap:4px"><div class="line" style="width:80%"></div><div class="line" style="width:40%"></div></div></div></div>
+      <div class="card">
+        <div class="card-head"><b>Now on TV</b><span>20:15 on TV »</span></div>
+        <div class="channel"><div class="logo"></div><div class="line light" style="width:24px"></div></div>
+        <div class="progress"></div>
+        <div class="row"><div class="t">Since<br>08:35</div><div class="c"><div class="line dark" style="width:55%"></div><div class="line light" style="width:90%"></div><div class="line light" style="width:70%"></div></div></div>
+        <div class="row"><div class="t">17:00</div><div class="c"><div class="line dark" style="width:45%"></div><div class="line light" style="width:80%"></div></div></div>
+<div class="channel"><div class="logo"></div><div class="line light" style="width:24px"></div></div>
+<div class="progress"></div>
+<div class="row"><div class="t">Since<br>09:00</div><div class="c"><div class="line dark" style="width:50%"></div><div class="line light" style="width:85%"></div></div></div>
+<div class="row"><div class="t">10:30</div><div class="c"><div class="line dark" style="width:40%"></div><div class="line light" style="width:70%"></div></div></div>
+      </div>
+    </div>
+    <div class="fab"></div>
+  </div></div>
+
+  <!-- 3. Bottom of Home: load more, then news, with the friction points marked -->
+  <div class="phone"><div class="screen" style="padding-top:12px">
+    <div class="card" style="border-top:none;margin-top:0">
+      <div class="progress"></div>
+      <div class="row"><div class="t">Since<br>11:05</div><div class="c"><div class="line dark" style="width:50%"></div><div class="line light" style="width:85%"></div></div></div>
+      <div class="row"><div class="t">12:05</div><div class="c"><div class="line dark" style="width:50%"></div><div class="line light" style="width:75%"></div></div></div>
+      <div class="channel"><div class="logo"></div><div class="line light" style="width:24px"></div></div>
+      <div class="progress"></div>
+      <div class="row"><div class="t">Since<br>11:30</div><div class="c"><div class="line dark" style="width:45%"></div><div class="line light" style="width:60%"></div></div></div>
+      <div class="row" style="margin-bottom:0"><div class="t">12:25</div><div class="c"><div class="line dark" style="width:55%"></div><div class="line light" style="width:90%"></div></div></div>
+    </div>
+    <div class="more hit">Load more</div>
+    <div class="news-head"><b>News</b><span class="hit">All news »</span></div>
+    <div class="news-img"><span class="tag hit">TV</span><span class="arrow hit"></span></div>
+    <div class="news-text">
+      <div class="line dark" style="width:95%;height:7px"></div>
+      <div class="line dark" style="width:60%;height:7px"></div>
+      <div class="line light" style="width:90%"></div>
+      <div style="display:flex;gap:6px;align-items:center"><div class="line light" style="width:40%"></div><span class="readmore hit">Read more »</span></div>
+    </div>
+    <div style="margin:14px 8px 0;border-top:1px solid #e2e2e2;padding-top:8px;font-size:7px;color:#888">Ad</div>
+    <div style="margin:4px 8px;height:60px;background:#e4e4e4"></div>
+  </div></div>
+
+</body>
+</html>

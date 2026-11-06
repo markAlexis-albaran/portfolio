@@ -7,8 +7,8 @@
   <meta name="description" content="yumm: optimizing an affiliate product page for trust and conversion. A UX case study by Mark Alexis Albaran.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css?v=2026-11-06b">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500;700;800&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css?v=2026-11-06j">
   <script>document.documentElement.classList.add("js");var t="light";try{if(localStorage.getItem("theme")==="dark")t="dark"}catch(e){}if(t==="light")document.documentElement.setAttribute("data-theme","light");</script>
 </head>
 <body>
@@ -58,7 +58,7 @@
       <section class="case-section" id="problem">
         <h2 data-reveal>Problem</h2>
         <div data-reveal data-delay="120">
-          <p>yumm is a German food and cooking publisher that earns money through affiliate links in its buying guides. Its electric grill guide brought in search traffic from people with one question: which electric grill should I buy?</p>
+          <p>yumm is a food and cooking publisher that earns money through affiliate links in its buying guides. Its electric grill guide brought in search traffic from people with one question: which electric grill should I buy?</p>
           <p>But <mark class="hl">every product card looked the same</mark>, buy buttons appeared before there was any reason to trust them, and on mobile the guide turned into a long scroll. People skimmed, hesitated at the links and left before reaching the lower-ranked grills, which cost clicks and affiliate revenue.</p>
         </div>
       </section>
@@ -88,53 +88,54 @@
       <section class="case-section" id="making">
         <h2 data-reveal>Making</h2>
         <div data-reveal data-delay="120">
+          <p class="label case-note">Visual style updated for confidentiality; layouts and flows are as designed.</p>
           <h3>A quick comparison at the top</h3>
           <p>I placed a comparison module near the top of the guide, with color-coded badges (Best Overall, Best Value) and checkboxes to <mark class="hl">compare two grills side by side</mark> in a spec table, instead of a long list of identical cards. Participants couldn't tell which grill was best, cheapest or premium, and asked to see the differences without reading every section.</p>
           <div class="try compare-demo">
             <p class="try__head"><span class="try__badge"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 2v7.5M6 9.5l-1.6-1.6a1.2 1.2 0 0 0-1.7 1.7L6 13c.9.9 2 1.4 3.2 1.4h.3A3.5 3.5 0 0 0 13 10.9V7.5a1 1 0 0 0-2 0M11 7.5V6.5a1 1 0 0 0-2 0v1M9 7.5V6a1 1 0 0 0-2 0v1.5M7 7.5V2a1 1 0 0 0-2 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Interactive</span><span class="try__title">Compare two grills</span></p>
             <div class="cd-phone">
-              <p class="cd-h">Alle Balkongrills im direkten Vergleich</p>
+              <p class="cd-h">All balcony grills, side by side</p>
               <div class="cd-products">
                 <div class="cd-product">
                   <p class="cd-badge cd-badge--best">Best overall</p>
-                  <label class="cd-check"><input type="checkbox" value="weber"> Vergleichen</label>
+                  <label class="cd-check"><input type="checkbox" value="ember"> Compare</label>
                   <div class="cd-img cd-img--green"><svg viewBox="0 0 120 70" aria-hidden="true" focusable="false"><path d="M18 40 Q18 14 60 14 Q102 14 102 40 Z" fill="currentColor"/><rect x="12" y="40" width="96" height="10" rx="4" fill="currentColor" opacity=".75"/><line x1="26" y1="50" x2="22" y2="64" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="94" y1="50" x2="98" y2="64" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><rect x="50" y="8" width="20" height="7" rx="3" fill="currentColor"/></svg></div>
-                  <p class="cd-name">Weber Elektro-Tisch Lumin</p>
-                  <p class="cd-price">€549,99</p>
+                  <p class="cd-name">Ember Table Grill E2</p>
+                  <p class="cd-price">€549.99</p>
                 </div>
                 <div class="cd-product">
                   <p class="cd-badge cd-badge--value">Best value</p>
-                  <label class="cd-check"><input type="checkbox" value="ninja"> Vergleichen</label>
+                  <label class="cd-check"><input type="checkbox" value="hearth"> Compare</label>
                   <div class="cd-img cd-img--grey"><svg viewBox="0 0 120 70" aria-hidden="true" focusable="false"><path d="M18 40 Q18 14 60 14 Q102 14 102 40 Z" fill="currentColor"/><rect x="12" y="40" width="96" height="10" rx="4" fill="currentColor" opacity=".75"/><line x1="26" y1="50" x2="22" y2="64" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="94" y1="50" x2="98" y2="64" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><rect x="50" y="8" width="20" height="7" rx="3" fill="currentColor"/></svg></div>
-                  <p class="cd-name">Ninja Woodfire Elektrogrill</p>
-                  <p class="cd-price">€275,09</p>
+                  <p class="cd-name">Hearth Woodfire Grill</p>
+                  <p class="cd-price">€275.09</p>
                 </div>
               </div>
               <div class="cd-table" hidden>
-                <p class="cd-table__h">Technische Daten</p>
+                <p class="cd-table__h">Specs</p>
                 <dl>
-                  <dt>Leistung in Watt</dt><dd><span>2200</span><span>2400</span></dd>
-                  <dt>Temperatur in °C</dt><dd><span>60–315</span><span>60–260</span></dd>
-                  <dt>Maße H × B × T in cm</dt><dd><span>30,5 × 66 × 48,5</span><span>34 × 46 × 46</span></dd>
-                  <dt>Gewicht in kg</dt><dd><span>16,6</span><span>12</span></dd>
+                  <dt>Power (W)</dt><dd><span>2200</span><span>2400</span></dd>
+                  <dt>Temperature (°C)</dt><dd><span>60–315</span><span>60–260</span></dd>
+                  <dt>Size H × W × D (cm)</dt><dd><span>30.5 × 66 × 48.5</span><span>34 × 46 × 46</span></dd>
+                  <dt>Weight (kg)</dt><dd><span>16.6</span><span>12</span></dd>
                 </dl>
-                <button class="cd-back" type="button">Zurück zur Auswahl</button>
+                <button class="cd-back" type="button">Back to the selection</button>
               </div>
               <div class="cd-bar" hidden>
                 <p class="cd-bar__count"></p>
                 <p class="cd-bar__hint"></p>
                 <div class="cd-bar__actions">
-                  <button class="cd-go" type="button" disabled>Jetzt vergleichen</button>
-                  <button class="cd-cancel" type="button">Abbrechen</button>
+                  <button class="cd-go" type="button" disabled>Compare now</button>
+                  <button class="cd-cancel" type="button">Cancel</button>
                 </div>
               </div>
               <p class="visually-hidden" role="status" aria-live="polite"></p>
             </div>
-            <p class="try__caption label">Rebuilt from my designs, in German as on the site. Tick &ldquo;Vergleichen&rdquo; on both grills, then compare.</p>
+            <p class="try__caption label">Rebuilt from my designs, with product and shop names changed. Tick &ldquo;Compare&rdquo; on both grills, then compare.</p>
           </div>
           <figure class="case-figure">
-            <img src="../images/yumm/comparison-before.jpg" alt="The original comparison: two near-identical product cards" loading="lazy">
-            <figcaption class="label">Before</figcaption>
+            <img src="../images/yumm/comparison-before.jpg" alt="Wireframe of the original comparison: two near-identical product cards" loading="lazy">
+            <figcaption class="label">Before: the original screen, redrawn as a wireframe</figcaption>
           </figure>
           <figure class="case-figure">
             <img class="case-figure__board" src="../images/yumm/comparison-board.jpg" alt="Redesigned comparison: badges, compare checkboxes, a selection bar, then a side-by-side spec table" loading="lazy">
@@ -148,26 +149,26 @@
             <div class="cd-phone st-phone">
               <div class="st-scroll" tabindex="0" aria-label="Article, scrollable">
                 <div class="st-podium" aria-hidden="true"><span>2</span><span>1</span><span>3</span></div>
-                <p class="st-p">Das Wichtigste zu Beginn: Es gibt nicht den einen „besten Balkongrill“. Jeder Grillfan hat unterschiedlich viel oder wenig Platz, diese ganz besonderen Nachbarn und Grill-Lieblinge.</p>
-                <p class="st-p">Wir haben diese Grills teilweise in der Stadtwohnung, auf dem Balkon, der Loggia und auf der Gartenterrasse getestet, um ihre Einsatzmöglichkeiten an verschiedenen Orten zu erproben.</p>
-                <p class="st-h">Grillen auf dem Balkon ohne Ärger</p>
-                <p class="st-p">Elektrogrills sparen Platz und Brennstoff und eignen sich daher besonders für das Grillen auf dem Balkon, aber auch unterwegs auf dem Campingplatz mit dem Wohnmobil.</p>
-                <p class="st-p">Im Sommer können wir in der Stadt schon mit einfachen Modellen ohne großen Aufwand zum Grillen ins Freie gehen. Unsere Favoriten ermöglichen dies auch im Mehrfamilienhaus ohne Ärger mit Nachbarn.</p>
-                <p class="st-h">So haben wir getestet</p>
-                <p class="st-p">Alle Geräte mussten im Test nicht nur das obligatorische Würstchen, sondern auch Gemüse grillen. Wir haben Aufheizzeit, Temperatur und Reinigung verglichen.</p>
-                <p class="st-p">Am Ende zählte, was auf einem kleinen Balkon wirklich wichtig ist: Platz, Rauch und wie schnell der Grill einsatzbereit ist.</p>
+                <p class="st-p">First things first: there&rsquo;s no single &lsquo;best balcony grill&rsquo;. Every grill fan has more or less space, very particular neighbors and their own favorites.</p>
+                <p class="st-p">We tested these grills in a city apartment, on a balcony, a loggia and a garden terrace, to see how they do in different places.</p>
+                <p class="st-h">Grilling on the balcony without trouble</p>
+                <p class="st-p">Electric grills save space and fuel, which makes them a good fit for balconies, and for campsites too.</p>
+                <p class="st-p">In summer, even simple models let you grill outdoors in the city without much effort. Our favorites manage it in an apartment building without trouble with the neighbors.</p>
+                <p class="st-h">How we tested</p>
+                <p class="st-p">Every grill had to cook more than the obligatory sausage: vegetables too. We compared heat-up time, temperature and cleaning.</p>
+                <p class="st-p">In the end, what counted was what a small balcony needs: space, smoke and how quickly the grill is ready.</p>
                 <div class="st-product" id="st-best" tabindex="-1">
                   <p class="cd-badge cd-badge--best">Best overall</p>
                   <div class="cd-img cd-img--green"><svg viewBox="0 0 120 70" aria-hidden="true" focusable="false"><path d="M18 40 Q18 14 60 14 Q102 14 102 40 Z" fill="currentColor"/><rect x="12" y="40" width="96" height="10" rx="4" fill="currentColor" opacity=".75"/><line x1="26" y1="50" x2="22" y2="64" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="94" y1="50" x2="98" y2="64" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><rect x="50" y="8" width="20" height="7" rx="3" fill="currentColor"/></svg></div>
-                  <p class="cd-name">Weber Elektro-Tisch Lumin</p>
-                  <p class="cd-price">€549,99</p>
-                  <span class="st-buy" aria-hidden="true">Jetzt kaufen</span>
+                  <p class="cd-name">Ember Table Grill E2</p>
+                  <p class="cd-price">€549.99</p>
+                  <span class="st-buy" aria-hidden="true">Buy now</span>
                 </div>
-                <p class="st-p">Weitere Modelle im Test folgen weiter unten im Artikel.</p>
+                <p class="st-p">More tested models follow further down the article.</p>
               </div>
-              <button class="st-jump" type="button" hidden><span aria-hidden="true">^</span>Jump to Best Price</button>
+              <button class="st-jump" type="button" hidden><span aria-hidden="true">&uarr;</span>Jump to best price</button>
             </div>
-            <p class="try__caption label">Rebuilt from my designs, in German as on the site. Scroll the article: the button appears once you're reading, and takes you to the top pick.</p>
+            <p class="try__caption label">Rebuilt from my designs, translated, with product names changed. Scroll the article: the button appears once you're reading, and takes you to the top pick.</p>
           </div>
           <figure class="case-figure">
             <img class="case-figure__board" src="../images/yumm/sticky-board.jpg" alt="A floating Jump to Best Price button over the article, leading to the Best Overall product card" loading="lazy">
@@ -182,26 +183,26 @@
               <div class="pc-card">
                 <p class="cd-badge cd-badge--best">Best overall</p>
                 <div class="cd-img cd-img--green"><svg viewBox="0 0 120 70" aria-hidden="true" focusable="false"><path d="M18 40 Q18 14 60 14 Q102 14 102 40 Z" fill="currentColor"/><rect x="12" y="40" width="96" height="10" rx="4" fill="currentColor" opacity=".75"/><line x1="26" y1="50" x2="22" y2="64" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="94" y1="50" x2="98" y2="64" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><rect x="50" y="8" width="20" height="7" rx="3" fill="currentColor"/></svg></div>
-                <p class="cd-name">Weber Elektro-Tisch Lumin Montgrün</p>
-                <p class="cd-price">€549,99</p>
-                <span class="st-buy" aria-hidden="true">Jetzt kaufen</span>
-                <button class="pc-toggle" type="button" aria-expanded="false" aria-controls="pc-sellers">Weitere Anbieter <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                <div class="pc-panel" id="pc-sellers" hidden><p><span>ABC Inc.</span><span>€620,99</span></p><p><span>OTTO</span><span>€635,99</span></p></div>
-                <p class="pc-rating">Unsere Bewertung: <span aria-hidden="true">★★★★★</span> 4/5</p>
-                <button class="pc-toggle" type="button" aria-expanded="false" aria-controls="pc-specs">Technische Daten <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <p class="cd-name">Ember Table Grill E2, Sand</p>
+                <p class="cd-price">€549.99</p>
+                <span class="st-buy" aria-hidden="true">Buy now</span>
+                <button class="pc-toggle" type="button" aria-expanded="false" aria-controls="pc-sellers">More sellers <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <div class="pc-panel" id="pc-sellers" hidden><p><span>GrillHouse</span><span>€620.99</span></p><p><span>ShopRow</span><span>€635.99</span></p></div>
+                <p class="pc-rating">Our rating <span aria-hidden="true">★★★★★</span> 4/5</p>
+                <button class="pc-toggle" type="button" aria-expanded="false" aria-controls="pc-specs">Specs <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 <dl class="pc-panel pc-specs" id="pc-specs" hidden>
-                  <dt>Leistung in Watt</dt><dd>2200</dd>
-                  <dt>Temperatur in °C</dt><dd>60–315</dd>
-                  <dt>Maße H × B × T in cm</dt><dd>30,5 × 66 × 48,5</dd>
-                  <dt>Gewicht in kg</dt><dd>16,6</dd>
+                  <dt>Power (W)</dt><dd>2200</dd>
+                  <dt>Temperature (°C)</dt><dd>60–315</dd>
+                  <dt>Size H × W × D (cm)</dt><dd>30.5 × 66 × 48.5</dd>
+                  <dt>Weight (kg)</dt><dd>16.6</dd>
                 </dl>
               </div>
             </div>
-            <p class="try__caption label">Rebuilt from my designs, in German as on the site. The card stays short until you open a section.</p>
+            <p class="try__caption label">Rebuilt from my designs, with product and shop names changed. The card stays short until you open a section.</p>
           </div>
           <figure class="case-figure">
-            <img src="../images/yumm/cards-before.jpg" alt="The original product card with every detail expanded" loading="lazy">
-            <figcaption class="label">Before</figcaption>
+            <img src="../images/yumm/cards-before.jpg" alt="Wireframe of the original product card with every detail expanded" loading="lazy">
+            <figcaption class="label">Before: the original screen, redrawn as a wireframe</figcaption>
           </figure>
           <figure class="case-figure">
             <img class="case-figure__board" src="../images/yumm/cards-board.jpg" alt="The compact product card, closed and with other sellers and specs expanded" loading="lazy">
@@ -235,9 +236,9 @@
             </div>
             <div class="walk__body">
               <ol class="walk__steps">
-                <li class="is-current"><span class="walk__n" aria-hidden="true">1</span><div class="walk__d"><p class="walk__name">Compare two grills</p><p>At the top of the article, tick Vergleichen on both grills, then open the side-by-side comparison.</p></div></li>
+                <li class="is-current"><span class="walk__n" aria-hidden="true">1</span><div class="walk__d"><p class="walk__name">Compare two grills</p><p>At the top of the article, tick Compare on both grills, then open the side-by-side comparison.</p></div></li>
                 <li><span class="walk__n" aria-hidden="true">2</span><div class="walk__d"><p class="walk__name">Jump to the best price</p><p>Read on. The button appears once you're in the article and takes you to the top pick.</p></div></li>
-                <li><span class="walk__n" aria-hidden="true">3</span><div class="walk__d"><p class="walk__name">Open only what you need</p><p>On the Best Overall card, open Weitere Anbieter, then Technische Daten.</p></div></li>
+                <li><span class="walk__n" aria-hidden="true">3</span><div class="walk__d"><p class="walk__name">Open only what you need</p><p>On the Best Overall card, open More sellers, then Specs.</p></div></li>
               </ol>
               <div class="walk__stage" aria-hidden="true" inert>
                 <p class="walk__label walk__label--l">yumm</p>
@@ -261,6 +262,6 @@
       <p class="label">Last Updated: November 2026</p>
     </div>
   </footer>
-  <script src="../main.js?v=2026-11-06b"></script>
+  <script src="../main.js?v=2026-11-06j"></script>
 </body>
 </html>

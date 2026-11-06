@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Link preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; }
+  body {
+    width: 1200px; height: 630px; box-sizing: border-box;
+    background: #e9e9e9; color: #0a0a0a;
+    font-family: "Manrope", sans-serif;
+    padding: 64px 80px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    background-image: repeating-linear-gradient(90deg, transparent 0 119px, rgba(0,0,0,0.06) 119px 120px);
+  }
+  .mono { font-family: "DM Mono", monospace; }
+  .name { font-size: 24px; }
+  .built { font-size: 15px; color: #4a4a4a; margin-top: 6px; }
+  .open { font-size: 18px; display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #1f00ff; }
+  h1 { font-weight: 300; font-size: 96px; line-height: 1; letter-spacing: -0.05em; margin: 0; }
+  .sub { font-weight: 300; font-size: 34px; color: #4a4a4a; margin-top: 22px; letter-spacing: -0.02em; }
+  .role { font-size: 18px; color: #4a4a4a; }
+</style>
+</head>
+<body>
+  <div>
+    <div class="mono name">markAlexis-Albaran</div>
+    <div class="mono built">built with Claude ;-)</div>
+  </div>
+  <div>
+    <div class="mono open"><span class="dot"></span>Open to full-time positions</div>
+    <h1>I turn complexity into clarity.</h1>
+    <div class="sub">with AI-powered research, prototyping and design-to-code</div>
+  </div>
+  <div class="mono role">UX / Product Designer</div>
+</body>
+</html>

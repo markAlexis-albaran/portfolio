@@ -97,7 +97,7 @@
     });
   });
 
-  // yumm: compare two grills. Ticking products fills the bar; at two, "Jetzt vergleichen" opens the table.
+  // yumm: compare two grills. Ticking products fills the bar; at two, "Compare now" opens the table.
   demo("compare-demo", function (cmp) {
     var boxes = cmp.querySelectorAll(".cd-check input");
     var bar = cmp.querySelector(".cd-bar");
@@ -108,8 +108,8 @@
     var update = function () {
       var n = Array.prototype.filter.call(boxes, function (b) { return b.checked; }).length;
       bar.hidden = n === 0;
-      cmp.querySelector(".cd-bar__count").textContent = n + " Produkt/e wurde ausgewählt";
-      cmp.querySelector(".cd-bar__hint").textContent = n < 2 ? "Ein weiteres Produkt hinzufügen, um mit dem Vergleich zu beginnen" : "Bereit zum Vergleich";
+      cmp.querySelector(".cd-bar__count").textContent = n + (n === 1 ? " product selected" : " products selected");
+      cmp.querySelector(".cd-bar__hint").textContent = n < 2 ? "Add one more product to start comparing" : "Ready to compare";
       go.disabled = n < 2;
       cmpSay(n === 0 ? "Nothing selected." : n + " of 2 selected." + (n === 2 ? " Ready to compare." : ""));
     };
@@ -135,27 +135,27 @@
     });
   });
 
-  // tvguideplus: jetzt / 20:15 / 22:00 tabs switch the list
+  // tvguideplus: now / 20:15 / 22:00 tabs switch the list
   demo("guide-demo", function (guide) {
     var slots = {
-      now: { label: "jetzt", items: [
-        ["SAT.1", "Spielfilm · Doku-Soap", "Auf Streife", "12:30–13:45", 45, true],
-        ["Comedy Central", "Serien · Zeichentrick", "Futurama", "12:30–13:45", 45],
-        ["RTL", "Unterhaltung · Casting", "Deutschland sucht den Superstar", "12:30–13:45", 45],
-        ["ZDFneo", "Reportage · Doku", "Die Reportage", "12:30–13:45", 45],
-        ["VOX", "Sports · Wrestling", "Wrestling: WWE Raw", "12:30–13:45", 45]
+      now: { label: "now", items: [
+        ["Kite", "Movie · Docusoap", "On Patrol", "12:30–13:45", 45, true],
+        ["Laugh Box", "Series · Animation", "Space Delivery", "12:30–13:45", 45],
+        ["Nova", "Entertainment · Talent show", "Next Big Voice", "12:30–13:45", 45],
+        ["Arc Plus", "Documentary · Report", "The Report", "12:30–13:45", 45],
+        ["Vista", "Sports · Wrestling", "Wrestling: Monday Mayhem", "12:30–13:45", 45]
       ]},
       "2015": { label: "20:15", items: [
-        ["ARD", "Spielfilm · Krimi", "Küstenwache Nord", "20:15–21:45", 0, true],
-        ["ZDF", "Unterhaltung · Quiz", "Der große Quizabend", "20:15–22:15", 0],
-        ["arte", "Reportage · Natur", "Die Alpen von oben", "20:15–21:00", 0],
-        ["ProSieben", "Spielfilm · Action", "Mission Polarstern", "20:15–22:30", 0]
+        ["Arc One", "Movie · Crime", "Coast Watch North", "20:15–21:45", 0, true],
+        ["Arc Two", "Entertainment · Quiz", "The Big Quiz Night", "20:15–22:15", 0],
+        ["Lumen", "Documentary · Nature", "The Alps from Above", "20:15–21:00", 0],
+        ["Orbit", "Movie · Action", "Mission North Star", "20:15–22:30", 0]
       ]},
       "2200": { label: "22:00", items: [
-        ["ZDFneo", "Serien · Drama", "Hafenklinik", "22:00–22:45", 0],
-        ["3sat", "Kultur · Talk", "Nachtgespräch", "22:00–23:00", 0, true],
-        ["RTL", "Nachrichten", "Nachtjournal", "22:15–22:45", 0],
-        ["VOX", "Serien · Comedy", "Die WG", "22:00–22:30", 0]
+        ["Arc Plus", "Series · Drama", "Harbor Clinic", "22:00–22:45", 0],
+        ["Meridian", "Culture · Talk", "Late Talk", "22:00–23:00", 0, true],
+        ["Nova", "News", "Night Journal", "22:15–22:45", 0],
+        ["Vista", "Series · Comedy", "The Flatshare", "22:00–22:30", 0]
       ]}
     };
     var gList = guide.querySelector(".tg-list");
@@ -166,7 +166,7 @@
         return '<li><span class="tg-ch">' + esc(i[0]) + '</span><span><span class="tg-genre">' + esc(i[1]) + '</span>' +
           '<span class="tg-title">' + esc(i[2]) + '</span>' +
           '<span class="tg-prog" aria-hidden="true"><span style="width:' + i[4] + '%"></span></span>' +
-          '<span class="tg-time">' + esc(i[3]) + '</span>' + (i[5] ? '<span class="tg-tip">TAGESTIPP</span>' : '') + '</span></li>';
+          '<span class="tg-time">' + esc(i[3]) + '</span>' + (i[5] ? '<span class="tg-tip">TODAY&rsquo;S PICK</span>' : '') + '</span></li>';
       }).join("");
       tabs.forEach(function (t) {
         var on = t.getAttribute("data-slot") === key;
@@ -398,14 +398,14 @@
   // tvguideplus: live search with labeled results
   demo("search-demo", function (sr) {
     var srData = [
-      ["Baracks", "08:00 – 10:00 · Freitag 20.12 · SuperRTL", "Sendung"],
-      ["Baracuda", "08:00 – 10:00 · Freitag 20.12 · ARD", "Sendung"],
+      ["Baracks", "08:00 – 10:00 · Fri, Dec 20 · Nova Kids", "Show"],
+      ["Baracuda", "08:00 – 10:00 · Fri, Dec 20 · Arc One", "Show"],
       ["Barkeeper", "Netflix", "VOD"],
-      ["Bar Mitzwa", "Netflix", "VOD"],
-      ["Neue Bar in Kassel eröffnet", "„Halbvoll“ bietet familiären Charme", "News"],
+      ["Bar Mitzvah", "Netflix", "VOD"],
+      ["New bar opens at the old harbor", "‘Half Full’ brings a family feel", "News"],
       ["Luther", "Netflix", "VOD"],
-      ["Luther – The Fallen Sun", "20:15 – 22:15 · Samstag 21.12 · ZDF", "Sendung"],
-      ["Lustige Tiere im Zoo", "16:00 – 16:45 · Sonntag 22.12 · KiKA", "Sendung"],
+      ["Luther – The Fallen Sun", "20:15 – 22:15 · Sat, Dec 21 · Arc Two", "Show"],
+      ["Lucky Zoo Animals", "16:00 – 16:45 · Sun, Dec 22 · Tiny TV", "Show"],
       ["Lord of the Rings", "Prime Video", "VOD"],
       ["The Wicked", "Prime Video", "VOD"]
     ];
@@ -415,7 +415,7 @@
       var q = srIn.value.trim().toLowerCase();
       var list = sr.querySelector(".sr-list");
       if (!q) {
-        sr.querySelector(".sr-h").textContent = "Top-Suchanfragen";
+        sr.querySelector(".sr-h").textContent = "Top searches";
         list.innerHTML = ["The Wicked", "Lord of the Rings", "Luther"].map(function (s) {
           return '<li><span class="sr-suggest">' + s + '</span><span aria-hidden="true">⌕</span></li>';
         }).join("");
@@ -423,7 +423,7 @@
         return;
       }
       var hits = srData.filter(function (r) { return r[0].toLowerCase().indexOf(q) !== -1; });
-      sr.querySelector(".sr-h").textContent = hits.length ? "Top Treffer" : "Keine Treffer";
+      sr.querySelector(".sr-h").textContent = hits.length ? "Top results" : "No results";
       list.innerHTML = hits.length ? hits.map(function (r) {
         var at = r[0].toLowerCase().indexOf(q);
         var title = srEsc(r[0].slice(0, at)) + "<mark>" + srEsc(r[0].slice(at, at + q.length)) + "</mark>" + srEsc(r[0].slice(at + q.length));
@@ -441,16 +441,16 @@
       var time = fl.querySelector('input[name^="fl-time"]:checked').value;
       var types = Array.prototype.map.call(fl.querySelectorAll('input[type="checkbox"]:checked'), function (c) { return c.value; });
       var chips = [];
-      chips.push(time === "Jetzt im TV" ? '<span class="fl-chip fl-chip--default">Jetzt im TV</span>' :
+      chips.push(time === "On now" ? '<span class="fl-chip fl-chip--default">On now</span>' :
         '<span class="fl-chip">' + time + '<button type="button" data-clear="time" aria-label="Remove filter ' + time + '">×</button></span>');
-      chips.push('<span class="fl-chip fl-chip--default">Alle Sender</span>');
-      if (!types.length) chips.push('<span class="fl-chip fl-chip--default">Alle Sendungsarten</span>');
+      chips.push('<span class="fl-chip fl-chip--default">All channels</span>');
+      if (!types.length) chips.push('<span class="fl-chip fl-chip--default">All program types</span>');
       types.forEach(function (ty) { chips.push('<span class="fl-chip">' + ty + '<button type="button" data-clear="' + ty + '" aria-label="Remove filter ' + ty + '">×</button></span>'); });
       fl.querySelector(".fl-chips__list").innerHTML = chips.join("");
       fl.querySelectorAll("[data-clear]").forEach(function (b) {
         b.addEventListener("click", function () {
           var k = b.getAttribute("data-clear");
-          if (k === "time") { fl.querySelector('input[value="Jetzt im TV"]').checked = true; }
+          if (k === "time") { fl.querySelector('input[value="On now"]').checked = true; }
           else { fl.querySelector('input[type="checkbox"][value="' + k + '"]').checked = false; }
           flDraw();
           fl.querySelector('input[name^="fl-time"]:checked').focus();
@@ -609,7 +609,7 @@
       }
     },
     tvguideplus: {
-      // One flow from Home (rebuilt from my Home design, with the menu) through search, the TV
+      // One flow from Home (rebuilt from my Home design, with the tab bar) through search, the TV
       // guide and its filter
       scenes: ["search-demo", "guide-demo"],
       compose: function (copy) {
@@ -625,29 +625,27 @@
       run: function (w) {
         var home = w.scene("home");
         return w.seq([
-          function () { home.querySelector(".tgh-menu-panel").hidden = true; w.show("home"); w.step(0); return w.hold(2200); },
+          function () { w.show("home"); w.step(0); return w.hold(2200); },
           function () { w.step(1); return w.tap("home", ".tgh-search"); },
           function () { w.show("search-demo"); return w.hold(700); },
           function () { return w.tap("search-demo", "input"); },
           function () { return w.type("search-demo", "input", "bar"); },
-          function () { return w.hold(2600); }, // results, each labeled Sendung, VOD or News
+          function () { return w.hold(2600); }, // results, each labeled Show, VOD or News
           function () { w.step(2); return w.tap("search-demo", ".tg-logo"); }, // the logo goes back to Home
           function () { w.show("home"); return w.hold(800); },
-          function () { return w.tap("home", ".tgh-menu"); },
-          function () { home.querySelector(".tgh-menu-panel").hidden = false; return w.hold(900); },
-          function () { return w.tap("home", ".tgh-menu-item"); },
+          function () { return w.tap("home", ".tgh-guide"); }, // the Guide tab opens the TV guide
           function () { w.show("guide-demo"); return w.hold(1300); },
           function () { return w.tap("guide-demo", '[data-slot="2015"]'); },
           function () { return w.hold(1400); },
           function () { w.step(3); return w.tap("guide-demo", ".tg-filter"); },
           function () { w.show("filter-demo"); return w.hold(1000); },
-          function () { return w.tap("filter-demo", 'input[value="Heute um 20:15"]'); },
-          function () { return w.tap("filter-demo", 'input[value="Spielfilme"]'); },
+          function () { return w.tap("filter-demo", 'input[value="Today at 20:15"]'); },
+          function () { return w.tap("filter-demo", 'input[value="Movies"]'); },
           function () { return w.hold(800); },
           function () { return w.tap("filter-demo", ".wk-fl-close"); },
           function () { // back in the guide: only the 20:15 films
             w.scene("guide-demo").querySelectorAll(".tg-list li").forEach(function (li) {
-              li.hidden = li.querySelector(".tg-genre").textContent.indexOf("Spielfilm") !== 0;
+              li.hidden = li.querySelector(".tg-genre").textContent.indexOf("Movie") !== 0;
             });
             w.show("guide-demo");
             return w.hold(2800);
