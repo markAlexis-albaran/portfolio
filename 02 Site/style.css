@@ -963,6 +963,7 @@ mark.hl {
   background: var(--try-bg);
   border: 1px solid var(--try-line);
   border-radius: 18px;
+  container: try / inline-size; /* the notes decide their place from the panel's width, not the window's */
 }
 
 :root { --try-bg: #0d0a3a; --try-line: rgba(120, 110, 255, 0.35); } /* solid, so the background lines stay behind it */
@@ -1120,6 +1121,10 @@ mark.hl {
   gap: var(--space-9);
   align-items: center;
   margin-top: var(--space-6);
+}
+/* The card and its tokens side by side only when the panel has room for both */
+@container try (max-width: 599px) {
+  .tk-stage { grid-template-columns: 1fr; gap: var(--space-6); }
 }
 
 .tk-card[data-brand="kochzeit"] {
@@ -1384,9 +1389,26 @@ mark.hl {
 
 .pf-arrow { flex-shrink: 0; width: 28px; color: var(--text-secondary); }
 
-@media (max-width: 680px) {
-  .pf-pair { flex-direction: column; }
-  .pf-arrow { transform: rotate(90deg); }
+.pf-pair > .pf-phone { flex-shrink: 0; } /* the phones keep their size; they never squeeze */
+/* A panel too narrow for two full phones (layoutPairs in main.js picks the mode):
+   swap: the first screen shows alone; the first tap shrinks it to the left, and the arrow and
+   the second screen come in beside it. stack: too narrow even for that (phones), so they stack. */
+.pf-pair--swap { justify-content: center; }
+.pf-pair--swap:not(.is-open) > .pf-arrow,
+.pf-pair--swap:not(.is-open) > .pf-arrow ~ .pf-phone { display: none; }
+.pf-pair--swap.is-open > .pf-phone:first-child {
+  transform: scale(var(--pf-s));
+  transform-origin: left center;
+  margin-right: calc(var(--pf-w) * (var(--pf-s) - 1)); /* give back the space the scale frees */
+}
+.pf-pair--swap.is-open > .pf-arrow,
+.pf-pair--swap.is-open > .pf-arrow ~ .pf-phone { animation: pf-in 0.4s ease-out 0.25s backwards; }
+@keyframes pf-in { from { opacity: 0; transform: translateX(16px); } }
+.pf-pair--stack { flex-direction: column; }
+.pf-pair--stack .pf-arrow { transform: rotate(90deg); }
+@media (prefers-reduced-motion: reduce) {
+  .pf-pair--swap.is-open > .pf-arrow,
+  .pf-pair--swap.is-open > .pf-arrow ~ .pf-phone { animation: none; }
 }
 
 /* ---------- SpringIn: calendar and review demos (share the wish-demo phone) ---------- */
@@ -1457,7 +1479,12 @@ mark.hl {
 .case-section .callouts p { margin: 0; font-size: 16px; color: var(--text-secondary); }
 .case-section .callouts .callouts__name { margin-bottom: 2px; font-weight: 500; color: var(--text); }
 .co-pin { width: 20px; height: 20px; font-size: 11px; margin-right: 6px; vertical-align: middle; }
-@media (max-width: 899px) {
+.co-pin--end { margin: 0 0 0 6px; }
+/* Notes under a prototype that is too wide to have them beside it (two phones side by side) */
+.callouts--under { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-6) var(--space-9); margin-top: var(--space-9); }
+/* Side by side only when the panel has room for the phone and about 240px of notes; on a
+   narrower panel (a small window, a tablet, a phone) the notes go under the phone */
+@container try (max-width: 659px) {
   .try__body { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .try__body > .wish-demo__phone { max-width: 380px; }
 }
@@ -1795,6 +1822,21 @@ button.walk__n { padding: 0; cursor: pointer; }
   color: #1a1a1a;
 }
 .walk__label--l { left: 28px; }
+/* Progress and time at the bottom of the board, like a video player, so they stay in view
+   with the phone. The board is light grey in both themes, so the colors are fixed. */
+.walk__bar {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+.walk__track { position: relative; flex: 1; height: 3px; border-radius: 2px; background: rgba(0, 0, 0, 0.12); overflow: hidden; }
+.walk__track-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--accent); }
+.walk__bar-time { font-family: var(--font-mono); font-size: 13px; color: #1a1a1a; font-variant-numeric: tabular-nums; }
 .walk__label--r { right: 28px; }
 .walk--hifi .walk__scene {
   position: relative;
@@ -2052,6 +2094,8 @@ button.walk__n { padding: 0; cursor: pointer; }
   .case-section .walk__label { top: 20px; font-size: 13px; }
   .walk__label--l { left: 18px; }
   .walk__label--r { right: 18px; }
+  .walk__bar { left: 18px; right: 18px; bottom: 12px; }
+  .walk__bar-time { font-size: 12px; }
 }
 
 /* SpringIn, decision 1: calendar, then the wish screen */
@@ -2245,6 +2289,7 @@ button.walk__n { padding: 0; cursor: pointer; }
 .pg-tiles span { padding: 8px 12px; border-radius: 8px; background: #f2f2f2; font-size: 11px; text-align: center; color: #333; }
 .progress-demo .pg-sec { display: flex; justify-content: space-between; align-items: baseline; margin: 8px 0 0; font-size: 14px; color: #1f1f1f; }
 .pg-sec span { font-size: 11px; color: var(--pf-red); }
+.pg-sec .co-pin { color: var(--on-accent); }
 .pg-card { display: flex; align-items: center; gap: 10px; }
 .pg-card strong { display: block; font-size: 13px; color: #1f1f1f; }
 .pg-thumb--lg { width: 84px; }

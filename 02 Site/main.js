@@ -880,13 +880,23 @@
     clock.className = "walk__time label";
     clock.setAttribute("aria-hidden", "true");
     toggle.parentNode.insertBefore(clock, toggle);
+    // The same progress and time at the bottom of the board, so they stay in view while the
+    // visitor watches the phone
+    var bar = document.createElement("div");
+    bar.className = "walk__bar";
+    bar.innerHTML = '<span class="walk__track"><span class="walk__track-fill"></span></span><span class="walk__bar-time"></span>';
+    stage.appendChild(bar);
+    var barFill = bar.querySelector(".walk__track-fill"), barTime = bar.querySelector(".walk__bar-time");
     var fmt = function (ms) { var t = Math.round(ms / 1000); return Math.floor(t / 60) + ":" + (t % 60 < 10 ? "0" : "") + (t % 60); };
     var progress = function () {
       if (!total) return;
       var n = stepEls.length, f = stepMs[cur] ? Math.min(1, inStep / stepMs[cur]) : 0;
       var frac = cur >= n - 1 ? 1 : (cur + f) / (n - 1);
       fill.style.width = "calc((100% - 40px) * " + frac.toFixed(4) + ")";
-      clock.textContent = fmt(Math.min(total, stepStart[cur] + inStep)) + " / " + fmt(total);
+      var played = Math.min(total, stepStart[cur] + inStep);
+      clock.textContent = fmt(played) + " / " + fmt(total);
+      barTime.textContent = clock.textContent;
+      barFill.style.width = (100 * played / total).toFixed(2) + "%";
     };
 
     // A fresh copy of a prototype: no panel, title, caption or notes, and its own ids and radio
@@ -1776,7 +1786,9 @@
     document.querySelectorAll(".walk--hifi:not(.walk--desktop) .walk__stage").forEach(function (stage) {
       var cs = getComputedStyle(stage);
       var box = { clientWidth: stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) };
-      stage.querySelectorAll(".walk__scene").forEach(function (sc) { size(sc, box, 356, 720); });
+      // The whole board fits the screen, labels and progress bar included, not only the phone
+      var pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+      stage.querySelectorAll(".walk__scene").forEach(function (sc) { size(sc, box, 356, 720 * avail / Math.max(1, avail - pad)); });
     });
     // Fixed-size prototype phones: measured once at full size
     document.querySelectorAll(".try .pf-phone, .try .st-phone").forEach(function (ph) {
@@ -1785,8 +1797,47 @@
       size(ph, ph.parentNode, +ph.dataset.w, +ph.dataset.h);
     });
   };
+  // Two phones in a panel (pflegePro). Side by side when both fit at full size. When only one
+  // does, "swap": the first screen shows alone, and the first tap in it shrinks it to the left
+  // while the arrow and the second screen come in. On phones both screens are made smaller
+  // first, so the same swap fits; they only stack if even that doesn't fit.
+  var GAPS = 28 + 2 * 16; // the arrow and the two gaps around it
+  var layoutPairs = function () {
+    document.querySelectorAll(".try .pf-pair").forEach(function (pair) {
+      var first = pair.querySelector(".pf-phone");
+      var w = +first.dataset.w || 270, shown = w * (parseFloat(first.style.zoom) || 1);
+      var room = pair.clientWidth, s = (room - shown - GAPS) / shown;
+      if (room < 2 * shown + GAPS && s < 0.45) {
+        // Phones: both screens get smaller, so the small first screen still fits beside the second
+        var z = (room - GAPS) / (w * 1.45);
+        pair.querySelectorAll(".pf-phone").forEach(function (ph) { ph.style.zoom = z.toFixed(3); });
+        shown = w * z;
+        s = (room - shown - GAPS) / shown;
+      }
+      var mode = room >= 2 * shown + GAPS ? "" : s >= 0.4 ? "swap" : "stack";
+      pair.classList.toggle("pf-pair--swap", mode === "swap");
+      pair.classList.toggle("pf-pair--stack", mode === "stack");
+      pair.style.setProperty("--pf-w", w + "px");
+      pair.style.setProperty("--pf-s", Math.min(1, s).toFixed(3));
+      if (pair.dataset.swap) return;
+      pair.dataset.swap = "1";
+      first.addEventListener("click", function (e) {
+        if (!e.target.closest("button")) return; // only a real action (a lesson, the heart) moves on
+        if (!pair.classList.contains("pf-pair--swap") || pair.classList.contains("is-open")) return;
+        var before = first.getBoundingClientRect().left;
+        pair.classList.add("is-open");
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var dx = before - first.getBoundingClientRect().left;
+        first.animate(
+          [{ transform: "translateX(" + dx + "px) scale(1)" }, { transform: "scale(" + getComputedStyle(pair).getPropertyValue("--pf-s") + ")" }],
+          { duration: 500, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" }
+        );
+      });
+    });
+  };
+  var fitAll = function () { fitPhones(); layoutPairs(); };
   var fitTimer;
-  fitPhones();
-  window.addEventListener("load", fitPhones);
-  window.addEventListener("resize", function () { clearTimeout(fitTimer); fitTimer = setTimeout(fitPhones, 150); });
+  fitAll();
+  window.addEventListener("load", fitAll);
+  window.addEventListener("resize", function () { clearTimeout(fitTimer); fitTimer = setTimeout(fitAll, 150); });
 })();

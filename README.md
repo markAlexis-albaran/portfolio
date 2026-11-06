@@ -15,7 +15,7 @@ A portfolio for mid-level UI / UX / product design roles. It shows five case stu
 **What's on it**
 
 - **Home** — a hero that types my AI-assisted skills and the tools behind each, then a scroll-driven fly-through of the five projects, then contact.
-- **About** — my "How I work" loop (Research, Synthesis, Prototype, Test), my stack and my experience.
+- **How I work** (about.html) — my "How I work" loop (Research, Synthesis, Prototype, Test), my stack and my experience.
 - **Five case studies** — SpringIn, tvguideplus, Columna, yumm and pflegePro. Each one has an anchor menu, interactive "Try it" prototypes, "How AI shaped this" notes and a walkthrough that plays the prototype from start to finish.
 
 **Built for everyone:** WCAG 2.2 AA throughout. Skip link, visible focus outlines, AAA contrast on body text, a pause button on every animation that runs longer than 5 seconds, and a plain list in place of the 3D view for screen readers and reduced motion.
